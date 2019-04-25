@@ -1,12 +1,29 @@
 import './App.css';
 
 import React from 'react';
-import Button from '@material-ui/core/Button';
+import axios from 'axios';
 
-const App = () => (
-    <Button variant="contained" color="primary">
-      Hello World
-    </Button>
-);
+export default class App extends React.Component {
+    state = {
+        name: '',
+    };
 
-export default App;
+    handleSubmit = event => {
+        event.preventDefault();
+        axios.get(`/api/round)`).then(res => this.setState({name: res.data.id}))
+    };
+
+    render() {
+        return (
+            <div>
+                <form onSubmit={this.handleSubmit}>
+                    <label>
+                        Person Name:
+                        <input type="text" name="name" value={this.state.name}/>
+                    </label>
+                    <button type="submit">Add</button>
+                </form>
+            </div>
+        )
+    }
+}

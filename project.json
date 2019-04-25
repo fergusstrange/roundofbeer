@@ -4,5 +4,7 @@
   "memory": 128,
   "timeout": 5,
   "role": "arn:aws:iam::673047522944:role/roundofbeer_lambda_function",
-  "environment": {}
+  "environment": {
+    "GO111MODULE": "on"
+  }
 }

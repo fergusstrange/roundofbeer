@@ -4,8 +4,6 @@ jobs:
     working_directory: /go/src/github.com/fergusstrange/roundofbeer
     docker:
       - image: circleci/golang:1.12-node
-        environment:
-          GO111MODULE: on
     steps:
       - checkout
       - run: |

@@ -19,5 +19,5 @@ jobs:
           apex infra init && \
           apex infra apply -auto-approve && \
           pushd ui && \
-          yarn build && \
+          npm -v && yarn && yarn build && \
           aws s3 sync build s3://roundof.beer

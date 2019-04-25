@@ -4,6 +4,8 @@ jobs:
     working_directory: /go/src/github.com/fergusstrange/roundofbeer
     docker:
       - image: circleci/golang:1.12-node
+        environment:
+          GO111MODULE: on
     steps:
       - checkout
       - run: |
@@ -13,6 +15,7 @@ jobs:
           sudo mv terraform /usr/local/bin && \
           sudo npm install -g yarn
       - run: |
+          go get -v && \
           apex deploy && \
           apex infra init && \
           apex infra apply -auto-approve

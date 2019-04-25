@@ -15,7 +15,6 @@ jobs:
           sudo mv terraform /usr/local/bin && \
           sudo npm install -g yarn
       - run: |
-          go get -v && \
           apex deploy && \
           apex infra init && \
           apex infra apply -auto-approve

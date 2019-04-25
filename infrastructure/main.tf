@@ -1,5 +1,4 @@
 data "aws_caller_identity" "current" {}
-data "aws_region" "current" {}
 
 variable "aws_region" {
   type = "string"
@@ -10,7 +9,7 @@ variable "apex_function_hello" {
 }
 
 provider "aws" {
-  region = "${data.aws_region.current.name}"
+  region = "eu-west-1"
   version = "2.7.0"
 }
 
@@ -18,7 +17,7 @@ terraform {
   backend "s3" {
     bucket = "roundofbeerinfra"
     key = "terraform/terraform.tfstate"
-    region = "${data.aws_region.current.name}"
+    region = "eu-west-1"
   }
 
   required_version = ">= 0.9.3"

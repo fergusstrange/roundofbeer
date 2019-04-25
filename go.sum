@@ -1,0 +1,4 @@
+github.com/apex/go-apex v1.0.0 h1:Em8+vo4WXEQp7GfNDTr35HRnE5sFYcRpkTODpVjU39A=
+github.com/apex/go-apex v1.0.0/go.mod h1:Hy8WsL4dnQc/bYBxElRQ7xHXLNBAqz0BVxUhHiGwKLA=
+github.com/aws/aws-lambda-go v1.10.0 h1:uafgdfYGQD0UeT7d2uKdyWW8j/ZYRifRPIdmeqLzLCk=
+github.com/aws/aws-lambda-go v1.10.0/go.mod h1:zUsUQhAUjYzR8AuduJPCfhBuKWUaDbQiPOG+ouzmE1A=

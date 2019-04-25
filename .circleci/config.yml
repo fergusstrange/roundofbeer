@@ -17,4 +17,7 @@ jobs:
       - run: |
           apex deploy && \
           apex infra init && \
-          apex infra apply -auto-approve
+          apex infra apply -auto-approve && \
+          pushd ui && \
+          yarn build && \
+          aws s3 sync build s3://roundof.beer

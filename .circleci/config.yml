@@ -1,19 +1,19 @@
 version: 2
 jobs:
   build:
+    working_directory: /go/src/github.com/fergusstrange/roundofbeer
     docker:
       - image: circleci/golang:1.12-node
         environment:
           GO111MODULE: on
-    working_directory: /go/src/github.com/fergusstrange/roundofbeer
     steps:
+      - checkout
       - run: |
           curl https://raw.githubusercontent.com/apex/apex/master/install.sh | sudo sh && \
           curl -O -L https://releases.hashicorp.com/terraform/0.11.13/terraform_0.11.13_linux_amd64.zip && \
           unzip terraform_0.11.13_linux_amd64.zip && \
           sudo mv terraform /usr/local/bin && \
           sudo npm install -g yarn
-      - checkout
       - run: |
           apex deploy && \
           apex infra init && \

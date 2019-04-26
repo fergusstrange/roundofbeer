@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
+	"time"
 )
 
 type Request struct {
@@ -12,11 +13,13 @@ type Request struct {
 }
 
 type Response struct {
+	Id    string `json:"id"`
 	Value string
 }
 
 func greet(in *Request) (events.APIGatewayProxyResponse, error) {
 	bytes, _ := json.Marshal(Response{
+		Id:    time.Now().String(),
 		Value: fmt.Sprintf("Hello %s", in.Name),
 	})
 

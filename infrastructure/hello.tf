@@ -3,10 +3,16 @@ variable "apex_function_hello" {
 }
 
 # API Gateway Resource
-resource "aws_api_gateway_resource" "roundofbeer_aws_api_gateway_resource_hello" {
+resource "aws_api_gateway_resource" "roundofbeer_aws_api_gateway_resource_api" {
   rest_api_id = "${aws_api_gateway_rest_api.roundofbeer_aws_api_gateway_rest_api.id}"
   parent_id = "${aws_api_gateway_rest_api.roundofbeer_aws_api_gateway_rest_api.root_resource_id}"
-  path_part = "/api/round"
+  path_part = "api"
+}
+
+resource "aws_api_gateway_resource" "roundofbeer_aws_api_gateway_resource_hello" {
+  rest_api_id = "${aws_api_gateway_rest_api.roundofbeer_aws_api_gateway_rest_api.id}"
+  parent_id = "${aws_api_gateway_resource.roundofbeer_aws_api_gateway_resource_api.id}"
+  path_part = "round"
 }
 
 resource "aws_api_gateway_method" "roundofbeer_aws_api_gateway_method_hello" {

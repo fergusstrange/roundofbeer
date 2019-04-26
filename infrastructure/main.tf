@@ -293,8 +293,12 @@ resource "aws_api_gateway_base_path_mapping" "roundofbeer_aws_api_gateway_base_p
 resource "aws_api_gateway_deployment" "roundofbeer_aws_api_gateway_deployment_prod" {
   rest_api_id = "${aws_api_gateway_rest_api.roundofbeer_aws_api_gateway_rest_api.id}"
   stage_name = "prod"
+  stage_description = "${timestamp()}"
   depends_on = [
     "aws_api_gateway_integration.roundofbeer_aws_api_gateway_integration_root",
     "aws_api_gateway_integration.roundofbeer_aws_api_gateway_integration"
   ]
+  lifecycle {
+    create_before_destroy = true
+  }
 }

@@ -10,7 +10,7 @@ export default class App extends React.Component {
 
     handleSubmit = event => {
         event.preventDefault();
-        axios.get(`/api/round)`).then(res => this.setState({name: res.data.id}))
+        axios.get(`/api/round`).then(res => this.setState({name: res.data.id}))
     };
 
     render() {

@@ -4,10 +4,6 @@ variable "aws_region" {
   type = "string"
 }
 
-variable "apex_function_hello" {
-  type = "string"
-}
-
 provider "aws" {
   region = "eu-west-1"
   version = "2.7.0"
@@ -130,43 +126,40 @@ resource "aws_api_gateway_rest_api" "roundofbeer_aws_api_gateway_rest_api" {
 }
 
 # API Gateway Root Resource
-resource "aws_api_gateway_method" "roundofbeer_aws_api_gateway_method_static" {
+resource "aws_api_gateway_method" "roundofbeer_aws_api_gateway_method_root" {
   rest_api_id = "${aws_api_gateway_rest_api.roundofbeer_aws_api_gateway_rest_api.id}"
   resource_id = "${aws_api_gateway_rest_api.roundofbeer_aws_api_gateway_rest_api.root_resource_id}"
   http_method = "ANY"
   authorization = "NONE"
 }
 
-resource "aws_api_gateway_integration" "roundofbeer_aws_api_gateway_integration_static" {
+resource "aws_api_gateway_integration" "roundofbeer_aws_api_gateway_integration_root" {
   rest_api_id = "${aws_api_gateway_rest_api.roundofbeer_aws_api_gateway_rest_api.id}"
-  resource_id = "${aws_api_gateway_method.roundofbeer_aws_api_gateway_method_static.resource_id}"
-  http_method = "${aws_api_gateway_method.roundofbeer_aws_api_gateway_method_static.http_method}"
+  resource_id = "${aws_api_gateway_method.roundofbeer_aws_api_gateway_method_root.resource_id}"
+  http_method = "${aws_api_gateway_method.roundofbeer_aws_api_gateway_method_root.http_method}"
   credentials = "${aws_iam_role.roundofbeer_gateway_aws_iam_role.arn}"
   integration_http_method = "GET"
   type = "AWS"
   uri = "arn:aws:apigateway:${var.aws_region}:s3:path/${aws_s3_bucket.roundofbeer_static_content.bucket}/index.html"
 }
 
-resource "aws_api_gateway_method_response" "roundofbeer_aws_api_gateway_method_response_static" {
+resource "aws_api_gateway_method_response" "roundofbeer_aws_api_gateway_method_response_200_root" {
   rest_api_id = "${aws_api_gateway_rest_api.roundofbeer_aws_api_gateway_rest_api.id}"
   resource_id = "${aws_api_gateway_rest_api.roundofbeer_aws_api_gateway_rest_api.root_resource_id}"
-  http_method = "${aws_api_gateway_method.roundofbeer_aws_api_gateway_method_static.http_method}"
+  http_method = "${aws_api_gateway_method.roundofbeer_aws_api_gateway_method_root.http_method}"
   status_code = "200"
   response_parameters = {
     "method.response.header.Timestamp" = true
     "method.response.header.Content-Length" = true
     "method.response.header.Content-Type" = true
   }
-  response_models = {
-    "application/json" = "Empty"
-  }
 }
 
-resource "aws_api_gateway_integration_response" "roundofbeer_aws_api_gateway_integration_response_static" {
+resource "aws_api_gateway_integration_response" "roundofbeer_aws_api_gateway_integration_response_root" {
   rest_api_id = "${aws_api_gateway_rest_api.roundofbeer_aws_api_gateway_rest_api.id}"
   resource_id = "${aws_api_gateway_rest_api.roundofbeer_aws_api_gateway_rest_api.root_resource_id}"
-  http_method = "${aws_api_gateway_method.roundofbeer_aws_api_gateway_method_static.http_method}"
-  status_code = "${aws_api_gateway_method_response.roundofbeer_aws_api_gateway_method_response_static.status_code}"
+  http_method = "${aws_api_gateway_method.roundofbeer_aws_api_gateway_method_root.http_method}"
+  status_code = "${aws_api_gateway_method_response.roundofbeer_aws_api_gateway_method_response_200_root.status_code}"
   selection_pattern = "-"
   response_parameters = {
     "method.response.header.Timestamp" = "integration.response.header.Date"
@@ -220,17 +213,47 @@ resource "aws_api_gateway_method_response" "roundofbeer_aws_api_gateway_method_r
   }
 }
 
-resource "aws_api_gateway_integration_response" "roundofbeer_aws_api_gateway_integration_response" {
+resource "aws_api_gateway_integration_response" "roundofbeer_aws_api_gateway_integration_response_200" {
   rest_api_id = "${aws_api_gateway_rest_api.roundofbeer_aws_api_gateway_rest_api.id}"
   resource_id = "${aws_api_gateway_resource.roundofbeer_aws_api_gateway_resource.id}"
   http_method = "${aws_api_gateway_method.roundofbeer_aws_api_gateway_method.http_method}"
-  status_code = "${aws_api_gateway_method_response.roundofbeer_aws_api_gateway_method_response_200.status_code}"
+  status_code = "${aws_api_gateway_method_response.roundofbeer_aws_api_gateway_method_response_200_hello.status_code}"
   selection_pattern = "-"
   response_parameters = {
     "method.response.header.Timestamp" = "integration.response.header.Date"
     "method.response.header.Content-Length" = "integration.response.header.Content-Length"
     "method.response.header.Content-Type" = "integration.response.header.Content-Type"
   }
+}
+
+resource "aws_api_gateway_method_response" "roundofbeer_aws_api_gateway_method_response_400" {
+  rest_api_id = "${aws_api_gateway_rest_api.roundofbeer_aws_api_gateway_rest_api.id}"
+  resource_id = "${aws_api_gateway_rest_api.roundofbeer_aws_api_gateway_rest_api.root_resource_id}"
+  http_method = "${aws_api_gateway_method.roundofbeer_aws_api_gateway_method.http_method}"
+  status_code = "400"
+}
+
+resource "aws_api_gateway_integration_response" "roundofbeer_aws_api_gateway_integration_response_400" {
+  rest_api_id = "${aws_api_gateway_rest_api.roundofbeer_aws_api_gateway_rest_api.id}"
+  resource_id = "${aws_api_gateway_resource.roundofbeer_aws_api_gateway_resource.id}"
+  http_method = "${aws_api_gateway_method.roundofbeer_aws_api_gateway_method.http_method}"
+  status_code = "${aws_api_gateway_method_response.roundofbeer_aws_api_gateway_method_response_400.status_code}"
+  selection_pattern = "4\\d{2}"
+}
+
+resource "aws_api_gateway_method_response" "roundofbeer_aws_api_gateway_method_response_500" {
+  rest_api_id = "${aws_api_gateway_rest_api.roundofbeer_aws_api_gateway_rest_api.id}"
+  resource_id = "${aws_api_gateway_rest_api.roundofbeer_aws_api_gateway_rest_api.root_resource_id}"
+  http_method = "${aws_api_gateway_method.roundofbeer_aws_api_gateway_method.http_method}"
+  status_code = "500"
+}
+
+resource "aws_api_gateway_integration_response" "roundofbeer_aws_api_gateway_integration_response_500" {
+  rest_api_id = "${aws_api_gateway_rest_api.roundofbeer_aws_api_gateway_rest_api.id}"
+  resource_id = "${aws_api_gateway_resource.roundofbeer_aws_api_gateway_resource.id}"
+  http_method = "${aws_api_gateway_method.roundofbeer_aws_api_gateway_method.http_method}"
+  status_code = "${aws_api_gateway_method_response.roundofbeer_aws_api_gateway_method_response_500.status_code}"
+  selection_pattern = "5\\d{2}"
 }
 
 #API Gateway Custom Domain & Deployment
@@ -271,7 +294,7 @@ resource "aws_api_gateway_deployment" "roundofbeer_aws_api_gateway_deployment_pr
   rest_api_id = "${aws_api_gateway_rest_api.roundofbeer_aws_api_gateway_rest_api.id}"
   stage_name = "prod"
   depends_on = [
-    "aws_api_gateway_integration.roundofbeer_aws_api_gateway_integration_static",
+    "aws_api_gateway_integration.roundofbeer_aws_api_gateway_integration_root",
     "aws_api_gateway_integration.roundofbeer_aws_api_gateway_integration"
   ]
 }

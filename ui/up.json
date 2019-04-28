@@ -1,10 +1,6 @@
 {
   "name": "ui",
   "type": "static",
-  "hooks": {
-    "clean": "rm -fr build",
-    "build": "yarn && yarn build"
-  },
   "static": {
     "dir": "build"
   },

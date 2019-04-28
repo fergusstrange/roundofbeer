@@ -17,20 +17,22 @@
     ],
     "allow_credentials": true
   },
-  "policy": [
-    {
-      "Effect": "Allow",
-      "Resource": "*",
-      "Action": [
-        "dynamodb:CreateTable",
-        "dynamodb:Get*",
-        "dynamodb:Scan",
-        "dynamodb:PutItem",
-        "dynamodb:UpdateItem",
-        "dynamodb:DeleteItem"
-      ]
-    }
-  ],
+  "lambda": {
+    "policy": [
+      {
+        "Effect": "Allow",
+        "Resource": "*",
+        "Action": [
+          "dynamodb:CreateTable",
+          "dynamodb:Get*",
+          "dynamodb:Scan",
+          "dynamodb:PutItem",
+          "dynamodb:UpdateItem",
+          "dynamodb:DeleteItem"
+        ]
+      }
+    ]
+  },
   "stages": {
     "production": {
       "domain": "api.roundof.beer",

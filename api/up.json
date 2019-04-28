@@ -1,23 +1,23 @@
 {
   "name": "api",
+  "policy": [
+    {
+      "Effect": "Allow",
+      "Resource": "*",
+      "Action": [
+        "dynamodb:CreateTable",
+        "dynamodb:Get*",
+        "dynamodb:Scan",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem"
+      ]
+    }
+  ],
   "stages": {
     "production": {
       "domain": "www.roundof.beer",
       "path": "/api"
-    },
-    "policy": [
-      {
-        "Effect": "Allow",
-        "Resource": "*",
-        "Action": [
-          "dynamodb:CreateTable",
-          "dynamodb:Get*",
-          "dynamodb:Scan",
-          "dynamodb:PutItem",
-          "dynamodb:UpdateItem",
-          "dynamodb:DeleteItem"
-        ]
-      }
-    ]
+    }
   }
 }

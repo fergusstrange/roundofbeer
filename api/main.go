@@ -21,14 +21,24 @@ func init() {
 	if err != nil {
 		log.WithError(err).Fatalf("Unable to create DynamoDB table")
 	} else {
-		dynamo.New(newSession).CreateTable("roundofbeer", Round{})
+		db := dynamo.New(newSession)
+		err := db.CreateTable("roundofbeer", Round{}).Run()
+		if err != nil {
+			log.WithError(err).Fatalf("Unable to create DynamoDB table")
+		}
 	}
 }
 
-// setup.
 func main() {
 	addr := ":" + os.Getenv("PORT")
 	app := pat.New()
+	app.Get("/round", func(writer http.ResponseWriter, request *http.Request) {
+		_, err := writer.Write([]byte("{}"))
+		if err != nil {
+			log.Fatalf("Cannot write bytes")
+		}
+		writer.WriteHeader(200)
+	})
 	if err := http.ListenAndServe(addr, app); err != nil {
 		log.WithError(err).Fatal("error listening")
 	}

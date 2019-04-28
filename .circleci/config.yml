@@ -6,6 +6,7 @@ jobs:
       - image: circleci/golang:1.12-node
         environment:
           GO111MODULE: "on"
+          CI: "true"
     steps:
       - checkout
       - run: |

@@ -1,0 +1,17 @@
+{
+  "name": "ui",
+  "type": "static",
+  "hooks": {
+    "build": "yarn build",
+    "clean": "rm -fr build"
+  },
+  "static": {
+    "dir": "build"
+  },
+  "stages": {
+    "production": {
+      "domain": "www.roundof.beer",
+      "path": "/"
+    }
+  }
+}

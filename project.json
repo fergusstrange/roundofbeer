@@ -1,8 +1,0 @@
-{
-  "name": "roundofbeer",
-  "description": "Whose round is it?",
-  "memory": 128,
-  "timeout": 5,
-  "role": "arn:aws:iam::673047522944:role/roundofbeer_lambda_function",
-  "environment": {}
-}

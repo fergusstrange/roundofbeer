@@ -9,17 +9,8 @@ jobs:
     steps:
       - checkout
       - run: |
-          curl https://bootstrap.pypa.io/get-pip.py | sudo python && \
-          sudo pip install awscli && \
-          curl https://raw.githubusercontent.com/apex/apex/master/install.sh | sudo sh && \
-          curl -O -L https://releases.hashicorp.com/terraform/0.11.13/terraform_0.11.13_linux_amd64.zip && \
-          unzip terraform_0.11.13_linux_amd64.zip && \
-          sudo mv terraform /usr/local/bin && \
+          curl -sf https://up.apex.sh/install | sudo sh && \
           sudo npm install -g yarn
       - run: |
-          apex deploy && \
-          apex infra init && \
-          apex infra apply -auto-approve && \
-          pushd ui && \
-          yarn && yarn build && \
-          aws s3 sync build s3://roundof.beer
+          up deploy production --chdir=api && \
+          up deploy production --chdir=ui

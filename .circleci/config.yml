@@ -12,5 +12,5 @@ jobs:
           curl -sf https://up.apex.sh/install | sudo sh && \
           sudo npm install -g yarn
       - run: |
-          up deploy production --chdir=api && \
-          up deploy production --chdir=ui
+          up deploy production --verbose --chdir api && \
+          up deploy production --verbose --chdir ui

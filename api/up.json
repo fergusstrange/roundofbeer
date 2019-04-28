@@ -1,5 +1,22 @@
 {
   "name": "api",
+  "cors": {
+    "allowed_origins": [
+      "https://www.roundofbeer.com"
+    ],
+    "allowed_methods": [
+      "HEAD",
+      "GET",
+      "POST",
+      "PUT",
+      "PATCH",
+      "DELETE"
+    ],
+    "allowed_headers": [
+      "*"
+    ],
+    "allow_credentials": true
+  },
   "policy": [
     {
       "Effect": "Allow",
@@ -16,8 +33,8 @@
   ],
   "stages": {
     "production": {
-      "domain": "www.roundof.beer",
-      "path": "/api"
+      "domain": "api.roundof.beer",
+      "path": "/"
     }
   }
 }

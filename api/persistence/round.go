@@ -11,7 +11,7 @@ const tableName = "roundofbeer"
 
 type Round struct {
 	Url          string        `dynamo:"url,hash"`
-	Participants []Participant `dynamo:"participants,set"`
+	Participants []Participant `dynamo:"participants"`
 	CreateDate   time.Time     `dynamo:"create_date"`
 	UpdateDate   time.Time     `dynamo:"update_date"`
 }

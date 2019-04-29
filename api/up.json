@@ -23,6 +23,7 @@
         "Effect": "Allow",
         "Resource": "*",
         "Action": [
+          "dynamodb:ListTables",
           "dynamodb:CreateTable",
           "dynamodb:Get*",
           "dynamodb:Scan",

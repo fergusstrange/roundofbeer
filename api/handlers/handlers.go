@@ -1,21 +1,24 @@
 package handlers
 
 import (
-	"github.com/fergusstrange/roundofbeer/api/jwt"
 	"github.com/gin-gonic/gin"
+	"time"
 )
 
-func CreateRound(ctx *gin.Context) {
-	token := ctx.GetHeader("x-roundofbeer-auth")
-	jwt.NewHelper().Decode(token)
-	ctx.Status(200)
+type Round struct {
+	Url          string        `json:"url"`
+	Participants []Participant `json:"participants"`
+	CreateDate   time.Time     `json:"create_date"`
+	UpdateDate   time.Time     `json:"update_date"`
+}
+
+type Participant struct {
+	UUID       string `json:"uuid"`
+	Name       string `json:"name"`
+	RoundCount int    `json:"round_count"`
 }
 
 func GetRound(ctx *gin.Context) {
-	ctx.Status(200)
-}
-
-func GetRoundsByParticipant(ctx *gin.Context) {
 	ctx.Status(200)
 }
 

@@ -6,6 +6,7 @@ import (
 	"github.com/fergusstrange/roundofbeer/api/handlers"
 	"github.com/fergusstrange/roundofbeer/api/handlers/create"
 	"github.com/fergusstrange/roundofbeer/api/persistence"
+	"github.com/fergusstrange/roundofbeer/api/read"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"os"
@@ -20,7 +21,7 @@ func main() {
 	app := gin.Default()
 
 	app.POST("/round", create.CreateRound)
-	app.GET("/round", handlers.GetRound)
+	app.GET("/round/:roundId", read.GetRound)
 	app.PUT("/round", handlers.IncrementRoundParticipant)
 
 	if err := http.ListenAndServe(":"+os.Getenv("PORT"), app); err != nil {

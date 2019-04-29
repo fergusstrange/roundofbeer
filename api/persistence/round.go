@@ -57,3 +57,13 @@ func CreateRound(url string, participants []string) {
 		Run()
 	errors.LogFatal(err)
 }
+
+func FetchRound(roundId string) Round {
+	var round Round
+	err := dynamo.Client.
+		Table(tableName).
+		Get("url", roundId).
+		One(&round)
+	errors.LogFatal(err)
+	return round
+}

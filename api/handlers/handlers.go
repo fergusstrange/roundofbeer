@@ -18,10 +18,6 @@ type Participant struct {
 	RoundCount int    `json:"round_count"`
 }
 
-func GetRound(ctx *gin.Context) {
-	ctx.Status(200)
-}
-
 func IncrementRoundParticipant(ctx *gin.Context) {
 	ctx.Status(200)
 }

@@ -8,6 +8,7 @@ import (
 	"github.com/fergusstrange/roundofbeer/api/persistence"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"os"
 )
 
 func init() {
@@ -22,7 +23,7 @@ func main() {
 	app.GET("/round", handlers.GetRound)
 	app.PUT("/round", handlers.IncrementRoundParticipant)
 
-	if err := http.ListenAndServe(":3000", app); err != nil {
+	if err := http.ListenAndServe(":"+os.Getenv("PORT"), app); err != nil {
 		log.WithError(err).Fatal("error listening")
 	}
 }

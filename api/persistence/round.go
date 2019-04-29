@@ -38,7 +38,7 @@ func CreateRoundTable() {
 }
 
 func CreateRound(url string, participants []string) {
-	participantList := make([]Participant, len(participants))
+	var participantList []Participant
 	for _, participant := range participants {
 		participantList = append(participantList, Participant{
 			UUID:       uuid.New().String(),

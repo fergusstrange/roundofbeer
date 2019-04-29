@@ -13,7 +13,7 @@ import (
 
 func init() {
 	log.SetHandler(text.Default)
-	go persistence.CreateRoundTable()
+	persistence.CreateRoundTable()
 }
 
 func main() {

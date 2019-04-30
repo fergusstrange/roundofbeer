@@ -5,6 +5,7 @@ import (
 	"github.com/fergusstrange/roundofbeer/api/persistence"
 	"github.com/gin-gonic/gin"
 	"math/rand"
+	"time"
 )
 
 type Response struct {
@@ -15,6 +16,25 @@ func IncrementRoundParticipant(ctx *gin.Context) {
 	roundId := validation.ValidRoundId(ctx)
 	round := persistence.FetchRound(roundId)
 
+	chosenParticipant := selectNextCandidate(round)
+	chosenParticipant.RoundCount = chosenParticipant.RoundCount + 1
+
+	var updatedParticipants []persistence.Participant
+	for _, existingParticipant := range round.Participants {
+		if existingParticipant.UUID == chosenParticipant.UUID {
+			updatedParticipants = append(updatedParticipants, chosenParticipant)
+		} else {
+			updatedParticipants = append(updatedParticipants, existingParticipant)
+		}
+	}
+	persistence.UpdateParticipants(round.Url, updatedParticipants)
+
+	ctx.JSON(200, &Response{
+		Participant: chosenParticipant.Name,
+	})
+}
+
+func selectNextCandidate(round persistence.Round) persistence.Participant {
 	firstParticipant := round.Participants[0]
 	lowestBought := firstParticipant.RoundCount
 	var candidatesForNextRound = []persistence.Participant{firstParticipant}
@@ -26,21 +46,14 @@ func IncrementRoundParticipant(ctx *gin.Context) {
 			candidatesForNextRound = append(candidatesForNextRound, participant)
 		}
 	}
-	chosenParticipant := candidatesForNextRound[rand.Intn(len(candidatesForNextRound)-1)]
-	chosenParticipant.RoundCount = chosenParticipant.RoundCount + 1
+	chosenParticipant := candidatesForNextRound[randomIndexOrFirstWhenOnlyOneCandidate(candidatesForNextRound)]
+	return chosenParticipant
+}
 
-	var updatedParticipants []persistence.Participant
-	for _, existingParticipant := range round.Participants {
-		if existingParticipant.UUID == chosenParticipant.UUID {
-			updatedParticipants = append(updatedParticipants, chosenParticipant)
-		} else {
-			updatedParticipants = append(updatedParticipants, existingParticipant)
-		}
+func randomIndexOrFirstWhenOnlyOneCandidate(candidatesForNextRound []persistence.Participant) int {
+	numberOfCandidates := len(candidatesForNextRound)
+	if numberOfCandidates <= 1 {
+		return 0
 	}
-	round.Participants = updatedParticipants
-	persistence.UpdateRound(round)
-
-	ctx.JSON(200, &Response{
-		Participant: chosenParticipant.Name,
-	})
+	return rand.New(rand.NewSource(time.Now().Unix())).Intn(numberOfCandidates)
 }

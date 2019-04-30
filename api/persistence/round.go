@@ -68,9 +68,10 @@ func FetchRound(roundId string) Round {
 	return round
 }
 
-func UpdateRound(round Round) {
+func UpdateParticipants(roundUrl string, participants []Participant) {
 	err := dynamo.Client.Table(roundOfBeer).
-		Update(round.Url, round).
+		Update("url", roundUrl).
+		Set("participants", participants).
 		Run()
 	errors.LogFatal(err)
 }

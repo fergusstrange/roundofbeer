@@ -3,13 +3,12 @@ package main
 import (
 	"github.com/apex/log"
 	"github.com/apex/log/handlers/text"
+	"github.com/fergusstrange/roundofbeer/api/errors"
 	"github.com/fergusstrange/roundofbeer/api/handlers"
 	"github.com/fergusstrange/roundofbeer/api/handlers/create"
 	"github.com/fergusstrange/roundofbeer/api/persistence"
 	"github.com/fergusstrange/roundofbeer/api/read"
 	"github.com/gin-gonic/gin"
-	"net/http"
-	"os"
 )
 
 func init() {
@@ -24,7 +23,5 @@ func main() {
 	app.GET("/round/:roundId", read.GetRound)
 	app.PUT("/round", handlers.IncrementRoundParticipant)
 
-	if err := http.ListenAndServe(":"+os.Getenv("PORT"), app); err != nil {
-		log.WithError(err).Fatal("error listening")
-	}
+	errors.LogFatal(app.Run())
 }

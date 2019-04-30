@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-const tableName = "roundofbeer"
+const roundOfBeer = "roundofbeer"
 
 type Round struct {
 	Url          string        `dynamo:"url,hash"`
@@ -26,12 +26,12 @@ func CreateRoundTable() {
 	tables, err := dynamo.Client.ListTables().All()
 	errors.LogFatal(err)
 	for _, table := range tables {
-		if table == tableName {
+		if table == roundOfBeer {
 			return
 		}
 	}
 	err = dynamo.Client.
-		CreateTable(tableName, Round{}).
+		CreateTable(roundOfBeer, Round{}).
 		Provision(3, 2).
 		Run()
 	errors.LogFatal(err)
@@ -47,7 +47,7 @@ func CreateRound(url string, participants []string) {
 		})
 	}
 	err := dynamo.Client.
-		Table(tableName).
+		Table(roundOfBeer).
 		Put(Round{
 			Url:          url,
 			CreateDate:   time.Now(),
@@ -61,9 +61,16 @@ func CreateRound(url string, participants []string) {
 func FetchRound(roundId string) Round {
 	var round Round
 	err := dynamo.Client.
-		Table(tableName).
+		Table(roundOfBeer).
 		Get("url", roundId).
 		One(&round)
 	errors.LogFatal(err)
 	return round
+}
+
+func UpdateRound(round Round) {
+	err := dynamo.Client.Table(roundOfBeer).
+		Update(round.Url, round).
+		Run()
+	errors.LogFatal(err)
 }

@@ -1,15 +1,12 @@
 package handlers
 
 import (
-	"github.com/gin-gonic/gin"
-	"time"
+	"github.com/fergusstrange/roundofbeer/api/persistence"
 )
 
 type Round struct {
 	Url          string        `json:"url"`
 	Participants []Participant `json:"participants"`
-	CreateDate   time.Time     `json:"create_date"`
-	UpdateDate   time.Time     `json:"update_date"`
 }
 
 type Participant struct {
@@ -18,6 +15,18 @@ type Participant struct {
 	RoundCount int    `json:"round_count"`
 }
 
-func IncrementRoundParticipant(ctx *gin.Context) {
-	ctx.Status(200)
+func Transform(round persistence.Round) Round {
+	var participants []Participant
+	for _, participant := range round.Participants {
+		participants = append(participants, Participant{
+			UUID:       participant.UUID,
+			Name:       participant.Name,
+			RoundCount: participant.RoundCount,
+		})
+	}
+
+	return Round{
+		Url:          round.Url,
+		Participants: participants,
+	}
 }

@@ -15,20 +15,10 @@ type Response struct {
 func IncrementRoundParticipant(ctx *gin.Context) {
 	roundId := validation.ValidRoundId(ctx)
 	round := persistence.FetchRound(roundId)
-
 	chosenParticipant := selectNextCandidate(round)
 	chosenParticipant.RoundCount = chosenParticipant.RoundCount + 1
-
-	var updatedParticipants []persistence.Participant
-	for _, existingParticipant := range round.Participants {
-		if existingParticipant.UUID == chosenParticipant.UUID {
-			updatedParticipants = append(updatedParticipants, chosenParticipant)
-		} else {
-			updatedParticipants = append(updatedParticipants, existingParticipant)
-		}
-	}
+	updatedParticipants := updateParticipantsWithChosen(round, chosenParticipant)
 	persistence.UpdateParticipants(round.Url, updatedParticipants)
-
 	ctx.JSON(200, &Response{
 		Participant: chosenParticipant.Name,
 	})
@@ -48,6 +38,18 @@ func selectNextCandidate(round persistence.Round) persistence.Participant {
 	}
 	chosenParticipant := candidatesForNextRound[randomIndexOrFirstWhenOnlyOneCandidate(candidatesForNextRound)]
 	return chosenParticipant
+}
+
+func updateParticipantsWithChosen(round persistence.Round, chosenParticipant persistence.Participant) []persistence.Participant {
+	var updatedParticipants []persistence.Participant
+	for _, existingParticipant := range round.Participants {
+		if existingParticipant.UUID == chosenParticipant.UUID {
+			updatedParticipants = append(updatedParticipants, chosenParticipant)
+		} else {
+			updatedParticipants = append(updatedParticipants, existingParticipant)
+		}
+	}
+	return updatedParticipants
 }
 
 func randomIndexOrFirstWhenOnlyOneCandidate(candidatesForNextRound []persistence.Participant) int {

@@ -72,6 +72,7 @@ func UpdateParticipants(roundUrl string, participants []Participant) {
 	err := dynamo.Client.Table(roundOfBeer).
 		Update("url", roundUrl).
 		Set("participants", participants).
+		Set("update_date", time.Now()).
 		Run()
 	errors.LogFatal(err)
 }

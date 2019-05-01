@@ -10,9 +10,12 @@ import (
 	"github.com/fergusstrange/roundofbeer/api/handlers/update"
 	"github.com/fergusstrange/roundofbeer/api/persistence"
 	"github.com/gin-gonic/gin"
+	"os"
 )
 
 func init() {
+	gin.DefaultErrorWriter = os.Stderr
+	gin.DefaultWriter = os.Stderr
 	log.SetHandler(text.Default)
 	persistence.CreateRoundTable()
 }

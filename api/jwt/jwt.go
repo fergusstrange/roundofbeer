@@ -26,7 +26,7 @@ func NewHelper() *Helper {
 func (jwtHelper *Helper) Encode(token *RoundToken) string {
 	signedString, err := jwt.
 		NewWithClaims(jwt.SigningMethodHS512, token).
-		SignedString(signingKey)
+		SignedString(jwtHelper.SigningKey)
 	errors.LogFatal(err)
 	return signedString
 }
@@ -34,7 +34,7 @@ func (jwtHelper *Helper) Encode(token *RoundToken) string {
 func (jwtHelper *Helper) Decode(token string) (RoundToken, error) {
 	var roundToken RoundToken
 	_, err := jwt.ParseWithClaims(token, &roundToken, func(token *jwt.Token) (i interface{}, e error) {
-		return signingKey, nil
+		return jwtHelper.SigningKey, nil
 	})
 	return roundToken, err
 }

@@ -7,7 +7,7 @@ import (
 )
 
 func Test_selectNextCandidate_OneParticipant_ExpectJesus(t *testing.T) {
-	candidate := selectNextCandidate(persistence.Round{
+	candidate := selectNextCandidate(&persistence.Round{
 		Participants: []persistence.Participant{
 			{
 				UUID:       "6b9f56c7-2035-43d3-b65a-c7cfc9c32b86",
@@ -27,7 +27,7 @@ func Test_selectNextCandidate_OneParticipant_ExpectJesus(t *testing.T) {
 }
 
 func Test_selectNextCandidate_TwoParticipants_ExpectJohn(t *testing.T) {
-	candidate := selectNextCandidate(persistence.Round{
+	candidate := selectNextCandidate(&persistence.Round{
 		Participants: []persistence.Participant{
 			{
 				UUID:       "6b9f56c7-2035-43d3-b65a-c7cfc9c32b86",
@@ -52,7 +52,7 @@ func Test_selectNextCandidate_TwoParticipants_ExpectJohn(t *testing.T) {
 }
 
 func Test_selectNextCandidate_TwoParticipants_ExpectAny(t *testing.T) {
-	candidate := selectNextCandidate(persistence.Round{
+	candidate := selectNextCandidate(&persistence.Round{
 		Participants: []persistence.Participant{
 			{
 				UUID:       "6b9f56c7-2035-43d3-b65a-c7cfc9c32b86",
@@ -82,7 +82,7 @@ func Test_selectNextCandidate_TwoParticipants_ExpectAny(t *testing.T) {
 }
 
 func Test_selectNextCandidate_ThreeParticipants_ExpectJim(t *testing.T) {
-	candidate := selectNextCandidate(persistence.Round{
+	candidate := selectNextCandidate(&persistence.Round{
 		Participants: []persistence.Participant{
 			{
 				UUID:       "6b9f56c7-2035-43d3-b65a-c7cfc9c32b86",
@@ -112,7 +112,7 @@ func Test_selectNextCandidate_ThreeParticipants_ExpectJim(t *testing.T) {
 }
 
 func Test_selectNextCandidate_ThreeParticipants_ExpectJose(t *testing.T) {
-	candidate := selectNextCandidate(persistence.Round{
+	candidate := selectNextCandidate(&persistence.Round{
 		Participants: []persistence.Participant{
 			{
 				UUID:       "6b9f56c7-2035-43d3-b65a-c7cfc9c32b86",

@@ -2,6 +2,7 @@ package update
 
 import (
 	"github.com/fergusstrange/roundofbeer/api/handlers/validation"
+	"github.com/fergusstrange/roundofbeer/api/jwt"
 	"github.com/fergusstrange/roundofbeer/api/persistence"
 	"github.com/gin-gonic/gin"
 	"math/rand"
@@ -12,19 +13,24 @@ type Response struct {
 	Participant string `json:"participant"`
 }
 
-func IncrementRoundParticipant(ctx *gin.Context) {
-	roundId := validation.ValidRoundId(ctx)
-	round := persistence.FetchRound(roundId)
-	chosenParticipant := selectNextCandidate(round)
-	chosenParticipant.RoundCount = chosenParticipant.RoundCount + 1
-	updatedParticipants := updateParticipantsWithChosen(round, chosenParticipant)
-	persistence.UpdateParticipants(round.Url, updatedParticipants)
-	ctx.JSON(200, &Response{
-		Participant: chosenParticipant.Name,
-	})
+func Round(ctx *gin.Context) {
+	roundToken, err := jwt.NewHelper().Decode(validation.ValidRoundHeader(ctx))
+	if err != nil {
+		ctx.AbortWithStatus(400)
+	} else if round := persistence.FetchRound(roundToken.RoundUrl); round != nil {
+		chosenParticipant := selectNextCandidate(round)
+		chosenParticipant.RoundCount = chosenParticipant.RoundCount + 1
+		updatedParticipants := updateParticipantsWithChosen(round, chosenParticipant)
+		persistence.UpdateParticipants(round.Url, updatedParticipants)
+		ctx.JSON(200, &Response{
+			Participant: chosenParticipant.Name,
+		})
+	} else {
+		ctx.AbortWithStatus(400)
+	}
 }
 
-func selectNextCandidate(round persistence.Round) persistence.Participant {
+func selectNextCandidate(round *persistence.Round) persistence.Participant {
 	firstParticipant := round.Participants[0]
 	lowestBought := firstParticipant.RoundCount
 	var candidatesForNextRound = []persistence.Participant{firstParticipant}
@@ -40,7 +46,7 @@ func selectNextCandidate(round persistence.Round) persistence.Participant {
 	return chosenParticipant
 }
 
-func updateParticipantsWithChosen(round persistence.Round, chosenParticipant persistence.Participant) []persistence.Participant {
+func updateParticipantsWithChosen(round *persistence.Round, chosenParticipant persistence.Participant) []persistence.Participant {
 	var updatedParticipants []persistence.Participant
 	for _, existingParticipant := range round.Participants {
 		if existingParticipant.UUID == chosenParticipant.UUID {

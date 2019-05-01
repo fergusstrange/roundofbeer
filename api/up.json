@@ -1,5 +1,8 @@
 {
   "name": "api",
+  "environment": {
+    "SIGNING_KEY": "$SIGNING_KEY_REPLACE"
+  },
   "cors": {
     "allowed_origins": [
       "https://www.roundofbeer.com"

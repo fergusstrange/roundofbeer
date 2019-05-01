@@ -1,8 +1,8 @@
 package jwt
 
 import (
-	"github.com/apex/log"
 	"github.com/dgrijalva/jwt-go"
+	"github.com/fergusstrange/roundofbeer/api/errors"
 	"os"
 )
 
@@ -12,28 +12,29 @@ type Helper struct {
 	SigningKey string
 }
 
+type RoundToken struct {
+	RoundUrl string `json:"round_url"`
+	jwt.StandardClaims
+}
+
 func NewHelper() *Helper {
 	return &Helper{
 		SigningKey: signingKey,
 	}
 }
 
-func (jwtHelper *Helper) Encode(claim jwt.Claims) string {
-	signedString, err := jwt.NewWithClaims(jwt.SigningMethodHS512, claim).
+func (jwtHelper *Helper) Encode(token RoundToken) string {
+	signedString, err := jwt.
+		NewWithClaims(jwt.SigningMethodHS512, token).
 		SignedString(signingKey)
-	if err != nil {
-		log.WithError(err).Fatalf("Unable to encode JWT %+v", claim)
-	}
+	errors.LogFatal(err)
 	return signedString
 }
 
-func (jwtHelper *Helper) Decode(token string) jwt.Claims {
-	claims := &jwt.StandardClaims{}
-	_, err := jwt.ParseWithClaims(token, claims, func(token *jwt.Token) (i interface{}, e error) {
+func (jwtHelper *Helper) Decode(token string) (RoundToken, error) {
+	var roundToken RoundToken
+	_, err := jwt.ParseWithClaims(token, &roundToken, func(token *jwt.Token) (i interface{}, e error) {
 		return signingKey, nil
 	})
-	if err != nil {
-		log.WithError(err).Fatalf("Unable to decode JWT %+v", token)
-	}
-	return claims
+	return roundToken, err
 }

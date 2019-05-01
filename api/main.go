@@ -5,6 +5,7 @@ import (
 	"github.com/apex/log/handlers/text"
 	"github.com/fergusstrange/roundofbeer/api/errors"
 	"github.com/fergusstrange/roundofbeer/api/handlers/create"
+	"github.com/fergusstrange/roundofbeer/api/handlers/join"
 	"github.com/fergusstrange/roundofbeer/api/handlers/read"
 	"github.com/fergusstrange/roundofbeer/api/handlers/update"
 	"github.com/fergusstrange/roundofbeer/api/persistence"
@@ -19,9 +20,10 @@ func init() {
 func main() {
 	app := gin.Default()
 
-	app.POST("/round", create.CreateRound)
-	app.GET("/round/:roundId", read.GetRound)
-	app.PUT("/round/:roundId", update.IncrementRoundParticipant)
+	app.POST("/round", create.NewRound)
+	app.POST("/round/:roundId", join.Round)
+	app.GET("/round", read.Round)
+	app.PUT("/round", update.Round)
 
 	errors.LogFatal(app.Run())
 }

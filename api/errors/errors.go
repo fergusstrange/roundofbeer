@@ -2,19 +2,22 @@ package errors
 
 import (
 	"github.com/apex/log"
-	"strings"
+	"runtime/debug"
 )
 
-func LogFatal(err error, message ...string) {
+func LogFatal(err error) {
 	if err != nil {
-		joinedMessage := strings.Join(message, "\n")
-		log.WithError(err).Fatal(joinedMessage)
+		logWithError(err).Fatal("Unexpected Fatal Error")
 	}
 }
 
-func LogError(err error, message ...string) {
+func LogError(err error) {
 	if err != nil {
-		joinedMessage := strings.Join(message, "\n")
-		log.WithError(err).Error(joinedMessage)
+		logWithError(err).Error("Unexpected Error")
 	}
+}
+
+func logWithError(err error) *log.Entry {
+	return log.WithError(err).
+		WithField("stacktrace", string(debug.Stack()))
 }

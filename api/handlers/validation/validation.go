@@ -1,10 +1,12 @@
 package validation
 
 import (
+	jwtlib "github.com/dgrijalva/jwt-go"
 	"github.com/fergusstrange/roundofbeer/api/jwt"
 	"github.com/fergusstrange/roundofbeer/api/persistence"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"time"
 )
 
 type Round struct {
@@ -41,8 +43,12 @@ func ValidRoundHeader(ctx *gin.Context) string {
 
 func NewRoundResponse(round *persistence.Round) Response {
 	return Response{
-		Token: jwt.NewHelper().Encode(jwt.RoundToken{
+		Token: jwt.NewHelper().Encode(&jwt.RoundToken{
 			RoundUrl: round.Url,
+			StandardClaims: jwtlib.StandardClaims{
+				IssuedAt:  time.Now().Unix(),
+				ExpiresAt: time.Now().AddDate(1, 0, 0).Unix(),
+			},
 		}),
 		Round: *Transform(round),
 	}

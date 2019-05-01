@@ -6,10 +6,10 @@ import (
 	"os"
 )
 
-var signingKey = os.Getenv("SIGNING_KEY")
+var signingKey = []byte(os.Getenv("SIGNING_KEY"))
 
 type Helper struct {
-	SigningKey string
+	SigningKey []byte
 }
 
 type RoundToken struct {
@@ -23,7 +23,7 @@ func NewHelper() *Helper {
 	}
 }
 
-func (jwtHelper *Helper) Encode(token RoundToken) string {
+func (jwtHelper *Helper) Encode(token *RoundToken) string {
 	signedString, err := jwt.
 		NewWithClaims(jwt.SigningMethodHS512, token).
 		SignedString(signingKey)

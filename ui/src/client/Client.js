@@ -7,11 +7,11 @@ const defaultOptions = {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
     }
-}
+};
 
 export class ApiClient {
     constructor(options) {
-        this.options = Object.assign({}, defaultOptions, options)
+        this.options = Object.assign({}, defaultOptions)
     }
 
     request = (method, path, data) => {

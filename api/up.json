@@ -6,7 +6,7 @@
   "cors": {
     "enable": true,
     "allowed_origins": [
-      "https://www.roundofbeer.com"
+      "https://www.roundof.beer"
     ],
     "allowed_methods": [
       "OPTIONS",

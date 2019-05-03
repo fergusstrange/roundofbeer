@@ -8,6 +8,7 @@
       "https://www.roundofbeer.com"
     ],
     "allowed_methods": [
+      "OPTIONS",
       "HEAD",
       "GET",
       "POST",

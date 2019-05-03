@@ -4,6 +4,7 @@
     "SIGNING_KEY": "$SIGNING_KEY_REPLACE"
   },
   "cors": {
+    "enable": true,
     "allowed_origins": [
       "https://www.roundofbeer.com"
     ],

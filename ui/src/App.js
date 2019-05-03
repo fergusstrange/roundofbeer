@@ -18,6 +18,9 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import {ApiClient} from "./client/Client";
+
+const apiClient = new ApiClient();
 
 const styles = theme => ({
     card: {
@@ -52,6 +55,14 @@ class RecipeReviewCard extends React.Component {
         this.setState(state => ({ expanded: !state.expanded }));
     };
 
+    handleLikeClick = () => {
+        apiClient.request("POST", "/round", {
+            participants: ["John", "James", "Jim"]
+        }).then(res => {
+            console.log(res.data)
+        })
+    };
+
     render() {
         const { classes } = this.props;
 
@@ -84,7 +95,7 @@ class RecipeReviewCard extends React.Component {
                 </CardContent>
                 <CardActions className={classes.actions} disableActionSpacing>
                     <IconButton aria-label="Add to favorites">
-                        <FavoriteIcon />
+                        <FavoriteIcon onClick={this.handleLikeClick}/>
                     </IconButton>
                     <IconButton aria-label="Share">
                         <ShareIcon />

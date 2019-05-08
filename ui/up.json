@@ -9,5 +9,11 @@
       "domain": "www.roundof.beer",
       "path": "/"
     }
+  },
+  "redirects": {
+    "/*": {
+      "location": "/",
+      "status": 200
+    }
   }
 }

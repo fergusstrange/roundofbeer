@@ -7,47 +7,46 @@ const defaultHeaders = {
 };
 
 export default class ApiClient {
-  constructor() {
+  constructor(host) {
     this.withDefaultOptions = (furtherOptions, roundToken) => defaultClient(
       Object.assign({},
         {
-          baseURL: 'https://api.roundof.beer',
+          baseURL: host || 'https://api.roundof.beer',
           headers: roundToken
             ? Object.assign({}, defaultHeaders, { 'x-round-token': roundToken })
             : defaultHeaders,
-          withCredentials: true,
         },
         furtherOptions),
     );
   }
 
   createRound(participants) {
-    this.withDefaultOptions({
+    return this.withDefaultOptions({
       method: 'POST',
-      path: '/round',
+      url: '/round',
       data: { participants },
     });
   }
 
   joinRound(roundId, name) {
-    this.withDefaultOptions({
+    return this.withDefaultOptions({
       method: 'POST',
-      path: `/round/${roundId}`,
+      url: `/round/${roundId}`,
       data: { name },
     });
   }
 
   fetchRound(roundToken) {
-    this.withDefaultOptions({
+    return this.withDefaultOptions({
       method: 'GET',
-      path: '/round',
+      url: '/round',
     }, roundToken);
   }
 
   nextRoundCandidate(roundToken) {
-    this.withDefaultOptions({
+    return this.withDefaultOptions({
       method: 'PUT',
-      path: '/round',
+      url: '/round',
     }, roundToken);
   }
 }

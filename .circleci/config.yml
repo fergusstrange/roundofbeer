@@ -13,13 +13,15 @@ jobs:
           curl -sf https://up.apex.sh/install | sudo sh && \
           sudo npm install -g yarn
       - run: |
+          pushd ui && \
+          rm -rf build && \
+          yarn && \
+          yarn test && \
+          yarn build && \
+          popd && \
           pushd api && \
           sed -i -e 's/$SIGNING_KEY_REPLACE/'${SIGNING_KEY}'/g' up.json && \
           go test -v ./... && \
           popd && \
           up deploy production --chdir api && \
-          pushd ui && \
-          rm -rf build && \
-          yarn && yarn build && \
-          popd && \
           up deploy production --chdir ui

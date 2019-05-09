@@ -10,7 +10,9 @@ import {
 const NewRoundPage = ({ participant, participants }) => {
   const addParticipant = (e) => {
     e.preventDefault();
-    actions.addParticipant();
+    if (participants.filter(p => p.toLowerCase().equals(participant.toLowerCase())).length === 0) {
+      actions.addParticipant();
+    }
   };
 
   const updateParticipant = (e) => {

@@ -8,9 +8,14 @@ import {
 } from '../store/Store';
 
 const NewRoundPage = ({ participant, participants }) => {
+  function validAndNotAlreadyExists() {
+    return participant
+        && !participants.find(element => element.toLowerCase() === participant.toLowerCase());
+  }
+
   const addParticipant = (e) => {
     e.preventDefault();
-    if (participants.filter(p => p.toLowerCase().equals(participant.toLowerCase())).length === 0) {
+    if (validAndNotAlreadyExists()) {
       actions.addParticipant();
     }
   };

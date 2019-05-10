@@ -3,44 +3,52 @@ import AddIcon from '@material-ui/icons/Add';
 import { TextField } from '@material-ui/core';
 import Fab from '@material-ui/core/Fab';
 import PropTypes from 'prop-types';
-import {
-  actions, connect,
-} from '../store/Store';
+import { actions, connect } from '../store/Store';
 
 const NewRoundPage = ({ participant, participants }) => {
+  function updateParticipant(e) {
+    if (e.target.value) {
+      actions.updateParticipant(e.target.value);
+    }
+  }
+
   function validAndNotAlreadyExists() {
     return participant
         && !participants.find(element => element.toLowerCase() === participant.toLowerCase());
   }
 
-  const addParticipant = (e) => {
+  function addParticipant(e) {
     e.preventDefault();
     if (validAndNotAlreadyExists()) {
       actions.addParticipant();
     }
-  };
+  }
 
-  const updateParticipant = (e) => {
-    if (e.target.value) {
-      actions.updateParticipant(e.target.value);
-    }
-  };
+  function submitParticipants() {
+    actions.submitParticipants();
+  }
 
   return (
     <div>
       <div>
-        {participants.map(name => (<div key={name}>{name}</div>))}
-      </div>
-      <div>
         <form onSubmit={addParticipant}>
           <div>
-            <TextField label="name" value={participant} onChange={updateParticipant} />
+            {participants.map(p => (
+              <div key={`participantForm-div-${p}`}>
+                <TextField
+                  key={`participantForm-textField-${p}`}
+                  value={p}
+                  disabled
+                />
+              </div>
+            ))}
+            <TextField label="name" value={participant} autoFocus onChange={updateParticipant} />
+          </div>
+          <div>
             <Fab type="submit" color="primary" aria-label="Add" size="small">
               <AddIcon />
             </Fab>
-          </div>
-          <div>
-            <Fab variant="extended" color="primary" aria-label="Add" onClick={actions.submitParticipants}>Start Round</Fab>
+            <Fab variant="extended" color="primary" aria-label="Add" onClick={submitParticipants}>Start Round</Fab>
           </div>
         </form>
       </div>
@@ -52,6 +60,5 @@ NewRoundPage.propTypes = {
   participant: PropTypes.string.isRequired,
   participants: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
-
 
 export default connect(state => state)(NewRoundPage);

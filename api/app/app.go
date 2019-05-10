@@ -5,12 +5,12 @@ import (
 	"github.com/fergusstrange/roundofbeer/api/handlers/join"
 	"github.com/fergusstrange/roundofbeer/api/handlers/read"
 	"github.com/fergusstrange/roundofbeer/api/handlers/update"
-	"github.com/fergusstrange/roundofbeer/api/handlers/validation"
+	"github.com/fergusstrange/roundofbeer/api/round"
 	"github.com/gin-gonic/gin"
 )
 
 type ApplicationHandlers struct {
-	CreateRound        func(*create.Request) validation.Response
+	CreateRound        func(*create.Request) round.Response
 	JoinRound          func(*gin.Context)
 	GetRound           func(*gin.Context)
 	NextRoundCandidate func(*gin.Context)

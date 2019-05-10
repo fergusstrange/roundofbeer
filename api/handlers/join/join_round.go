@@ -4,6 +4,7 @@ import (
 	"github.com/fergusstrange/roundofbeer/api/errors"
 	"github.com/fergusstrange/roundofbeer/api/handlers/validation"
 	"github.com/fergusstrange/roundofbeer/api/persistence"
+	"github.com/fergusstrange/roundofbeer/api/round"
 	"github.com/gin-gonic/gin"
 	"strings"
 )
@@ -16,9 +17,9 @@ func Round(ctx *gin.Context) {
 	roundId := validation.ValidRoundPathParam(ctx)
 	joinRoundRequest := new(RoundRequest)
 	errors.LogFatal(ctx.BindJSON(joinRoundRequest))
-	round := persistence.FetchRound(roundId)
-	if round != nil && nameNotAlreadyExists(joinRoundRequest, round.Participants) {
-		ctx.JSON(200, validation.Transform(round))
+	fetchedRound := persistence.FetchRound(roundId)
+	if fetchedRound != nil && nameNotAlreadyExists(joinRoundRequest, fetchedRound.Participants) {
+		ctx.JSON(200, round.TransformRound(fetchedRound))
 	} else {
 		ctx.AbortWithStatus(400)
 	}

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/fergusstrange/roundofbeer/api/errors"
 	"github.com/fergusstrange/roundofbeer/api/handlers/create"
-	"github.com/fergusstrange/roundofbeer/api/handlers/validation"
+	"github.com/fergusstrange/roundofbeer/api/round"
 	"github.com/gin-gonic/gin"
 	"github.com/pact-foundation/pact-go/dsl"
 	"github.com/pact-foundation/pact-go/types"
@@ -49,12 +49,12 @@ func Test_VerifyProviderTests(t *testing.T) {
 
 func MockHandlers() ApplicationHandlers {
 	return ApplicationHandlers{
-		CreateRound: func(request *create.Request) validation.Response {
-			return validation.Response{
+		CreateRound: func(request *create.Request) round.Response {
+			return round.Response{
 				Token: "daskdsa",
-				Round: validation.Round{
+				Round: round.Round{
 					Url: "theberesford.diet",
-					Participants: []validation.Participant{{
+					Participants: []round.Participant{{
 						UUID:       "d197f52e-5f9d-4082-92d7-fcbadf4663af",
 						Name:       "Tom",
 						RoundCount: 33,

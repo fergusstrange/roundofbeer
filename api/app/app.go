@@ -1,12 +1,14 @@
 package app
 
 import (
+	"fmt"
 	"github.com/fergusstrange/roundofbeer/api/handlers/create"
 	"github.com/fergusstrange/roundofbeer/api/handlers/join"
 	"github.com/fergusstrange/roundofbeer/api/handlers/read"
 	"github.com/fergusstrange/roundofbeer/api/handlers/update"
 	"github.com/fergusstrange/roundofbeer/api/round"
 	"github.com/gin-gonic/gin"
+	"os"
 )
 
 type ApplicationHandlers struct {
@@ -28,7 +30,7 @@ func WithHandlers(handlers ApplicationHandlers) error {
 	app.GET("/round", handlers.GetRound)
 	app.PUT("/round", handlers.NextRoundCandidate)
 
-	return app.Run("localhost:8080")
+	return app.Run(portFromEnvironment())
 }
 
 func DefaultHandlers() ApplicationHandlers {
@@ -37,5 +39,14 @@ func DefaultHandlers() ApplicationHandlers {
 		JoinRound:          join.Round,
 		GetRound:           read.Round,
 		NextRoundCandidate: update.Round,
+	}
+}
+
+func portFromEnvironment() string {
+	port := os.Getenv("PORT")
+	if port == "" {
+		return "localhost:8080"
+	} else {
+		return fmt.Sprintf(":%s", port)
 	}
 }

@@ -12,11 +12,17 @@ type Request struct {
 	Participants []string `json:"participants"`
 }
 
-func NewRound(ctx *gin.Context) {
-	createRoundRequest := new(Request)
-	errors.LogError(ctx.BindJSON(createRoundRequest))
+func NewRoundHandler(serviceHandler func(request *Request) validation.Response) func(*gin.Context) {
+	return func(ctx *gin.Context) {
+		createRoundRequest := new(Request)
+		errors.LogError(ctx.BindJSON(createRoundRequest))
+		ctx.JSON(200, serviceHandler(createRoundRequest))
+	}
+}
+
+func NewRound(request *Request) validation.Response {
 	url := random.AlphaNumeric(6)
-	persistence.CreateRound(url, createRoundRequest.Participants)
+	persistence.CreateRound(url, request.Participants)
 	round := persistence.FetchRound(url)
-	ctx.JSON(200, validation.NewRoundResponse(round))
+	return validation.NewRoundResponse(round)
 }

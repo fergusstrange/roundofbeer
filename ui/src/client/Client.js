@@ -6,16 +6,23 @@ const defaultHeaders = {
   'Content-Type': 'application/json',
 };
 
+function defaultOptions(roundToken, overrides) {
+  return Object.assign({},
+    {
+      baseURL: 'https://api.roundof.beer',
+      withCredentials: true,
+      headers: roundToken
+        ? Object.assign({}, defaultHeaders, { 'x-round-token': roundToken })
+        : defaultHeaders,
+    },
+    overrides);
+}
+
 export default class ApiClient {
-  constructor(host) {
+  constructor(overrides) {
     this.withDefaultOptions = (furtherOptions, roundToken) => defaultClient(
       Object.assign({},
-        {
-          baseURL: host || 'https://api.roundof.beer',
-          headers: roundToken
-            ? Object.assign({}, defaultHeaders, { 'x-round-token': roundToken })
-            : defaultHeaders,
-        },
+        defaultOptions(roundToken, overrides),
         furtherOptions),
     );
   }

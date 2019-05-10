@@ -7,7 +7,10 @@ import {Pact} from '@pact-foundation/pact';
 import path from 'path';
 import {eachLike, somethingLike, uuid} from "@pact-foundation/pact/dsl/matchers";
 
-const client = new Client('http://localhost:8888');
+const client = new Client({
+    baseURL: 'http://localhost:8888',
+    withCredentials: false,
+});
 
 describe('Tests the API Client', () => {
     const provider = new Pact({

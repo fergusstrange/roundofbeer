@@ -13,12 +13,12 @@ jobs:
           curl -sf https://up.apex.sh/install | sudo sh && \
           sudo npm install -g yarn
       - run: |
-          export PATH=/home/circleci/bin:/home/circleci/pact/bin:$PATH
           if [ ! -d "/home/circleci/pact" ]; then
             curl -fsSL https://raw.githubusercontent.com/pact-foundation/pact-ruby-standalone/master/install.sh | bash
             mv pact /home/circleci/pact
           fi
       - run: |
+          export PATH=/home/circleci/bin:/home/circleci/pact/bin:$PATH && \
           pushd ui && \
           rm -rf build && \
           yarn && \

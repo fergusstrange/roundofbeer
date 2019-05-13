@@ -12,8 +12,8 @@ export default function RoundLandingPage({ match }) {
   const [state, actions] = useContext();
 
   useEffect(() => {
-    actions.fetchRound(state.roundToken);
-  }, [actions, match.params.roundUrl, state.roundToken]);
+    actions.fetchRound();
+  }, [actions, match.params.roundUrl]);
 
   const rows = state.round
     ? state.round.participants.map(p => (

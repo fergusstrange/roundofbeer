@@ -31,7 +31,6 @@ describe('Tests the API Client', () => {
     afterAll(() => provider.finalize());
 
     describe('Create Round', () => {
-
         beforeEach(() => provider.addInteraction({
             state: 'round does not exist',
             uponReceiving: 'a valid create round request',
@@ -79,4 +78,50 @@ describe('Tests the API Client', () => {
                 });
             }));
     });
+
+    describe('Fetch Round', () => {
+        beforeEach(() => provider.addInteraction({
+            state: 'round exists',
+            uponReceiving: 'a valid roundToken header',
+            withRequest: {
+                method: 'GET',
+                path: '/round',
+                headers: {
+                    'x-round-token': somethingLike('i<3b33r'),
+                    'Accept': 'application/json'
+                },
+            },
+            willRespondWith: {
+                status: 200,
+                body: {
+                    token: somethingLike('tom@beer.com'),
+                    round: {
+                        url: somethingLike('dsakdna'),
+                        participants: eachLike({
+                            uuid: uuid("ce118b6e-d8e1-11e7-9296-cec278b6b50a"),
+                            name: somethingLike('Tom'),
+                            round_count: somethingLike(10)
+                        })
+                    }
+                }
+            }
+        }));
+
+        it('Should fetch a round', () => client
+        .fetchRound('i<3b33r')
+        .then(res => {
+            expect(res.status).toEqual(200);
+            expect(res.data).toEqual({
+                token: "tom@beer.com",
+                round: {
+                    url: 'dsakdna',
+                    participants: [{
+                        uuid: "ce118b6e-d8e1-11e7-9296-cec278b6b50a",
+                        name: "Tom",
+                        "round_count": 10
+                    }]
+                }
+            });
+        }));
+    })
 });

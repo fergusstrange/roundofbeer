@@ -51,8 +51,8 @@ const [ContextProvider, useContext] = createDakpan(localStorageStateOrDefaults()
         error,
       });
   },
-  fetchRound: roundToken => async (state) => {
-    const { error, data } = await client.fetchRound(roundToken);
+  fetchRound: () => async (state) => {
+    const { error, data } = await client.fetchRound(state.roundToken);
     return error
       ? ({
         ...state,

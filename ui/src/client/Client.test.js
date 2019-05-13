@@ -94,15 +94,13 @@ describe('Tests the API Client', () => {
             willRespondWith: {
                 status: 200,
                 body: {
-                    token: somethingLike('tom@beer.com'),
-                    round: {
-                        url: somethingLike('dsakdna'),
-                        participants: eachLike({
-                            uuid: uuid("ce118b6e-d8e1-11e7-9296-cec278b6b50a"),
-                            name: somethingLike('Tom'),
-                            round_count: somethingLike(10)
-                        })
-                    }
+                    url: somethingLike('dsakdna'),
+                    participants: eachLike({
+                        uuid: uuid("ce118b6e-d8e1-11e7-9296-cec278b6b50a"),
+                        name: somethingLike('Tom'),
+                        round_count: somethingLike(10)
+                    })
+
                 }
             }
         }));
@@ -112,15 +110,12 @@ describe('Tests the API Client', () => {
         .then(res => {
             expect(res.status).toEqual(200);
             expect(res.data).toEqual({
-                token: "tom@beer.com",
-                round: {
-                    url: 'dsakdna',
-                    participants: [{
-                        uuid: "ce118b6e-d8e1-11e7-9296-cec278b6b50a",
-                        name: "Tom",
-                        "round_count": 10
-                    }]
-                }
+                url: 'dsakdna',
+                participants: [{
+                    uuid: "ce118b6e-d8e1-11e7-9296-cec278b6b50a",
+                    name: "Tom",
+                    "round_count": 10
+                }]
             });
         }));
     })

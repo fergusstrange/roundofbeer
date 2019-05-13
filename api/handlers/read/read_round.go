@@ -8,13 +8,21 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Round(ctx *gin.Context) {
-	roundToken, err := jwt.NewHelper().Decode(validation.ValidRoundHeader(ctx))
+func NewReadRoundHandler(serviceHandler func(roundToken string) (*round.Round, int)) func(ctx *gin.Context) {
+	return func(ctx *gin.Context) {
+		roundTokenHeader := validation.ValidRoundHeader(ctx)
+		body, status := serviceHandler(roundTokenHeader)
+		ctx.JSON(status, body)
+	}
+}
+
+func Round(roundTokenHeader string) (*round.Round, int) {
+	roundToken, err := jwt.NewHelper().Decode(roundTokenHeader)
 	if err != nil {
-		ctx.AbortWithStatus(400)
+		return nil, 400
 	} else if fetchedRound := persistence.FetchRound(roundToken.RoundUrl); fetchedRound != nil {
-		ctx.JSON(200, round.TransformRound(fetchedRound))
+		return round.TransformRound(fetchedRound), 200
 	} else {
-		ctx.AbortWithStatus(400)
+		return nil, 400
 	}
 }

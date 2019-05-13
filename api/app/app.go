@@ -14,7 +14,7 @@ import (
 type ApplicationHandlers struct {
 	CreateRound        func(*create.Request) round.Response
 	JoinRound          func(*gin.Context)
-	GetRound           func(*gin.Context)
+	GetRound           func(roundToken string) (*round.Round, int)
 	NextRoundCandidate func(*gin.Context)
 }
 
@@ -27,7 +27,7 @@ func WithHandlers(handlers ApplicationHandlers) error {
 
 	app.POST("/round", create.NewRoundHandler(handlers.CreateRound))
 	app.POST("/round/:roundId", handlers.JoinRound)
-	app.GET("/round", handlers.GetRound)
+	app.GET("/round", read.NewReadRoundHandler(handlers.GetRound))
 	app.PUT("/round", handlers.NextRoundCandidate)
 
 	return app.Run(portFromEnvironment())

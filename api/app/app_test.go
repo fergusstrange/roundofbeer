@@ -61,7 +61,15 @@ func MockHandlers() ApplicationHandlers {
 					}}}}
 		},
 		NextRoundCandidate: func(context *gin.Context) {},
-		GetRound:           func(context *gin.Context) {},
-		JoinRound:          func(context *gin.Context) {},
+		GetRound: func(roundToken string) (*round.Round, int) {
+			return &round.Round{
+				Url: "theberesford.diet",
+				Participants: []round.Participant{{
+					UUID:       "d197f52e-5f9d-4082-92d7-fcbadf4663af",
+					Name:       "Tom",
+					RoundCount: 33,
+				}}}, 200
+		},
+		JoinRound: func(context *gin.Context) {},
 	}
 }

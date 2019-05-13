@@ -1,15 +1,19 @@
 import './App.css';
 
-import React from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import LandingPage from './landing/LandingPage';
 import RoundLandingPage from './roundlanding/RoundLandingPage';
 import NewRoundPage from './newround/NewRoundPage';
-import { Provider } from './store/Store';
+import ContextMessage from './contextmessage/ContextMessage';
+import { useContext, updateLocalStore } from './store/Store';
 
 function App() {
+  const [state] = useContext();
+  useEffect(() => updateLocalStore(state), [state]);
+
   return (
-    <Provider>
+    <Fragment>
       <Router>
         <Switch>
           <Route path="/new-round" component={NewRoundPage} />
@@ -17,7 +21,8 @@ function App() {
           <Route path="/" component={LandingPage} />
         </Switch>
       </Router>
-    </Provider>
+      <ContextMessage />
+    </Fragment>
   );
 }
 

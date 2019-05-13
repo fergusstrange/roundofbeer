@@ -18,6 +18,12 @@ function defaultOptions(roundToken, overrides) {
     overrides);
 }
 
+function errorWithMessage(message) {
+  return () => ({
+    error: message,
+  });
+}
+
 export default class ApiClient {
   constructor(overrides) {
     this.withDefaultOptions = (furtherOptions, roundToken) => defaultClient(
@@ -27,33 +33,37 @@ export default class ApiClient {
     );
   }
 
-  createRound(participants) {
+  async createRound(participants) {
     return this.withDefaultOptions({
       method: 'POST',
       url: '/round',
       data: { participants },
-    });
+    })
+      .catch(errorWithMessage('Unable to create a new round'));
   }
 
-  joinRound(roundId, name) {
+  async joinRound(roundId, name) {
     return this.withDefaultOptions({
       method: 'POST',
       url: `/round/${roundId}`,
       data: { name },
-    });
+    })
+      .catch(errorWithMessage('Unable to join that round'));
   }
 
-  fetchRound(roundToken) {
+  async fetchRound(roundToken) {
     return this.withDefaultOptions({
       method: 'GET',
       url: '/round',
-    }, roundToken);
+    }, roundToken)
+      .catch(errorWithMessage('Unable to load that round'));
   }
 
-  nextRoundCandidate(roundToken) {
+  async nextRoundCandidate(roundToken) {
     return this.withDefaultOptions({
       method: 'PUT',
       url: '/round',
-    }, roundToken);
+    }, roundToken)
+      .catch(errorWithMessage('Unable to find next buyer... Rock, Paper, Scissors?'));
   }
 }

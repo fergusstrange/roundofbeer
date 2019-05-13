@@ -3441,6 +3441,11 @@ d@1:
   dependencies:
     es5-ext "^0.10.9"
 
+dakpan@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/dakpan/-/dakpan-2.0.2.tgz#fad3a64fa32717766fae49f9ecbb807ea5023fdb"
+  integrity sha512-mZWLPJFQOdaMMb+uMsnPmSafGesWQIJ6WL4XAMWzigzY+QZBX7DEbYfb+d3AHmw1m0t2IAtQI0jg/KrY6o/53Q==
+
 damerau-levenshtein@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/damerau-levenshtein/-/damerau-levenshtein-1.0.4.tgz#03191c432cb6eea168bb77f3a55ffdccb8978514"
@@ -4138,7 +4143,7 @@ eslint-plugin-jsx-a11y@6.2.1, eslint-plugin-jsx-a11y@^6.1.1:
     has "^1.0.3"
     jsx-ast-utils "^2.0.1"
 
-eslint-plugin-react-hooks@^1.5.0:
+eslint-plugin-react-hooks@^1.5.0, eslint-plugin-react-hooks@^1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-react-hooks/-/eslint-plugin-react-hooks-1.6.0.tgz#348efcda8fb426399ac7b8609607c7b4025a6f5f"
   integrity sha512-lHBVRIaz5ibnIgNG07JNiAuBUeKhEf8l4etNx5vfAEwqQ5tcuK3jV9yjmopPgQDagQb7HwIuQVsE3IVcGrRnag==
@@ -6735,6 +6740,11 @@ loader-utils@1.2.3, loader-utils@^1.0.1, loader-utils@^1.0.2, loader-utils@^1.1.
     emojis-list "^2.0.0"
     json5 "^1.0.1"
 
+local-storage@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/local-storage/-/local-storage-2.0.0.tgz#748b7d041b197f46f3ec7393640851c175b64db8"
+  integrity sha512-/0sRoeijw7yr/igbVVygDuq6dlYCmtsuTmmpnweVlVtl/s10pf5BCq8LWBxW/AMyFJ3MhMUuggMZiYlx6qr9tw==
+
 locate-path@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/locate-path/-/locate-path-2.0.0.tgz#2b568b265eec944c6d9c0de9c3dbbbca0354cd8e"
@@ -9146,11 +9156,6 @@ react-transition-group@^2.2.1:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
     react-lifecycles-compat "^3.0.4"
-
-react-waterfall@^4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/react-waterfall/-/react-waterfall-4.0.1.tgz#5f37854123f5345a29d0b2818f5fe86f264943b1"
-  integrity sha512-Bq4MApxvYI8OgtT3FoIn/PvFZ6s4Vj903ZIoaLz+1rSiJ3i8qd5qHW2tCpsb4XfyVpvIw2Js7Fstc+RAvMMbzQ==
 
 react@^16.8.6:
   version "16.8.6"

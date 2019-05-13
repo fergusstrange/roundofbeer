@@ -7,6 +7,8 @@ import {Pact} from '@pact-foundation/pact';
 import path from 'path';
 import {eachLike, somethingLike, uuid} from "@pact-foundation/pact/dsl/matchers";
 
+jest.setTimeout(30000);
+
 const client = new Client({
     baseURL: 'http://localhost:8888',
     withCredentials: false,

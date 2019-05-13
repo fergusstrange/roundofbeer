@@ -37,10 +37,12 @@ const [ContextProvider, useContext] = createDakpan(localStorageStateOrDefaults()
     participant,
   }),
   submitParticipants: () => async (state) => {
-    const { error } = await client.createRound(state.participants);
+    const { error, data } = await client.createRound(state.participants);
     return !error
       ? ({
         ...state,
+        round: data.round,
+        roundToken: data.token,
         participant: '',
         participants: [],
       })

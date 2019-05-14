@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "react-scripts start",
+    "prestart": "node local-proxy.js &",
+    "start": "REACT_APP_API_URL=/ react-scripts start",
     "build": "eslint src && react-scripts build",
     "test": "CI=true react-scripts test",
     "eject": "react-scripts eject"
@@ -29,7 +30,8 @@
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.1",
     "eslint-plugin-react": "^7.11.0",
-    "eslint-plugin-react-hooks": "^1.6.0"
+    "eslint-plugin-react-hooks": "^1.6.0",
+    "http-proxy": "^1.17.0"
   },
   "browserslist": [
     ">0.2%",

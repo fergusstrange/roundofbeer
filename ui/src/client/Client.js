@@ -9,7 +9,7 @@ const defaultHeaders = {
 function defaultOptions(roundToken, overrides) {
   return Object.assign({},
     {
-      baseURL: 'https://api.roundof.beer',
+      baseURL: process.env.REACT_APP_API_URL || 'https://api.roundof.beer',
       withCredentials: true,
       headers: roundToken
         ? Object.assign({}, defaultHeaders, { 'x-round-token': roundToken })

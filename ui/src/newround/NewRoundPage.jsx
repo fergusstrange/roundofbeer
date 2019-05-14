@@ -28,8 +28,7 @@ export default function NewRoundPage({ history }) {
   }
 
   function submitParticipants() {
-    actions.submitParticipants()
-      .then(() => history.push(`/${state.round.url}`));
+    actions.submitParticipants().then(() => history.push(`/${state.round.url}`));
   }
 
   return (

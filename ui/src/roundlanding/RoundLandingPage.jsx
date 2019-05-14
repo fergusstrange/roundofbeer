@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {
   Table,
   TableBody,
-  TableCell,
+  TableCell, TableFooter,
   TableRow,
 } from '@material-ui/core';
 import { useContext } from '../store/Store';
@@ -18,8 +18,8 @@ export default function RoundLandingPage({ match }) {
   const rows = state.round
     ? state.round.participants.map(p => (
       <TableRow key={p.uuid}>
-        <TableCell colSpan={1}>p.name</TableCell>
-        <TableCell colSpan={1}>p.round_count</TableCell>
+        <TableCell colSpan={1}>{p.name}</TableCell>
+        <TableCell colSpan={1}>{p.round_count}</TableCell>
       </TableRow>
     ))
     : undefined;
@@ -36,11 +36,13 @@ export default function RoundLandingPage({ match }) {
       <Table>
         <TableBody>
           {rows}
+        </TableBody>
+        <TableFooter>
           <TableRow>
-            <TableCell colSpan={2}>Total Rounds</TableCell>
+            <TableCell colSpan={1}>Total Rounds</TableCell>
             <TableCell colSpan={1}>{roundCount}</TableCell>
           </TableRow>
-        </TableBody>
+        </TableFooter>
       </Table>
     </div>
   );

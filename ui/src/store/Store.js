@@ -60,7 +60,7 @@ const [ContextProvider, useContext] = createDakpan(localStorageStateOrDefaults()
       })
       : ({
         ...state,
-        round: data.round,
+        round: data,
       });
   },
 });

@@ -139,4 +139,56 @@ describe('Tests the API Client', () => {
             });
         }));
     })
+
+    describe('Gets Next Round', () => {
+        beforeEach(() => provider.addInteraction({
+            state: 'An inflight round exists',
+            uponReceiving: 'a valid roundToken header',
+            withRequest: {
+                method: 'PUT',
+                path: '/round',
+                headers: {
+                    'x-round-token': somethingLike('i<3b33r'),
+                    'Accept': 'application/json'
+                },
+            },
+            willRespondWith: {
+                status: 200,
+                body: {
+                    url: somethingLike('dsakdna'),
+                    participants: eachLike({
+                        uuid: uuid('5559be5c-2d73-446b-a3f8-da14d7c7f5a6'),
+                        name: somethingLike('Geoff'),
+                        round_count: somethingLike(11)
+                    }),
+                    current_candidate: {
+                        uuid: uuid('5559be5c-2d73-446b-a3f8-da14d7c7f5a6'),
+                        name: somethingLike('Geoff'),
+                        round_count: somethingLike(11)
+                    }
+
+                }
+            }
+        }));
+
+        it('Should update current candidate and fetch updated round', () => client
+        .nextRoundCandidate('i<3b33r')
+        .then(res => {
+            expect(res.status).toEqual(200);
+            expect(res.data).toEqual({
+                url: 'dsakdna',
+                participants: [
+                  {
+                    uuid: '5559be5c-2d73-446b-a3f8-da14d7c7f5a6',
+                    name: 'Geoff',
+                    round_count: 11
+                  }],
+                current_candidate: {
+                    uuid: '5559be5c-2d73-446b-a3f8-da14d7c7f5a6',
+                    name: 'Geoff',
+                    round_count: 11
+                }
+            });
+        }));
+    })
 });

@@ -31,14 +31,12 @@ func NewRoundHandler(serviceHandler func(request *Request) Response) func(*gin.C
 
 func Round(request *Request) Response {
 	url := random.AlphaNumeric(6)
-
 	roundToPersist := round.UpdatedRoundWithNextCandidate(&persistence.Round{
 		Url:          url,
 		CreateDate:   time.Now(),
 		UpdateDate:   time.Now(),
 		Participants: transformParticipants(request),
 	})
-
 	persistence.CreateRound(roundToPersist)
 	return newRoundResponse(roundToPersist)
 }

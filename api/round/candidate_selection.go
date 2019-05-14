@@ -9,8 +9,10 @@ import (
 func UpdatedRoundWithNextCandidate(currentRound *persistence.Round) *persistence.Round {
 	chosenParticipant := selectNextCandidate(currentRound)
 	chosenParticipant.RoundCount = chosenParticipant.RoundCount + 1
-	updatedParticipants := updateParticipantsWithChosen(currentRound, chosenParticipant)
-	return persistence.UpdateParticipantsAndCurrentCandidate(currentRound.Url, updatedParticipants, chosenParticipant.UUID)
+	updatedParticipants := remapParticipantsWithChosen(currentRound, chosenParticipant)
+	currentRound.CurrentCandidate = chosenParticipant.UUID
+	currentRound.Participants = updatedParticipants
+	return currentRound
 }
 
 func selectNextCandidate(round *persistence.Round) persistence.Participant {
@@ -28,7 +30,7 @@ func selectNextCandidate(round *persistence.Round) persistence.Participant {
 	return candidatesForNextRound[randomIndexOrFirstWhenOnlyOneCandidate(candidatesForNextRound)]
 }
 
-func updateParticipantsWithChosen(round *persistence.Round, chosenParticipant persistence.Participant) []persistence.Participant {
+func remapParticipantsWithChosen(round *persistence.Round, chosenParticipant persistence.Participant) []persistence.Participant {
 	var updatedParticipants []persistence.Participant
 	for _, existingParticipant := range round.Participants {
 		if existingParticipant.UUID == chosenParticipant.UUID {

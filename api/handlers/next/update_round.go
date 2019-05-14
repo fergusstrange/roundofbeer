@@ -26,6 +26,7 @@ func Round(roundTokenHeader string) (*round.Round, int) {
 		return nil, 400
 	} else if currentRound := persistence.FetchRound(roundToken.RoundUrl); currentRound != nil {
 		updatedRound := round.UpdatedRoundWithNextCandidate(currentRound)
+		persistence.UpdateParticipantsAndCurrentCandidate(updatedRound)
 		return round.TransformRound(updatedRound), 200
 	} else {
 		return nil, 400

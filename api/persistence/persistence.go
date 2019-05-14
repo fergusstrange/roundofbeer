@@ -57,14 +57,14 @@ func FetchRound(roundId string) *Round {
 	return round
 }
 
-func UpdateParticipantsAndCurrentCandidate(roundUrl string, participants []Participant, currentCandidate string) *Round {
-	round := new(Round)
+func UpdateParticipantsAndCurrentCandidate(updatedRound *Round) *Round {
+	persistedRound := new(Round)
 	err := dynamo.Client.Table(roundOfBeer).
-		Update("url", roundUrl).
-		Set("participants", participants).
-		Set("current_candidate", currentCandidate).
+		Update("url", updatedRound.Url).
+		Set("participants", updatedRound.Participants).
+		Set("current_candidate", updatedRound.CurrentCandidate).
 		Set("update_date", time.Now()).
-		Value(round)
+		Value(persistedRound)
 	errors.LogFatal(err)
-	return round
+	return persistedRound
 }

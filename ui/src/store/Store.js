@@ -67,6 +67,18 @@ const [ContextProvider, useContext] = createDakpan(localStorageStateOrDefaults()
         round: data,
       });
   },
+  nextRoundCandidate: () => async (state) => {
+    const { error, data } = await client.nextRoundCandidate(state.roundToken);
+    return error
+      ? ({
+        ...state,
+        error,
+      })
+      : ({
+        ...state,
+        round: data,
+      });
+  },
 });
 
 export { ContextProvider, useContext, updateLocalStore };

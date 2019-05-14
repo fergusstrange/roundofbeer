@@ -6,6 +6,7 @@ import {
   TableCell, TableFooter,
   TableRow,
 } from '@material-ui/core';
+import Fab from '@material-ui/core/Fab';
 import { useContext } from '../store/Store';
 
 export default function RoundLandingPage({ match }) {
@@ -44,6 +45,7 @@ export default function RoundLandingPage({ match }) {
           </TableRow>
         </TableFooter>
       </Table>
+      <Fab variant="extended" color="primary" aria-label="Add" onClick={actions.nextRoundCandidate}>Next Buyer</Fab>
     </div>
   );
 }

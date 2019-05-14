@@ -4,16 +4,16 @@
   "static": {
     "dir": "build"
   },
-  "stages": {
-    "production": {
-      "domain": "www.roundof.beer",
-      "path": "/"
-    }
-  },
   "redirects": {
     "/*": {
       "location": "/",
       "status": 200
+    }
+  },
+  "stages": {
+    "production": {
+      "domain": "www.roundof.beer",
+      "path": "/"
     }
   }
 }

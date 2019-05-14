@@ -1,15 +1,13 @@
 package round
 
 import (
-	jwtLib "github.com/dgrijalva/jwt-go"
-	"github.com/fergusstrange/roundofbeer/api/jwt"
 	"github.com/fergusstrange/roundofbeer/api/persistence"
-	"time"
 )
 
 type Round struct {
-	Url          string        `json:"url"`
-	Participants []Participant `json:"participants"`
+	Url              string        `json:"url"`
+	Participants     []Participant `json:"participants"`
+	CurrentCandidate Participant   `json:"current_candidate"`
 }
 
 type Participant struct {
@@ -18,36 +16,28 @@ type Participant struct {
 	RoundCount int    `json:"round_count"`
 }
 
-type Response struct {
-	Token string `json:"token"`
-	Round Round  `json:"round"`
-}
-
-func NewRoundResponse(round *persistence.Round) Response {
-	return Response{
-		Token: jwt.NewHelper().Encode(&jwt.RoundToken{
-			RoundUrl: round.Url,
-			StandardClaims: jwtLib.StandardClaims{
-				IssuedAt:  time.Now().Unix(),
-				ExpiresAt: time.Now().AddDate(1, 0, 0).Unix(),
-			},
-		}),
-		Round: *TransformRound(round),
-	}
-}
-
 func TransformRound(round *persistence.Round) *Round {
 	var participants []Participant
+	var currentCandidate Participant
 	for _, participant := range round.Participants {
-		participants = append(participants, Participant{
-			UUID:       participant.UUID,
-			Name:       participant.Name,
-			RoundCount: participant.RoundCount,
-		})
+		transformedParticipant := transformParticipant(participant)
+		participants = append(participants, transformedParticipant)
+		if transformedParticipant.UUID == round.CurrentCandidate {
+			currentCandidate = transformedParticipant
+		}
 	}
 
 	return &Round{
-		Url:          round.Url,
-		Participants: participants,
+		Url:              round.Url,
+		Participants:     participants,
+		CurrentCandidate: currentCandidate,
+	}
+}
+
+func transformParticipant(participant persistence.Participant) Participant {
+	return Participant{
+		UUID:       participant.UUID,
+		Name:       participant.Name,
+		RoundCount: participant.RoundCount,
 	}
 }

@@ -10,6 +10,10 @@ function localStorageStateOrDefaults() {
     || {
       token: undefined,
       round: undefined,
+      newRound: {
+        participants: [],
+        participant: undefined,
+      },
       participant: '',
       participants: [],
     };

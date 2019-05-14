@@ -1,33 +1,16 @@
-package update
+package round
 
 import (
-	"github.com/fergusstrange/roundofbeer/api/handlers/validation"
-	"github.com/fergusstrange/roundofbeer/api/jwt"
 	"github.com/fergusstrange/roundofbeer/api/persistence"
-	"github.com/gin-gonic/gin"
 	"math/rand"
 	"time"
 )
 
-type Response struct {
-	Participant string `json:"participant"`
-}
-
-func Round(ctx *gin.Context) {
-	roundToken, err := jwt.NewHelper().Decode(validation.ValidRoundHeader(ctx))
-	if err != nil {
-		ctx.AbortWithStatus(400)
-	} else if round := persistence.FetchRound(roundToken.RoundUrl); round != nil {
-		chosenParticipant := selectNextCandidate(round)
-		chosenParticipant.RoundCount = chosenParticipant.RoundCount + 1
-		updatedParticipants := updateParticipantsWithChosen(round, chosenParticipant)
-		persistence.UpdateParticipants(round.Url, updatedParticipants)
-		ctx.JSON(200, &Response{
-			Participant: chosenParticipant.Name,
-		})
-	} else {
-		ctx.AbortWithStatus(400)
-	}
+func UpdatedRoundWithNextCandidate(currentRound *persistence.Round) *persistence.Round {
+	chosenParticipant := selectNextCandidate(currentRound)
+	chosenParticipant.RoundCount = chosenParticipant.RoundCount + 1
+	updatedParticipants := updateParticipantsWithChosen(currentRound, chosenParticipant)
+	return persistence.UpdateParticipantsAndCurrentCandidate(currentRound.Url, updatedParticipants, chosenParticipant.UUID)
 }
 
 func selectNextCandidate(round *persistence.Round) persistence.Participant {
@@ -42,8 +25,7 @@ func selectNextCandidate(round *persistence.Round) persistence.Participant {
 			candidatesForNextRound = append(candidatesForNextRound, participant)
 		}
 	}
-	chosenParticipant := candidatesForNextRound[randomIndexOrFirstWhenOnlyOneCandidate(candidatesForNextRound)]
-	return chosenParticipant
+	return candidatesForNextRound[randomIndexOrFirstWhenOnlyOneCandidate(candidatesForNextRound)]
 }
 
 func updateParticipantsWithChosen(round *persistence.Round, chosenParticipant persistence.Participant) []persistence.Participant {

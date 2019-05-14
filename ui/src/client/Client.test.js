@@ -5,7 +5,7 @@
 import Client from './Client';
 import {Pact} from '@pact-foundation/pact';
 import path from 'path';
-import {eachLike, somethingLike, uuid} from "@pact-foundation/pact/dsl/matchers";
+import {eachLike, somethingLike, uuid} from '@pact-foundation/pact/dsl/matchers';
 
 jest.setTimeout(30000);
 
@@ -16,7 +16,7 @@ const client = new Client({
 
 describe('Tests the API Client', () => {
     const provider = new Pact({
-        logLevel: "debug",
+        logLevel: 'debug',
         port: 8888,
         consumer: 'ui',
         provider: 'api',
@@ -52,10 +52,15 @@ describe('Tests the API Client', () => {
                     round: {
                         url: somethingLike('dsakdna'),
                         participants: eachLike({
-                            uuid: uuid("ce118b6e-d8e1-11e7-9296-cec278b6b50a"),
+                            uuid: uuid('ce118b6e-d8e1-11e7-9296-cec278b6b50a'),
                             name: somethingLike('Tom'),
                             round_count: somethingLike(5)
-                        })
+                        }),
+                        current_candidate: {
+                            uuid: uuid('ce118b6e-d8e1-11e7-9296-cec278b6b50a'),
+                            name: somethingLike('Tom'),
+                            round_count: somethingLike(10)
+                        }
                     }
                 }
             }
@@ -66,14 +71,19 @@ describe('Tests the API Client', () => {
             .then(res => {
                 expect(res.status).toEqual(200);
                 expect(res.data).toEqual({
-                    token: "tom@beer.com",
+                    token: 'tom@beer.com',
                     round: {
                         url: 'dsakdna',
                         participants: [{
-                            uuid: "ce118b6e-d8e1-11e7-9296-cec278b6b50a",
-                            name: "Tom",
-                            "round_count": 5
-                        }]
+                            uuid: 'ce118b6e-d8e1-11e7-9296-cec278b6b50a',
+                            name: 'Tom',
+                            'round_count': 5
+                        }],
+                        current_candidate: {
+                            uuid: 'ce118b6e-d8e1-11e7-9296-cec278b6b50a',
+                            name: 'Tom',
+                            round_count: 10
+                        }
                     }
                 });
             }));
@@ -96,10 +106,15 @@ describe('Tests the API Client', () => {
                 body: {
                     url: somethingLike('dsakdna'),
                     participants: eachLike({
-                        uuid: uuid("ce118b6e-d8e1-11e7-9296-cec278b6b50a"),
+                        uuid: uuid('ce118b6e-d8e1-11e7-9296-cec278b6b50a'),
                         name: somethingLike('Tom'),
                         round_count: somethingLike(10)
-                    })
+                    }),
+                    current_candidate: {
+                        uuid: uuid('ce118b6e-d8e1-11e7-9296-cec278b6b50a'),
+                        name: somethingLike('Tom'),
+                        round_count: somethingLike(10)
+                    }
 
                 }
             }
@@ -112,10 +127,15 @@ describe('Tests the API Client', () => {
             expect(res.data).toEqual({
                 url: 'dsakdna',
                 participants: [{
-                    uuid: "ce118b6e-d8e1-11e7-9296-cec278b6b50a",
-                    name: "Tom",
-                    "round_count": 10
-                }]
+                    uuid: 'ce118b6e-d8e1-11e7-9296-cec278b6b50a',
+                    name: 'Tom',
+                    round_count: 10
+                }],
+                current_candidate: {
+                    uuid: 'ce118b6e-d8e1-11e7-9296-cec278b6b50a',
+                    name: 'Tom',
+                    round_count: 10
+                }
             });
         }));
     })

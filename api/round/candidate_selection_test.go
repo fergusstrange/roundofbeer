@@ -1,4 +1,4 @@
-package update
+package round
 
 import (
 	"github.com/fergusstrange/roundofbeer/api/persistence"

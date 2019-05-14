@@ -4,18 +4,18 @@ import (
 	"fmt"
 	"github.com/fergusstrange/roundofbeer/api/handlers/create"
 	"github.com/fergusstrange/roundofbeer/api/handlers/join"
+	"github.com/fergusstrange/roundofbeer/api/handlers/next"
 	"github.com/fergusstrange/roundofbeer/api/handlers/read"
-	"github.com/fergusstrange/roundofbeer/api/handlers/update"
 	"github.com/fergusstrange/roundofbeer/api/round"
 	"github.com/gin-gonic/gin"
 	"os"
 )
 
 type ApplicationHandlers struct {
-	CreateRound        func(*create.Request) round.Response
+	CreateRound        func(*create.Request) create.Response
 	JoinRound          func(*gin.Context)
 	GetRound           func(roundToken string) (*round.Round, int)
-	NextRoundCandidate func(*gin.Context)
+	NextRoundCandidate func(roundToken string) (*round.Round, int)
 }
 
 func DefaultApp() error {
@@ -28,17 +28,17 @@ func WithHandlers(handlers ApplicationHandlers) error {
 	app.POST("/round", create.NewRoundHandler(handlers.CreateRound))
 	app.POST("/round/:roundId", handlers.JoinRound)
 	app.GET("/round", read.NewReadRoundHandler(handlers.GetRound))
-	app.PUT("/round", handlers.NextRoundCandidate)
+	app.PUT("/round", next.NewNextRoundHandler(handlers.NextRoundCandidate))
 
 	return app.Run(portFromEnvironment())
 }
 
 func DefaultHandlers() ApplicationHandlers {
 	return ApplicationHandlers{
-		CreateRound:        create.NewRound,
+		CreateRound:        create.Round,
 		JoinRound:          join.Round,
 		GetRound:           read.Round,
-		NextRoundCandidate: update.Round,
+		NextRoundCandidate: next.Round,
 	}
 }
 

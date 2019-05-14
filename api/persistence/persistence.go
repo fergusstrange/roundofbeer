@@ -3,17 +3,17 @@ package persistence
 import (
 	"github.com/fergusstrange/roundofbeer/api/dynamo"
 	"github.com/fergusstrange/roundofbeer/api/errors"
-	"github.com/google/uuid"
 	"time"
 )
 
 const roundOfBeer = "roundofbeer"
 
 type Round struct {
-	Url          string        `dynamo:"url,hash"`
-	Participants []Participant `dynamo:"participants"`
-	CreateDate   time.Time     `dynamo:"create_date"`
-	UpdateDate   time.Time     `dynamo:"update_date"`
+	Url              string        `dynamo:"url,hash"`
+	Participants     []Participant `dynamo:"participants"`
+	CurrentCandidate string        `dynamo:"current_candidate"`
+	CreateDate       time.Time     `dynamo:"create_date"`
+	UpdateDate       time.Time     `dynamo:"update_date"`
 }
 
 type Participant struct {
@@ -37,23 +37,10 @@ func CreateRoundTable() {
 	errors.LogFatal(err)
 }
 
-func CreateRound(url string, participants []string) {
-	var participantList []Participant
-	for _, participant := range participants {
-		participantList = append(participantList, Participant{
-			UUID:       uuid.New().String(),
-			Name:       participant,
-			RoundCount: 0,
-		})
-	}
+func CreateRound(round *Round) {
 	err := dynamo.Client.
 		Table(roundOfBeer).
-		Put(Round{
-			Url:          url,
-			CreateDate:   time.Now(),
-			UpdateDate:   time.Now(),
-			Participants: participantList,
-		}).
+		Put(round).
 		Run()
 	errors.LogFatal(err)
 }
@@ -70,11 +57,14 @@ func FetchRound(roundId string) *Round {
 	return round
 }
 
-func UpdateParticipants(roundUrl string, participants []Participant) {
+func UpdateParticipantsAndCurrentCandidate(roundUrl string, participants []Participant, currentCandidate string) *Round {
+	round := new(Round)
 	err := dynamo.Client.Table(roundOfBeer).
 		Update("url", roundUrl).
 		Set("participants", participants).
+		Set("current_candidate", currentCandidate).
 		Set("update_date", time.Now()).
-		Run()
+		Value(round)
 	errors.LogFatal(err)
+	return round
 }

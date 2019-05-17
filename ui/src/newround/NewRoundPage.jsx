@@ -9,7 +9,7 @@ import { roundContext } from '../store/Store';
 const client = new ApiClient();
 
 export default function NewRoundPage({ history }) {
-  const [state, actions] = roundContext();
+  const [, actions] = roundContext();
   const participantRef = React.createRef();
   const participants = [];
 
@@ -19,15 +19,16 @@ export default function NewRoundPage({ history }) {
         === participant.toLowerCase());
   }
 
-  function addParticipant(e) {
-    e.preventDefault();
+  function addParticipant() {
     const participant = participantRef.current.value;
     if (validAndNotAlreadyExists(participant)) {
       participants.push(participant);
+      participantRef.current.value = undefined;
     }
   }
 
-  function submitParticipants() {
+  function submitParticipants(e) {
+    e.preventDefault();
     client.createRound(participants)
       .then(({ data }) => actions.updateRoundToken(data.token)
         .then(() => history.push(`/${data.roundUrl}`)))
@@ -36,7 +37,7 @@ export default function NewRoundPage({ history }) {
 
   return (
     <div>
-      <form onSubmit={addParticipant}>
+      <form onSubmit={submitParticipants}>
         <div>
           {participants.map(p => (
             <div key={`participantForm-div-${p}`}>
@@ -47,13 +48,13 @@ export default function NewRoundPage({ history }) {
               />
             </div>
           ))}
-          <TextField label="name" value={state.participant} autoFocus inputRef={participantRef} />
+          <TextField label="name" autoFocus inputRef={participantRef} />
         </div>
         <div>
-          <Fab type="submit" color="primary" aria-label="Add" size="small">
-            <AddIcon />
+          <Fab color="primary" aria-label="Add" size="small">
+            <AddIcon onClick={addParticipant} />
           </Fab>
-          <Fab variant="extended" color="primary" aria-label="Add" onClick={submitParticipants}>Start Round</Fab>
+          <Fab type="submit" variant="extended" color="primary" aria-label="Add">Start Round</Fab>
         </div>
       </form>
     </div>

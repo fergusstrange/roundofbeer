@@ -25,21 +25,21 @@ func NewJoinRoundHandler(serviceHandler func(roundId string, request *RoundReque
 
 func Round(roundId string, request *RoundRequest) (*round.WithToken, int) {
 	if fetchedRound := persistence.FetchRound(roundId); fetchedRound != nil &&
-		nameNotAlreadyExists(request, fetchedRound.Participants) {
+		nameExistsInRound(request, fetchedRound.Participants) {
 		token := round.EncodeRoundToken(fetchedRound.Url)
 		return &round.WithToken{
-			Token: &token,
+			Token:    &token,
 			RoundUrl: &fetchedRound.Url,
 		}, 200
 	}
 	return nil, 400
 }
 
-func nameNotAlreadyExists(request *RoundRequest, participants []persistence.Participant) bool {
+func nameExistsInRound(request *RoundRequest, participants []persistence.Participant) bool {
 	for _, participant := range participants {
 		if strings.EqualFold(participant.Name, request.Name) {
-			return false
+			return true
 		}
 	}
-	return true
+	return false
 }

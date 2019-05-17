@@ -15,7 +15,8 @@ export default function JoinRoundPage({ match, history }) {
     event.preventDefault();
     client.joinRound(match.params.roundUrl, nameRef.current.value)
       .then(({ data }) => actions.updateRoundToken(data.token)
-        .then(() => history.push(`/${data.roundUrl}`)));
+        .then(() => history.push(`/${data.roundUrl}`)))
+      .catch(error => actions.updateError(error));
   }
 
   return (

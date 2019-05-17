@@ -38,8 +38,7 @@ export default class ApiClient {
       method: 'POST',
       url: '/round',
       data: { participants },
-    })
-      .catch(errorWithMessage('Unable to create a new round'));
+    }).catch(errorWithMessage('Unable to create a new round'));
   }
 
   async joinRound(roundId, name) {
@@ -47,23 +46,22 @@ export default class ApiClient {
       method: 'POST',
       url: `/round/${roundId}`,
       data: { name },
-    })
-      .catch(errorWithMessage('Unable to join that round'));
+    }).catch(errorWithMessage('Unable to join that round'));
   }
 
   async fetchRound(roundToken) {
     return this.withDefaultOptions({
       method: 'GET',
       url: '/round',
-    }, roundToken)
-      .catch(errorWithMessage('Unable to load that round'));
+    }, roundToken).catch(errorWithMessage('Unable to load that round'));
   }
 
   async nextRoundCandidate(roundToken) {
     return this.withDefaultOptions({
       method: 'PUT',
       url: '/round',
-    }, roundToken)
-      .catch(errorWithMessage('Unable to find next buyer... Rock, Paper, Scissors?'));
+    }, roundToken).catch(errorWithMessage(
+      'Unable to find next buyer... Rock, Paper, Scissors?',
+    ));
   }
 }

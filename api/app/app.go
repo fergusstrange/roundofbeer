@@ -12,8 +12,8 @@ import (
 )
 
 type ApplicationHandlers struct {
-	CreateRound        func(*create.Request) create.Response
-	JoinRound          func(*gin.Context)
+	CreateRound        func(*create.Request) round.WithToken
+	JoinRound          func(roundId string, request *join.RoundRequest) (*round.WithToken, int)
 	GetRound           func(roundToken string) (*round.Round, int)
 	NextRoundCandidate func(roundToken string) (*round.Round, int)
 }
@@ -26,7 +26,7 @@ func WithHandlers(handlers ApplicationHandlers) error {
 	app := gin.Default()
 
 	app.POST("/round", create.NewRoundHandler(handlers.CreateRound))
-	app.POST("/round/:roundId", handlers.JoinRound)
+	app.POST("/round/:roundId", join.NewJoinRoundHandler(handlers.JoinRound))
 	app.GET("/round", read.NewReadRoundHandler(handlers.GetRound))
 	app.PUT("/round", next.NewNextRoundHandler(handlers.NextRoundCandidate))
 

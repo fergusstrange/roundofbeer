@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"github.com/fergusstrange/roundofbeer/api/errors"
 	"github.com/fergusstrange/roundofbeer/api/handlers/create"
+	"github.com/fergusstrange/roundofbeer/api/handlers/join"
 	"github.com/fergusstrange/roundofbeer/api/pointers"
 	"github.com/fergusstrange/roundofbeer/api/round"
-	"github.com/gin-gonic/gin"
 	"github.com/pact-foundation/pact-go/dsl"
 	"github.com/pact-foundation/pact-go/types"
 	"github.com/stretchr/testify/assert"
@@ -50,22 +50,10 @@ func Test_VerifyProviderTests(t *testing.T) {
 
 func MockHandlers() ApplicationHandlers {
 	return ApplicationHandlers{
-		CreateRound: func(request *create.Request) create.Response {
-			return create.Response{
+		CreateRound: func(request *create.Request) round.WithToken {
+			return round.WithToken{
 				Token: pointers.String("daskdsa"),
-				Round: &round.Round{
-					Url: "theberesford.diet",
-					Participants: []round.Participant{{
-						UUID:       "d197f52e-5f9d-4082-92d7-fcbadf4663af",
-						Name:       "Tom",
-						RoundCount: 33,
-					}},
-					CurrentCandidate: round.Participant{
-						UUID:       "d197f52e-5f9d-4082-92d7-fcbadf4663af",
-						Name:       "Tom",
-						RoundCount: 33,
-					},
-				},
+				RoundUrl: pointers.String("aUrl"),
 			}
 		},
 		NextRoundCandidate: func(roundToken string) (*round.Round, int) {
@@ -120,6 +108,11 @@ func MockHandlers() ApplicationHandlers {
 					RoundCount: 33,
 				}}, 200
 		},
-		JoinRound: func(context *gin.Context) {},
+		JoinRound: func(roundId string, request *join.RoundRequest) (*round.WithToken, int) {
+			return &round.WithToken{
+				Token: pointers.String("daskdsa"),
+				RoundUrl: pointers.String("aUrl"),
+			}, 200
+		},
 	}
 }

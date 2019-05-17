@@ -7,10 +7,11 @@ import LandingPage from './landing/LandingPage';
 import RoundLandingPage from './roundlanding/RoundLandingPage';
 import NewRoundPage from './newround/NewRoundPage';
 import ContextMessage from './contextmessage/ContextMessage';
-import { useContext, updateLocalStore } from './store/Store';
+import JoinRoundPage from './joinround/JoinRoundPage';
+import { roundContext, updateLocalStore } from './store/Store';
 
 function App() {
-  const [state] = useContext();
+  const [state] = roundContext();
   useEffect(() => updateLocalStore(state), [state]);
 
   return (
@@ -19,6 +20,7 @@ function App() {
         <Router>
           <Switch>
             <Route path="/new-round" component={NewRoundPage} />
+            <Route path="/:roundUrl/join" component={JoinRoundPage} />
             <Route path="/:roundUrl" component={RoundLandingPage} />
             <Route path="/" component={LandingPage} />
           </Switch>

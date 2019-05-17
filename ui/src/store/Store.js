@@ -1,21 +1,13 @@
 import { get, set } from 'local-storage';
 import { createDakpan } from 'dakpan';
-import ApiClient from '../client/Client';
 
 const localStorageKey = 'roundOfBeerLocalStorage';
-const client = new ApiClient();
 
 function localStorageStateOrDefaults() {
   return get(localStorageKey)
     || {
       token: undefined,
       round: undefined,
-      newRound: {
-        participants: [],
-        participant: undefined,
-      },
-      participant: '',
-      participants: [],
     };
 }
 
@@ -23,62 +15,25 @@ function updateLocalStore(state) {
   set(localStorageKey, state);
 }
 
-const [ContextProvider, useContext] = createDakpan(localStorageStateOrDefaults())({
+const [ContextProvider, roundContext] = createDakpan(localStorageStateOrDefaults())({
+  updateError: error => async state => ({
+    ...state,
+    error,
+  }),
   clearError: () => async state => ({
     ...state,
     error: undefined,
   }),
-  addParticipant: () => ({ participant, ...state }) => ({
+  updateRoundToken: roundToken => async state => ({
     ...state,
-    participants: [
-      ...state.participants,
-      participant,
-    ],
+    roundToken,
     participant: '',
+    participants: [],
   }),
-  updateParticipant: participant => state => ({
+  updateRound: round => async state => ({
     ...state,
-    participant,
+    round,
   }),
-  submitParticipants: () => async (state) => {
-    const { error, data } = await client.createRound(state.participants);
-    return !error
-      ? ({
-        ...state,
-        round: data.round,
-        roundToken: data.token,
-        participant: '',
-        participants: [],
-      })
-      : ({
-        ...state,
-        error,
-      });
-  },
-  fetchRound: () => async (state) => {
-    const { error, data } = await client.fetchRound(state.roundToken);
-    return error
-      ? ({
-        ...state,
-        error,
-      })
-      : ({
-        ...state,
-        round: data,
-      });
-  },
-  nextRoundCandidate: () => async (state) => {
-    const { error, data } = await client.nextRoundCandidate(state.roundToken);
-    return error
-      ? ({
-        ...state,
-        error,
-      })
-      : ({
-        ...state,
-        round: data,
-      });
-  },
 });
 
-export { ContextProvider, useContext, updateLocalStore };
+export { ContextProvider, roundContext, updateLocalStore };

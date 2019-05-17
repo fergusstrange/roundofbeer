@@ -3,39 +3,41 @@ import AddIcon from '@material-ui/icons/Add';
 import { TextField } from '@material-ui/core';
 import Fab from '@material-ui/core/Fab';
 import PropType from 'prop-types';
-import { useContext } from '../store/Store';
+import ApiClient from '../client/Client';
+import { roundContext } from '../store/Store';
+
+const client = new ApiClient();
 
 export default function NewRoundPage({ history }) {
-  const [state, actions] = useContext();
+  const [state, actions] = roundContext();
+  const participantRef = React.createRef();
+  const participants = [];
 
-  function updateParticipant(e) {
-    if (e.target.value) {
-      actions.updateParticipant(e.target.value);
-    }
-  }
-
-  function validAndNotAlreadyExists() {
-    return state.participant
-        && !state.participants.find(element => element.toLowerCase()
-        === state.participant.toLowerCase());
+  function validAndNotAlreadyExists(participant) {
+    return participant
+        && participants.find(element => element.toLowerCase()
+        === participant.toLowerCase());
   }
 
   function addParticipant(e) {
     e.preventDefault();
-    if (validAndNotAlreadyExists()) {
-      actions.addParticipant();
+    const participant = participantRef.current.value;
+    if (validAndNotAlreadyExists(participant)) {
+      participants.push(participant);
     }
   }
 
   function submitParticipants() {
-    actions.submitParticipants().then(() => history.push(`/${state.round.url}`));
+    client.createRound(participants)
+      .then(({ data }) => actions.updateRoundToken(data.token)
+        .then(() => history.push(`/${data.roundUrl}`)));
   }
 
   return (
     <div>
       <form onSubmit={addParticipant}>
         <div>
-          {state.participants.map(p => (
+          {participants.map(p => (
             <div key={`participantForm-div-${p}`}>
               <TextField
                 key={`participantForm-textField-${p}`}
@@ -44,7 +46,7 @@ export default function NewRoundPage({ history }) {
               />
             </div>
           ))}
-          <TextField label="name" value={state.participant} autoFocus onChange={updateParticipant} />
+          <TextField label="name" value={state.participant} autoFocus inputRef={participantRef} />
         </div>
         <div>
           <Fab type="submit" color="primary" aria-label="Add" size="small">

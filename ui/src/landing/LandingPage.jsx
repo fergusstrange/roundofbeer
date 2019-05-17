@@ -1,11 +1,11 @@
 import React from 'react';
-import PropType from 'prop-types';
-import { useContext } from '../store/Store';
+import PropTypes from 'prop-types';
+import { roundContext } from '../store/Store';
 
 export default function LandingPage({ history }) {
-  const [state] = useContext();
+  const [state] = roundContext();
 
-  if (state.round) {
+  if (state.round && state.roundToken) {
     history.push(`/${state.round.url}`);
   } else {
     history.push('/new-round');
@@ -19,5 +19,5 @@ export default function LandingPage({ history }) {
 }
 
 LandingPage.propTypes = {
-  history: PropType.shape().isRequired,
+  history: PropTypes.shape().isRequired,
 };

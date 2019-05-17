@@ -13,16 +13,26 @@ type RoundRequest struct {
 	Name string `json:"name" binding:"required"`
 }
 
-func Round(ctx *gin.Context) {
-	roundId := validation.ValidRoundPathParam(ctx)
-	joinRoundRequest := new(RoundRequest)
-	errors.LogFatal(ctx.BindJSON(joinRoundRequest))
-	fetchedRound := persistence.FetchRound(roundId)
-	if fetchedRound != nil && nameNotAlreadyExists(joinRoundRequest, fetchedRound.Participants) {
-		ctx.JSON(200, round.TransformRound(fetchedRound))
-	} else {
-		ctx.AbortWithStatus(400)
+func NewJoinRoundHandler(serviceHandler func(roundId string, request *RoundRequest) (*round.WithToken, int)) func(ctx *gin.Context) {
+	return func(ctx *gin.Context) {
+		joinRoundRequest := new(RoundRequest)
+		errors.LogError(ctx.BindJSON(joinRoundRequest))
+		roundId := validation.ValidRoundPathParam(ctx)
+		joinedRound, status := serviceHandler(roundId, joinRoundRequest)
+		ctx.JSON(status, joinedRound)
 	}
+}
+
+func Round(roundId string, request *RoundRequest) (*round.WithToken, int) {
+	if fetchedRound := persistence.FetchRound(roundId); fetchedRound != nil &&
+		nameNotAlreadyExists(request, fetchedRound.Participants) {
+		token := round.EncodeRoundToken(fetchedRound.Url)
+		return &round.WithToken{
+			Token: &token,
+			RoundUrl: &fetchedRound.Url,
+		}, 200
+	}
+	return nil, 400
 }
 
 func nameNotAlreadyExists(request *RoundRequest, participants []persistence.Participant) bool {

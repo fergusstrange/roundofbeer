@@ -1,9 +1,9 @@
 import React from 'react';
 import { Snackbar } from '@material-ui/core';
-import { useContext } from '../store/Store';
+import { roundContext } from '../store/Store';
 
 export default function ContextMessage() {
-  const [state, actions] = useContext();
+  const [state, actions] = roundContext();
 
   return (
     <div>

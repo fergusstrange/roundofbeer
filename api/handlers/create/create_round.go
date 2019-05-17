@@ -1,9 +1,7 @@
 package create
 
 import (
-	jwtLib "github.com/dgrijalva/jwt-go"
 	"github.com/fergusstrange/roundofbeer/api/errors"
-	"github.com/fergusstrange/roundofbeer/api/jwt"
 	"github.com/fergusstrange/roundofbeer/api/persistence"
 	"github.com/fergusstrange/roundofbeer/api/random"
 	"github.com/fergusstrange/roundofbeer/api/round"
@@ -16,12 +14,7 @@ type Request struct {
 	Participants []string `json:"participants"`
 }
 
-type Response struct {
-	Token *string      `json:"token"`
-	Round *round.Round `json:"round"`
-}
-
-func NewRoundHandler(serviceHandler func(request *Request) Response) func(*gin.Context) {
+func NewRoundHandler(serviceHandler func(request *Request) round.WithToken) func(*gin.Context) {
 	return func(ctx *gin.Context) {
 		createRoundRequest := new(Request)
 		errors.LogError(ctx.BindJSON(createRoundRequest))
@@ -29,7 +22,7 @@ func NewRoundHandler(serviceHandler func(request *Request) Response) func(*gin.C
 	}
 }
 
-func Round(request *Request) Response {
+func Round(request *Request) round.WithToken {
 	url := random.AlphaNumeric(6)
 	roundToPersist := round.UpdatedRoundWithNextCandidate(&persistence.Round{
 		Url:          url,
@@ -53,20 +46,10 @@ func transformParticipants(request *Request) []persistence.Participant {
 	return participantList
 }
 
-func newRoundResponse(persistedRound *persistence.Round) Response {
-	encodedRoundToken := encodeRoundToken(persistedRound)
-	return Response{
+func newRoundResponse(persistedRound *persistence.Round) round.WithToken {
+	encodedRoundToken := round.EncodeRoundToken(persistedRound.Url)
+	return round.WithToken{
 		Token: &encodedRoundToken,
-		Round: round.TransformRound(persistedRound),
+		RoundUrl: &persistedRound.Url,
 	}
-}
-
-func encodeRoundToken(persistedRound *persistence.Round) string {
-	return jwt.NewHelper().Encode(&jwt.RoundToken{
-		RoundUrl: persistedRound.Url,
-		StandardClaims: jwtLib.StandardClaims{
-			IssuedAt:  time.Now().Unix(),
-			ExpiresAt: time.Now().AddDate(1, 0, 0).Unix(),
-		},
-	})
 }

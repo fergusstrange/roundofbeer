@@ -49,19 +49,7 @@ describe('Tests the API Client', () => {
                 status: 200,
                 body: {
                     token: somethingLike('tom@beer.com'),
-                    round: {
-                        url: somethingLike('dsakdna'),
-                        participants: eachLike({
-                            uuid: uuid('ce118b6e-d8e1-11e7-9296-cec278b6b50a'),
-                            name: somethingLike('Tom'),
-                            round_count: somethingLike(5)
-                        }),
-                        current_candidate: {
-                            uuid: uuid('ce118b6e-d8e1-11e7-9296-cec278b6b50a'),
-                            name: somethingLike('Tom'),
-                            round_count: somethingLike(10)
-                        }
-                    }
+                    roundUrl: somethingLike('aUrl')
                 }
             }
         }));
@@ -72,21 +60,44 @@ describe('Tests the API Client', () => {
                 expect(res.status).toEqual(200);
                 expect(res.data).toEqual({
                     token: 'tom@beer.com',
-                    round: {
-                        url: 'dsakdna',
-                        participants: [{
-                            uuid: 'ce118b6e-d8e1-11e7-9296-cec278b6b50a',
-                            name: 'Tom',
-                            'round_count': 5
-                        }],
-                        current_candidate: {
-                            uuid: 'ce118b6e-d8e1-11e7-9296-cec278b6b50a',
-                            name: 'Tom',
-                            round_count: 10
-                        }
-                    }
+                    roundUrl: 'aUrl',
                 });
             }));
+    });
+
+    describe('Join Round', () => {
+        beforeEach(() => provider.addInteraction({
+            state: 'round exists',
+            uponReceiving: 'a request to join the round',
+            withRequest: {
+                method: 'POST',
+                path: '/round/das8db',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: {
+                    name: somethingLike('Tom'),
+                }
+            },
+            willRespondWith: {
+                status: 200,
+                body: {
+                    token: somethingLike('tom@beer.com'),
+                    roundUrl: somethingLike('aUrl')
+                }
+            }
+        }));
+
+        it('Should join round', () => client
+        .joinRound('das8db', 'Tom')
+        .then(res => {
+            expect(res.status).toEqual(200);
+            expect(res.data).toEqual({
+                token: 'tom@beer.com',
+                roundUrl: 'aUrl',
+            });
+        }));
     });
 
     describe('Fetch Round', () => {
@@ -108,12 +119,12 @@ describe('Tests the API Client', () => {
                     participants: eachLike({
                         uuid: uuid('ce118b6e-d8e1-11e7-9296-cec278b6b50a'),
                         name: somethingLike('Tom'),
-                        round_count: somethingLike(10)
+                        roundCount: somethingLike(10)
                     }),
-                    current_candidate: {
+                    currentCandidate: {
                         uuid: uuid('ce118b6e-d8e1-11e7-9296-cec278b6b50a'),
                         name: somethingLike('Tom'),
-                        round_count: somethingLike(10)
+                        roundCount: somethingLike(10)
                     }
 
                 }
@@ -129,12 +140,12 @@ describe('Tests the API Client', () => {
                 participants: [{
                     uuid: 'ce118b6e-d8e1-11e7-9296-cec278b6b50a',
                     name: 'Tom',
-                    round_count: 10
+                    roundCount: 10
                 }],
-                current_candidate: {
+                currentCandidate: {
                     uuid: 'ce118b6e-d8e1-11e7-9296-cec278b6b50a',
                     name: 'Tom',
-                    round_count: 10
+                    roundCount: 10
                 }
             });
         }));
@@ -159,12 +170,12 @@ describe('Tests the API Client', () => {
                     participants: eachLike({
                         uuid: uuid('5559be5c-2d73-446b-a3f8-da14d7c7f5a6'),
                         name: somethingLike('Geoff'),
-                        round_count: somethingLike(11)
+                        roundCount: somethingLike(11)
                     }),
-                    current_candidate: {
+                    currentCandidate: {
                         uuid: uuid('5559be5c-2d73-446b-a3f8-da14d7c7f5a6'),
                         name: somethingLike('Geoff'),
-                        round_count: somethingLike(11)
+                        roundCount: somethingLike(11)
                     }
 
                 }
@@ -181,12 +192,12 @@ describe('Tests the API Client', () => {
                   {
                     uuid: '5559be5c-2d73-446b-a3f8-da14d7c7f5a6',
                     name: 'Geoff',
-                    round_count: 11
+                    roundCount: 11
                   }],
-                current_candidate: {
+                currentCandidate: {
                     uuid: '5559be5c-2d73-446b-a3f8-da14d7c7f5a6',
                     name: 'Geoff',
-                    round_count: 11
+                    roundCount: 11
                 }
             });
         }));

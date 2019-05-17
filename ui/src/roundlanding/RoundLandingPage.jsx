@@ -3,24 +3,45 @@ import PropTypes from 'prop-types';
 import {
   Table,
   TableBody,
-  TableCell, TableFooter,
+  TableCell,
+  TableFooter,
   TableRow,
 } from '@material-ui/core';
 import Fab from '@material-ui/core/Fab';
-import { useContext } from '../store/Store';
+import ApiClient from '../client/Client';
+import { roundContext } from '../store/Store';
 
-export default function RoundLandingPage({ match }) {
-  const [state, actions] = useContext();
+const client = new ApiClient();
+
+export default function RoundLandingPage({ match, history }) {
+  const [state, actions] = roundContext();
 
   useEffect(() => {
-    actions.fetchRound();
-  }, [actions, match.params.roundUrl]);
+    function redirectJoinRoundPage() {
+      history.push(`/${match.params.roundUrl}/join`);
+    }
+
+    if (!state.round && state.roundToken) {
+      client.fetchRound(state.roundToken)
+        .then(({ data }) => actions.updateRound(data))
+        .catch(redirectJoinRoundPage);
+    } else if ((state.round && state.roundToken && state.round.url !== match.params.roundUrl)
+      || (!state.round && !state.roundToken)) {
+      redirectJoinRoundPage();
+    }
+  }, [actions, history, match.params.roundUrl, state.round, state.roundToken]);
+
+  function nextRoundCandidate() {
+    client.nextRoundCandidate(state.roundToken)
+      .then(({ data }) => actions.updateRound(data))
+      .catch(error => actions.updateError(error));
+  }
 
   const rows = state.round
     ? state.round.participants.map(p => (
       <TableRow key={p.uuid}>
         <TableCell colSpan={1}>{p.name}</TableCell>
-        <TableCell colSpan={1}>{p.round_count}</TableCell>
+        <TableCell colSpan={1}>{p.roundCount}</TableCell>
       </TableRow>
     ))
     : undefined;
@@ -28,7 +49,7 @@ export default function RoundLandingPage({ match }) {
   const roundCount = state.round
     ? state.round
       .participants
-      .map(p => p.round_count)
+      .map(p => p.roundCount)
       .reduce((a, b) => a + b)
     : 0;
 
@@ -45,12 +66,13 @@ export default function RoundLandingPage({ match }) {
           </TableRow>
         </TableFooter>
       </Table>
-      <Fab variant="extended" color="primary" aria-label="Add" onClick={actions.nextRoundCandidate}>Next Buyer</Fab>
+      <Fab variant="extended" color="primary" aria-label="Add" onClick={nextRoundCandidate}>Next Buyer</Fab>
     </div>
   );
 }
 
 RoundLandingPage.propTypes = {
+  history: PropTypes.shape().isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       roundUrl: PropTypes.string.isRequired,

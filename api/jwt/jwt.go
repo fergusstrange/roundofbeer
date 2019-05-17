@@ -13,7 +13,7 @@ type Helper struct {
 }
 
 type RoundToken struct {
-	RoundUrl string `json:"round_url"`
+	RoundUrl string `json:"roundUrl"`
 	jwt.StandardClaims
 }
 

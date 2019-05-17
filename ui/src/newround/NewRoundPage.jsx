@@ -30,7 +30,8 @@ export default function NewRoundPage({ history }) {
   function submitParticipants() {
     client.createRound(participants)
       .then(({ data }) => actions.updateRoundToken(data.token)
-        .then(() => history.push(`/${data.roundUrl}`)));
+        .then(() => history.push(`/${data.roundUrl}`)))
+      .then(() => actions.updateError('Unable to create round'));
   }
 
   return (

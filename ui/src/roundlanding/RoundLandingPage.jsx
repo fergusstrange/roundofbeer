@@ -24,7 +24,8 @@ export default function RoundLandingPage({ match, history }) {
     if (!state.round && state.roundToken) {
       client.fetchRound(state.roundToken)
         .then(({ data }) => actions.updateRound(data))
-        .catch(redirectJoinRoundPage);
+        .catch(() => actions.updateError('Please rejoin that round')
+          .then(redirectJoinRoundPage));
     } else if ((state.round && state.roundToken && state.round.url !== match.params.roundUrl)
       || (!state.round && !state.roundToken)) {
       redirectJoinRoundPage();
@@ -34,7 +35,7 @@ export default function RoundLandingPage({ match, history }) {
   function nextRoundCandidate() {
     client.nextRoundCandidate(state.roundToken)
       .then(({ data }) => actions.updateRound(data))
-      .catch(error => actions.updateError(error));
+      .catch(() => actions.updateError('Unable to find next buyer... Rock, Paper, Scissors?'));
   }
 
   const rows = state.round

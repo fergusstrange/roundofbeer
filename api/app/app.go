@@ -6,39 +6,45 @@ import (
 	"github.com/fergusstrange/roundofbeer/api/handlers/join"
 	"github.com/fergusstrange/roundofbeer/api/handlers/next"
 	"github.com/fergusstrange/roundofbeer/api/handlers/read"
+	"github.com/fergusstrange/roundofbeer/api/persistence"
 	"github.com/fergusstrange/roundofbeer/api/round"
 	"github.com/gin-gonic/gin"
 	"os"
 )
 
-type ApplicationHandlers struct {
-	CreateRound        func(*create.Request) round.WithToken
+type ApplicationModule struct {
+	Persistence        persistence.Persistence
+	CreateRound        func(request *create.Request) round.WithToken
 	JoinRound          func(roundId string, request *join.RoundRequest) (*round.WithToken, int)
 	GetRound           func(roundToken string) (*round.Round, int)
-	NextRoundCandidate func(roundToken string) (*round.Round, int)
+	NextRoundCandidate func(roundTokenHeader string) (*round.Round, int)
 }
 
 func DefaultApp() error {
-	return WithHandlers(DefaultHandlers())
+	return WithHandlers(DefaultModule())
 }
 
-func WithHandlers(handlers ApplicationHandlers) error {
+func WithHandlers(applicationModule ApplicationModule) error {
 	app := gin.Default()
 
-	app.POST("/round", create.NewRoundHandler(handlers.CreateRound))
-	app.POST("/round/:roundId", join.NewJoinRoundHandler(handlers.JoinRound))
-	app.GET("/round", read.NewReadRoundHandler(handlers.GetRound))
-	app.PUT("/round", next.NewNextRoundHandler(handlers.NextRoundCandidate))
+	app.POST("/round", create.Handler(applicationModule.CreateRound))
+	app.POST("/round/:roundId", join.Handler(applicationModule.JoinRound))
+	app.GET("/round", read.Handler(applicationModule.GetRound))
+	app.PUT("/round", next.Handler(applicationModule.NextRoundCandidate))
+
+	applicationModule.Persistence.CreateRoundTable()
 
 	return app.Run(portFromEnvironment())
 }
 
-func DefaultHandlers() ApplicationHandlers {
-	return ApplicationHandlers{
-		CreateRound:        create.Round,
-		JoinRound:          join.Round,
-		GetRound:           read.Round,
-		NextRoundCandidate: next.Round,
+func DefaultModule() ApplicationModule {
+	dynamoDBPersistence := persistence.NewDynamoDBPersistence()
+	return ApplicationModule{
+		Persistence:        dynamoDBPersistence,
+		CreateRound:        create.NewServiceContext(dynamoDBPersistence).ServiceHandler,
+		JoinRound:          join.NewServiceContext(dynamoDBPersistence).ServiceHandler,
+		GetRound:           read.NewServiceContext(dynamoDBPersistence).ServiceHandler,
+		NextRoundCandidate: next.NewServiceContext(dynamoDBPersistence).ServiceHandler,
 	}
 }
 

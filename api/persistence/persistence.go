@@ -1,12 +1,30 @@
 package persistence
 
 import (
-	"github.com/fergusstrange/roundofbeer/api/dynamo"
+	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/fergusstrange/roundofbeer/api/errors"
+	"github.com/guregu/dynamo"
 	"time"
 )
 
 const roundOfBeer = "roundofbeer"
+
+type Persistence interface {
+	CreateRoundTable()
+	CreateRound(round *Round)
+	FetchRound(roundId string) *Round
+	UpdateParticipantsAndCurrentCandidate(updatedRound *Round) *Round
+}
+
+type DynamoDBPersistence struct {
+	client *dynamo.DB
+}
+
+func NewDynamoDBPersistence() *DynamoDBPersistence {
+	return &DynamoDBPersistence{
+		client: newClient(),
+	}
+}
 
 type Round struct {
 	Url              string        `dynamo:"url,hash"`
@@ -22,32 +40,32 @@ type Participant struct {
 	RoundCount int    `dynamo:"round_count"`
 }
 
-func CreateRoundTable() {
-	tables, err := dynamo.Client.ListTables().All()
+func (db *DynamoDBPersistence) CreateRoundTable() {
+	tables, err := db.client.ListTables().All()
 	errors.LogFatal(err)
 	for _, table := range tables {
 		if table == roundOfBeer {
 			return
 		}
 	}
-	err = dynamo.Client.
+	err = db.client.
 		CreateTable(roundOfBeer, Round{}).
 		Provision(3, 2).
 		Run()
 	errors.LogFatal(err)
 }
 
-func CreateRound(round *Round) {
-	err := dynamo.Client.
+func (db *DynamoDBPersistence) CreateRound(round *Round) {
+	err := db.client.
 		Table(roundOfBeer).
 		Put(round).
 		Run()
 	errors.LogFatal(err)
 }
 
-func FetchRound(roundId string) *Round {
+func (db *DynamoDBPersistence) FetchRound(roundId string) *Round {
 	round := new(Round)
-	err := dynamo.Client.
+	err := db.client.
 		Table(roundOfBeer).
 		Get("url", roundId).
 		One(round)
@@ -57,9 +75,9 @@ func FetchRound(roundId string) *Round {
 	return round
 }
 
-func UpdateParticipantsAndCurrentCandidate(updatedRound *Round) *Round {
+func (db *DynamoDBPersistence) UpdateParticipantsAndCurrentCandidate(updatedRound *Round) *Round {
 	persistedRound := new(Round)
-	err := dynamo.Client.Table(roundOfBeer).
+	err := db.client.Table(roundOfBeer).
 		Update("url", updatedRound.Url).
 		Set("participants", updatedRound.Participants).
 		Set("current_candidate", updatedRound.CurrentCandidate).
@@ -67,4 +85,10 @@ func UpdateParticipantsAndCurrentCandidate(updatedRound *Round) *Round {
 		Value(persistedRound)
 	errors.LogFatal(err)
 	return persistedRound
+}
+
+func newClient() *dynamo.DB {
+	newSession, err := session.NewSession()
+	errors.LogFatal(err)
+	return dynamo.New(newSession)
 }

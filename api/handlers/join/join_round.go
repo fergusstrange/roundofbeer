@@ -13,7 +13,11 @@ type RoundRequest struct {
 	Name string `json:"name" binding:"required"`
 }
 
-func NewJoinRoundHandler(serviceHandler func(roundId string, request *RoundRequest) (*round.WithToken, int)) func(ctx *gin.Context) {
+type ServiceContext struct {
+	persistence persistence.Persistence
+}
+
+func Handler(serviceHandler func(roundId string, request *RoundRequest) (*round.WithToken, int)) func(ctx *gin.Context) {
 	return func(ctx *gin.Context) {
 		joinRoundRequest := new(RoundRequest)
 		errors.LogError(ctx.BindJSON(joinRoundRequest))
@@ -23,8 +27,14 @@ func NewJoinRoundHandler(serviceHandler func(roundId string, request *RoundReque
 	}
 }
 
-func Round(roundId string, request *RoundRequest) (*round.WithToken, int) {
-	if fetchedRound := persistence.FetchRound(roundId); fetchedRound != nil &&
+func NewServiceContext(db persistence.Persistence) ServiceContext {
+	return ServiceContext{
+		persistence: db,
+	}
+}
+
+func (sc ServiceContext) ServiceHandler(roundId string, request *RoundRequest) (*round.WithToken, int) {
+	if fetchedRound := sc.persistence.FetchRound(roundId); fetchedRound != nil &&
 		nameExistsInRound(request, fetchedRound.Participants) {
 		token := round.EncodeRoundToken(fetchedRound.Url)
 		return &round.WithToken{

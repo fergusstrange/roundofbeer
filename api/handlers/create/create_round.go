@@ -14,7 +14,11 @@ type Request struct {
 	Participants []string `json:"participants"`
 }
 
-func NewRoundHandler(serviceHandler func(request *Request) round.WithToken) func(*gin.Context) {
+type ServiceContext struct {
+	persistence persistence.Persistence
+}
+
+func Handler(serviceHandler func(request *Request) round.WithToken) func(*gin.Context) {
 	return func(ctx *gin.Context) {
 		createRoundRequest := new(Request)
 		errors.LogError(ctx.BindJSON(createRoundRequest))
@@ -22,7 +26,13 @@ func NewRoundHandler(serviceHandler func(request *Request) round.WithToken) func
 	}
 }
 
-func Round(request *Request) round.WithToken {
+func NewServiceContext(db persistence.Persistence) ServiceContext {
+	return ServiceContext{
+		persistence: db,
+	}
+}
+
+func (sc ServiceContext) ServiceHandler(request *Request) round.WithToken {
 	url := random.AlphaNumeric(6)
 	roundToPersist := round.UpdatedRoundWithNextCandidate(&persistence.Round{
 		Url:          url,
@@ -30,7 +40,7 @@ func Round(request *Request) round.WithToken {
 		UpdateDate:   time.Now(),
 		Participants: transformParticipants(request),
 	})
-	persistence.CreateRound(roundToPersist)
+	sc.persistence.CreateRound(roundToPersist)
 	return newRoundResponse(roundToPersist)
 }
 
@@ -49,7 +59,7 @@ func transformParticipants(request *Request) []persistence.Participant {
 func newRoundResponse(persistedRound *persistence.Round) round.WithToken {
 	encodedRoundToken := round.EncodeRoundToken(persistedRound.Url)
 	return round.WithToken{
-		Token: &encodedRoundToken,
+		Token:    &encodedRoundToken,
 		RoundUrl: &persistedRound.Url,
 	}
 }

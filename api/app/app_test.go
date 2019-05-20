@@ -7,6 +7,7 @@ import (
 	"github.com/fergusstrange/roundofbeer/api/handlers/join"
 	"github.com/fergusstrange/roundofbeer/api/pointers"
 	"github.com/fergusstrange/roundofbeer/api/round"
+	"github.com/fergusstrange/roundofbeer/api/testfixtures"
 	"github.com/pact-foundation/pact-go/dsl"
 	"github.com/pact-foundation/pact-go/types"
 	"github.com/stretchr/testify/assert"
@@ -48,11 +49,12 @@ func Test_VerifyProviderTests(t *testing.T) {
 	assert.Nil(t, err)
 }
 
-func MockHandlers() ApplicationHandlers {
-	return ApplicationHandlers{
+func MockHandlers() ApplicationModule {
+	return ApplicationModule{
+		Persistence: testfixtures.MockPersistence{},
 		CreateRound: func(request *create.Request) round.WithToken {
 			return round.WithToken{
-				Token: pointers.String("daskdsa"),
+				Token:    pointers.String("daskdsa"),
 				RoundUrl: pointers.String("aUrl"),
 			}
 		},
@@ -110,7 +112,7 @@ func MockHandlers() ApplicationHandlers {
 		},
 		JoinRound: func(roundId string, request *join.RoundRequest) (*round.WithToken, int) {
 			return &round.WithToken{
-				Token: pointers.String("daskdsa"),
+				Token:    pointers.String("daskdsa"),
 				RoundUrl: pointers.String("aUrl"),
 			}, 200
 		},

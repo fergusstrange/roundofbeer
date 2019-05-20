@@ -7,10 +7,12 @@ import (
 	"github.com/fergusstrange/roundofbeer/api/handlers/join"
 	"github.com/fergusstrange/roundofbeer/api/pointers"
 	"github.com/fergusstrange/roundofbeer/api/round"
+	"github.com/fergusstrange/roundofbeer/api/testfixtures"
 )
 
 func main() {
-	errors.LogFatal(app.WithHandlers(app.ApplicationHandlers{
+	errors.LogFatal(app.WithHandlers(app.ApplicationModule{
+		Persistence: testfixtures.MockPersistence{},
 		CreateRound: func(request *create.Request) round.WithToken {
 			return round.WithToken{
 				Token:    pointers.String("daskdsa"),

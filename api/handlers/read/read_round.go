@@ -8,7 +8,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func NewReadRoundHandler(serviceHandler func(roundToken string) (*round.Round, int)) func(ctx *gin.Context) {
+type ServiceContext struct {
+	persistence persistence.Persistence
+}
+
+func Handler(serviceHandler func(roundToken string) (*round.Round, int)) func(ctx *gin.Context) {
 	return func(ctx *gin.Context) {
 		roundTokenHeader := validation.ValidRoundHeader(ctx)
 		body, status := serviceHandler(roundTokenHeader)
@@ -16,11 +20,17 @@ func NewReadRoundHandler(serviceHandler func(roundToken string) (*round.Round, i
 	}
 }
 
-func Round(roundTokenHeader string) (*round.Round, int) {
+func NewServiceContext(db persistence.Persistence) ServiceContext {
+	return ServiceContext{
+		persistence: db,
+	}
+}
+
+func (sc ServiceContext) ServiceHandler(roundTokenHeader string) (*round.Round, int) {
 	roundToken, err := jwt.NewHelper().Decode(roundTokenHeader)
 	if err != nil {
 		return nil, 400
-	} else if fetchedRound := persistence.FetchRound(roundToken.RoundUrl); fetchedRound != nil {
+	} else if fetchedRound := sc.persistence.FetchRound(roundToken.RoundUrl); fetchedRound != nil {
 		return round.TransformRound(fetchedRound), 200
 	} else {
 		return nil, 400

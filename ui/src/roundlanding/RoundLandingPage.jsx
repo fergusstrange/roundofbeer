@@ -5,69 +5,68 @@ import {
   TableBody,
   TableCell,
   TableFooter,
-  TableRow,
+  TableRow, Typography,
 } from '@material-ui/core';
 import Fab from '@material-ui/core/Fab';
-import ApiClient from '../client/Client';
 import { roundContext } from '../store/Store';
-
-const client = new ApiClient();
+import { fetchRoundOrRedirect, nextRoundCandidate } from './roundLandingPageService';
 
 export default function RoundLandingPage({ match, history }) {
   const [state, actions] = roundContext();
 
-  useEffect(() => {
-    function redirectJoinRoundPage() {
-      history.push(`/${match.params.roundUrl}/join`);
+  useEffect(() => fetchRoundOrRedirect(
+    state.round,
+    state.participatingRounds,
+    actions.updateRound,
+    match.params.roundUrl,
+    history,
+  ), [
+    state.round,
+    state.participatingRounds,
+    actions,
+    history,
+    match.params.roundUrl]);
+
+  const ParticipantRows = () => (
+    <TableBody>
+      {state.round
+        ? state.round.participants.map(p => (
+          <TableRow key={p.uuid}>
+            <TableCell colSpan={1}>{p.name}</TableCell>
+            <TableCell colSpan={1}>{p.roundCount}</TableCell>
+          </TableRow>
+        ))
+        : undefined
     }
+    </TableBody>
+  );
 
-    if (!state.round && state.roundToken) {
-      client.fetchRound(state.roundToken)
-        .then(({ data }) => actions.updateRound(data))
-        .catch(() => actions.updateError('Please rejoin that round')
-          .then(redirectJoinRoundPage));
-    } else if ((state.round && state.roundToken && state.round.url !== match.params.roundUrl)
-      || (!state.round && !state.roundToken)) {
-      redirectJoinRoundPage();
-    }
-  }, [actions, history, match.params.roundUrl, state.round, state.roundToken]);
-
-  function nextRoundCandidate() {
-    client.nextRoundCandidate(state.roundToken)
-      .then(({ data }) => actions.updateRound(data))
-      .catch(() => actions.updateError('Unable to find next buyer... Rock, Paper, Scissors?'));
-  }
-
-  const rows = state.round
-    ? state.round.participants.map(p => (
-      <TableRow key={p.uuid}>
-        <TableCell colSpan={1}>{p.name}</TableCell>
-        <TableCell colSpan={1}>{p.roundCount}</TableCell>
-      </TableRow>
-    ))
-    : undefined;
-
-  const roundCount = state.round
-    ? state.round
-      .participants
-      .map(p => p.roundCount)
-      .reduce((a, b) => a + b)
-    : 0;
+  const RoundCount = () => (
+    <span>
+      {state.round
+        ? state.round
+          .participants
+          .map(p => p.roundCount)
+          .reduce((a, b) => a + b)
+        : 0}
+    </span>
+  );
 
   return (
     <div>
+      <Typography variant="h1" component="h1">
+        {`${state.round.currentCandidate.name} buys`}
+      </Typography>
       <Table>
-        <TableBody>
-          {rows}
-        </TableBody>
+        <ParticipantRows />
         <TableFooter>
           <TableRow>
             <TableCell colSpan={1}>Total Rounds</TableCell>
-            <TableCell colSpan={1}>{roundCount}</TableCell>
+            <TableCell colSpan={1}><RoundCount /></TableCell>
           </TableRow>
         </TableFooter>
       </Table>
-      <Fab variant="extended" color="primary" aria-label="Add" onClick={nextRoundCandidate}>Next Buyer</Fab>
+      <Fab variant="extended" color="primary" aria-label="Add" onClick={() => nextRoundCandidate(state, actions)}>Next Buyer</Fab>
     </div>
   );
 }

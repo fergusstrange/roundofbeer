@@ -2,38 +2,29 @@ package testfixtures
 
 import (
 	"github.com/fergusstrange/roundofbeer/api/persistence"
-	"time"
 )
 
 type MockPersistence struct {
+	mockStore map[string]*persistence.Round
+}
+
+func NewMockPersistence() MockPersistence {
+	return MockPersistence{
+		mockStore: make(map[string]*persistence.Round),
+	}
 }
 
 func (mp MockPersistence) CreateRoundTable() {}
 
-func (mp MockPersistence) CreateRound(round *persistence.Round) {}
+func (mp MockPersistence) CreateRound(round *persistence.Round) {
+	mp.mockStore[round.Url] = round
+}
 
 func (mp MockPersistence) FetchRound(roundId string) *persistence.Round {
-	return aFakeRound()
+	return mp.mockStore[roundId]
 }
 
 func (mp MockPersistence) UpdateParticipantsAndCurrentCandidate(updatedRound *persistence.Round) *persistence.Round {
-	return aFakeRound()
-}
-
-func aFakeRound() *persistence.Round {
-	return &persistence.Round{
-		Url:              "abc",
-		CurrentCandidate: aFakeParticipant().UUID,
-		Participants:     []persistence.Participant{aFakeParticipant()},
-		UpdateDate:       time.Now(),
-		CreateDate:       time.Now(),
-	}
-}
-
-func aFakeParticipant() persistence.Participant {
-	return persistence.Participant{
-		Name:       "John",
-		UUID:       "54de9ad7-7ae0-47f1-bb47-28b14d17c941",
-		RoundCount: 1,
-	}
+	mp.mockStore[updatedRound.Url] = updatedRound
+	return mp.mockStore[updatedRound.Url]
 }

@@ -51,7 +51,7 @@ func Test_VerifyProviderTests(t *testing.T) {
 
 func MockHandlers() ApplicationModule {
 	return ApplicationModule{
-		Persistence: testfixtures.MockPersistence{},
+		Persistence: testfixtures.NewMockPersistence(),
 		CreateRound: func(request *create.Request) round.WithToken {
 			return round.WithToken{
 				Token:    pointers.String("daskdsa"),

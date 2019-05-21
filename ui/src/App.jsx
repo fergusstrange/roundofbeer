@@ -16,7 +16,7 @@ function App() {
 
   return (
     <Fragment>
-      <Grid container spacing={24} justify="center" alignItems="center" alignContent="center">
+      <Grid container spacing={24} justify="center" alignItems="center" alignContent="center" style={{ marginTop: '25px' }}>
         <Router>
           <Switch>
             <Route path="/new-round" component={NewRoundPage} />

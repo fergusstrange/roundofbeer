@@ -21,7 +21,7 @@ type ApplicationModule struct {
 }
 
 func DefaultApp() error {
-	return WithHandlers(DefaultModule())
+	return WithHandlers(DefaultModule(persistence.NewDynamoDBPersistence()))
 }
 
 func WithHandlers(applicationModule ApplicationModule) error {
@@ -37,14 +37,13 @@ func WithHandlers(applicationModule ApplicationModule) error {
 	return app.Run(portFromEnvironment())
 }
 
-func DefaultModule() ApplicationModule {
-	dynamoDBPersistence := persistence.NewDynamoDBPersistence()
+func DefaultModule(persistence persistence.Persistence) ApplicationModule {
 	return ApplicationModule{
-		Persistence:        dynamoDBPersistence,
-		CreateRound:        create.NewServiceContext(dynamoDBPersistence).ServiceHandler,
-		JoinRound:          join.NewServiceContext(dynamoDBPersistence).ServiceHandler,
-		GetRound:           read.NewServiceContext(dynamoDBPersistence).ServiceHandler,
-		NextRoundCandidate: next.NewServiceContext(dynamoDBPersistence).ServiceHandler,
+		Persistence:        persistence,
+		CreateRound:        create.NewServiceContext(persistence).ServiceHandler,
+		JoinRound:          join.NewServiceContext(persistence).ServiceHandler,
+		GetRound:           read.NewServiceContext(persistence).ServiceHandler,
+		NextRoundCandidate: next.NewServiceContext(persistence).ServiceHandler,
 	}
 }
 

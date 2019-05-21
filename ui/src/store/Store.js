@@ -6,8 +6,9 @@ const localStorageKey = 'roundOfBeerLocalStorage';
 function localStorageStateOrDefaults() {
   return get(localStorageKey)
     || {
-      token: undefined,
+      roundToken: undefined,
       round: undefined,
+      participatingRounds: [],
     };
 }
 
@@ -24,11 +25,12 @@ const [ContextProvider, roundContext] = createDakpan(localStorageStateOrDefaults
     ...state,
     error: undefined,
   }),
-  updateRoundToken: roundToken => async state => ({
+  updateRoundToken: (roundUrl, roundToken) => async state => ({
     ...state,
     roundToken,
-    participant: '',
-    participants: [],
+    round: undefined,
+    participatingRounds: [...[...state.participatingRounds]
+      .filter(pr => pr.roundUrl !== roundUrl), { roundUrl, roundToken }],
   }),
   updateRound: round => async state => ({
     ...state,

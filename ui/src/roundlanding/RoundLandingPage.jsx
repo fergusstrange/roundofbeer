@@ -52,11 +52,17 @@ export default function RoundLandingPage({ match, history }) {
     </span>
   );
 
+  const CurrentCandidate = () => (
+    <Typography variant="h1" component="h1">
+      {state.round
+        ? `${state.round.currentCandidate.name} buys`
+        : undefined}
+    </Typography>
+  );
+
   return (
     <div>
-      <Typography variant="h1" component="h1">
-        {`${state.round.currentCandidate.name} buys`}
-      </Typography>
+      <CurrentCandidate/>
       <Table>
         <ParticipantRows />
         <TableFooter>

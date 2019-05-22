@@ -1,0 +1,110 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`New Round Page Tests renders correctly 1`] = `
+<div>
+  <form
+    onSubmit={[Function]}
+  >
+    <div>
+      <div
+        className="MuiFormControl-root-1"
+      >
+        <label
+          className="MuiFormLabel-root-16 MuiInputLabel-root-5 MuiInputLabel-formControl-10 MuiInputLabel-animated-13"
+          data-shrink={false}
+        >
+          name
+        </label>
+        <div
+          className="MuiInputBase-root-36 MuiInput-root-23 MuiInput-underline-27 MuiInputBase-formControl-37 MuiInput-formControl-24"
+          onClick={[Function]}
+        >
+          <input
+            aria-invalid={false}
+            autoFocus={true}
+            className="MuiInputBase-input-46 MuiInput-input-31"
+            disabled={false}
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            required={false}
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+    </div>
+    <div>
+      <button
+        aria-label="Add"
+        className="MuiButtonBase-root-63 MuiFab-root-53 MuiFab-primary-55 MuiFab-sizeSmall-61"
+        disabled={false}
+        onBlur={[Function]}
+        onContextMenu={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchMove={[Function]}
+        onTouchStart={[Function]}
+        tabIndex="0"
+        type="button"
+      >
+        <span
+          className="MuiFab-label-54"
+        >
+          <svg
+            aria-hidden="true"
+            className="MuiSvgIcon-root-66"
+            focusable="false"
+            onClick={[Function]}
+            role="presentation"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"
+            />
+            <path
+              d="M0 0h24v24H0z"
+              fill="none"
+            />
+          </svg>
+        </span>
+        <span
+          className="MuiTouchRipple-root-75"
+        />
+      </button>
+      <button
+        aria-label="Add"
+        className="MuiButtonBase-root-63 MuiFab-root-53 MuiFab-extended-57 MuiFab-primary-55"
+        disabled={false}
+        onBlur={[Function]}
+        onContextMenu={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchMove={[Function]}
+        onTouchStart={[Function]}
+        tabIndex="0"
+        type="submit"
+      >
+        <span
+          className="MuiFab-label-54"
+        >
+          Start Round
+        </span>
+        <span
+          className="MuiTouchRipple-root-75"
+        />
+      </button>
+    </div>
+  </form>
+</div>
+`;

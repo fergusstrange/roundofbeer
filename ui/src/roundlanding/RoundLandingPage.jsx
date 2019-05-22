@@ -62,7 +62,7 @@ export default function RoundLandingPage({ match, history }) {
 
   return (
     <div>
-      <CurrentCandidate/>
+      <CurrentCandidate />
       <Table>
         <ParticipantRows />
         <TableFooter>

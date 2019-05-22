@@ -29,8 +29,10 @@ const [ContextProvider, roundContext] = createDakpan(localStorageStateOrDefaults
     ...state,
     roundToken,
     round: undefined,
-    participatingRounds: [...[...state.participatingRounds]
-      .filter(pr => pr.roundUrl !== roundUrl), { roundUrl, roundToken }],
+    participatingRounds: Array.isArray(state.participatingRounds)
+      ? [...state.participatingRounds.filter(pr => pr.roundUrl !== roundUrl),
+        { roundUrl, roundToken }]
+      : [{ roundUrl, roundToken }],
   }),
   updateRound: round => async state => ({
     ...state,

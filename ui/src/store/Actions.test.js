@@ -82,4 +82,40 @@ describe('Tests actions', () => {
         ],
       }));
   });
+
+  it('updates round', () => expect(actions.updateRound({
+    url: 'dsakdna',
+    participants: [
+      {
+        uuid: '5559be5c-2d73-446b-a3f8-da14d7c7f5a6',
+        name: 'Geoff',
+        roundCount: 11,
+      }],
+    currentCandidate: {
+      uuid: '5559be5c-2d73-446b-a3f8-da14d7c7f5a6',
+      name: 'Geoff',
+      roundCount: 11,
+    },
+  })({
+    anotherProp: 12345,
+    round: {
+      url: '12345',
+    },
+  })).resolves.toEqual({
+    anotherProp: 12345,
+    round: {
+      url: 'dsakdna',
+      participants: [
+        {
+          uuid: '5559be5c-2d73-446b-a3f8-da14d7c7f5a6',
+          name: 'Geoff',
+          roundCount: 11,
+        }],
+      currentCandidate: {
+        uuid: '5559be5c-2d73-446b-a3f8-da14d7c7f5a6',
+        name: 'Geoff',
+        roundCount: 11,
+      },
+    },
+  }));
 });

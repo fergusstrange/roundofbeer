@@ -54,10 +54,7 @@ export default function NewRoundPage({ history }) {
       client.createRound(participants)
         .then(({ data }) => actions.updateRoundToken(data.roundUrl, data.token)
           .then(() => history.push(`/${data.roundUrl}`)))
-        .catch((err) => {
-          console.log(err);
-          actions.updateError('Unable to create round');
-        });
+        .catch(() => actions.updateError('Unable to create round'));
     } else {
       actions.updateError('Need at least one friend!');
     }

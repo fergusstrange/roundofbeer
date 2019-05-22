@@ -1156,9 +1156,9 @@
   integrity sha512-shAmDyaQC4H92APFoIaVDHCx5bStIocgvbwQyxPRrbUY20V1EYTbSDchWbuwlMG3V17cprZhA6+78JfB+3DTPw==
 
 "@pact-foundation/pact-node@^8.2.0":
-  version "8.3.2"
-  resolved "https://registry.yarnpkg.com/@pact-foundation/pact-node/-/pact-node-8.3.2.tgz#18246da10d12ac56add0ab9ffd7c40d2f993fa9e"
-  integrity sha512-wAKuOJ2YVxTWmyr5p2sN903Ih85KnTSfV40shpDs+4BoPN2sB0ZTxuRVmg+Fx22KB6Ko+06vpMtEHqh0GVpgXQ==
+  version "8.3.3"
+  resolved "https://registry.yarnpkg.com/@pact-foundation/pact-node/-/pact-node-8.3.3.tgz#e43bc3364946d83f84bfc78630a706f1344d32f7"
+  integrity sha512-pK+B7L76DIGmHBGySmP7PVG77Bw4z+mXSczxDP2fk3Ret+p4EG3kC0nrRbkXnGNs5JH3PhxyJI/ZmmdTcIlFPg==
   dependencies:
     "@types/q" "1.0.7"
     bunyan "1.8.12"
@@ -2632,9 +2632,9 @@ caniuse-api@^3.0.0:
     lodash.uniq "^4.5.0"
 
 caniuse-lite@^1.0.0, caniuse-lite@^1.0.30000939, caniuse-lite@^1.0.30000955, caniuse-lite@^1.0.30000957, caniuse-lite@^1.0.30000967:
-  version "1.0.30000969"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000969.tgz#7664f571f2072657bde70b00a1fc1ba41f1942a9"
-  integrity sha512-Kus0yxkoAJgVc0bax7S4gLSlFifCa7MnSZL9p9VuS/HIKEL4seaqh28KIQAAO50cD/rJ5CiJkJFapkdDAlhFxQ==
+  version "1.0.30000971"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000971.tgz#d1000e4546486a6977756547352bc96a4cfd2b13"
+  integrity sha512-TQFYFhRS0O5rdsmSbF1Wn+16latXYsQJat66f7S7lizXW1PVpWJeZw9wqqVLIjuxDRz7s7xRUj13QCfd8hKn6g==
 
 caporal@1.2.0:
   version "1.2.0"
@@ -7379,9 +7379,9 @@ node-pre-gyp@^0.12.0:
     tar "^4"
 
 node-releases@^1.1.13, node-releases@^1.1.19:
-  version "1.1.19"
-  resolved "https://registry.yarnpkg.com/node-releases/-/node-releases-1.1.19.tgz#c492d1e381fea0350b338b646c27867e88e91b3d"
-  integrity sha512-SH/B4WwovHbulIALsQllAVwqZZD1kPmKCqrhGfR29dXjLAVZMHvBjD3S6nL9D/J9QkmZ1R92/0wCMDKXUUvyyA==
+  version "1.1.20"
+  resolved "https://registry.yarnpkg.com/node-releases/-/node-releases-1.1.20.tgz#f77f9f9a4fcb22e74ba88fe15732a3a8b037146d"
+  integrity sha512-YnC3NemTLgzOkQTmR4+0yl/7pIsXZcfWXoquNp0Dql03GQ+CYURhnjUDFsSJxpX/Q9nw8lAjLFdnACQoKs6h5w==
   dependencies:
     semver "^5.3.0"
 

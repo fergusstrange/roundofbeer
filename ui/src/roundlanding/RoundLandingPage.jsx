@@ -1,11 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   Table,
   TableBody,
   TableCell,
   TableFooter,
-  TableRow, Typography,
+  TableRow,
+  Typography,
+  Divider, Grid,
 } from '@material-ui/core';
 import Fab from '@material-ui/core/Fab';
 import { roundContext } from '../store/Store';
@@ -53,7 +55,7 @@ export default function RoundLandingPage({ match, history }) {
   );
 
   const CurrentCandidate = () => (
-    <Typography variant="h1" component="h1">
+    <Typography variant="h3" component="h3">
       {state.round
         ? `${state.round.currentCandidate.name} buys`
         : undefined}
@@ -61,19 +63,30 @@ export default function RoundLandingPage({ match, history }) {
   );
 
   return (
-    <div>
-      <CurrentCandidate />
-      <Table>
-        <ParticipantRows />
-        <TableFooter>
-          <TableRow>
-            <TableCell colSpan={1}>Total Rounds</TableCell>
-            <TableCell colSpan={1}><RoundCount /></TableCell>
-          </TableRow>
-        </TableFooter>
-      </Table>
-      <Fab variant="extended" color="primary" aria-label="Add" onClick={() => nextRoundCandidate(state, actions)}>Next Buyer</Fab>
-    </div>
+    <Fragment>
+      <Grid container spacing={3} direction="column" alignItems="center">
+        <Grid item xs={12}>
+          <CurrentCandidate />
+        </Grid>
+        <Grid item xs={12}>
+          <Divider variant="middle" component="h2" />
+        </Grid>
+        <Grid item xs={12}>
+          <Table>
+            <ParticipantRows />
+            <TableFooter>
+              <TableRow>
+                <TableCell colSpan={1}>Total Rounds</TableCell>
+                <TableCell colSpan={1}><RoundCount /></TableCell>
+              </TableRow>
+            </TableFooter>
+          </Table>
+        </Grid>
+        <Grid item xs={12}>
+          <Fab variant="extended" color="primary" aria-label="Add" onClick={() => nextRoundCandidate(state, actions)}>Next Buyer</Fab>
+        </Grid>
+      </Grid>
+    </Fragment>
   );
 }
 

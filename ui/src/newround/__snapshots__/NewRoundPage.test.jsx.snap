@@ -1,46 +1,96 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`New Round Page Tests renders correctly 1`] = `
-<div>
-  <form
-    onSubmit={[Function]}
+<form
+  onSubmit={[Function]}
+>
+  <div
+    className="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-3 MuiGrid-direction-xs-column MuiGrid-align-items-xs-center"
   >
-    <div>
+    <div
+      className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12"
+    >
       <div
-        className="MuiFormControl-root-1"
+        className="MuiContainer-root MuiContainer-maxWidthLg"
+      />
+      <div
+        className="MuiContainer-root MuiContainer-maxWidthLg"
       >
-        <label
-          className="MuiFormLabel-root-16 MuiInputLabel-root-5 MuiInputLabel-formControl-10 MuiInputLabel-animated-13"
-          data-shrink={false}
-        >
-          name
-        </label>
         <div
-          className="MuiInputBase-root-36 MuiInput-root-23 MuiInput-underline-27 MuiInputBase-formControl-37 MuiInput-formControl-24"
-          onClick={[Function]}
+          className="MuiFormControl-root MuiTextField-root"
         >
-          <input
-            aria-invalid={false}
-            autoFocus={true}
-            className="MuiInputBase-input-46 MuiInput-input-31"
-            disabled={false}
-            onBlur={[Function]}
-            onChange={[Function]}
-            onFocus={[Function]}
-            required={false}
-            type="text"
-            value=""
-          />
+          <label
+            className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
+            data-shrink={false}
+          >
+            name
+          </label>
+          <div
+            className="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
+            onClick={[Function]}
+          >
+            <input
+              aria-invalid={false}
+              autoFocus={true}
+              className="MuiInputBase-input MuiInput-input"
+              disabled={false}
+              onBlur={[Function]}
+              onChange={[Function]}
+              onFocus={[Function]}
+              required={false}
+              type="text"
+              value=""
+            />
+          </div>
         </div>
+        <button
+          aria-label="Add"
+          className="MuiButtonBase-root MuiFab-root MuiFab-primary MuiFab-sizeSmall"
+          disabled={false}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          onKeyUp={[Function]}
+          onMouseDown={[Function]}
+          onMouseLeave={[Function]}
+          onMouseUp={[Function]}
+          onTouchEnd={[Function]}
+          onTouchMove={[Function]}
+          onTouchStart={[Function]}
+          tabIndex={0}
+          type="button"
+        >
+          <span
+            className="MuiFab-label"
+          >
+            <svg
+              aria-hidden="true"
+              className="MuiSvgIcon-root"
+              focusable="false"
+              role="presentation"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"
+              />
+              <path
+                d="M0 0h24v24H0z"
+                fill="none"
+              />
+            </svg>
+          </span>
+        </button>
       </div>
     </div>
-    <div>
+    <div
+      className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12"
+    >
       <button
         aria-label="Add"
-        className="MuiButtonBase-root-63 MuiFab-root-53 MuiFab-primary-55 MuiFab-sizeSmall-61"
+        className="MuiButtonBase-root MuiFab-root MuiFab-extended MuiFab-primary"
         disabled={false}
         onBlur={[Function]}
-        onContextMenu={[Function]}
         onFocus={[Function]}
         onKeyDown={[Function]}
         onKeyUp={[Function]}
@@ -50,61 +100,16 @@ exports[`New Round Page Tests renders correctly 1`] = `
         onTouchEnd={[Function]}
         onTouchMove={[Function]}
         onTouchStart={[Function]}
-        tabIndex="0"
-        type="button"
-      >
-        <span
-          className="MuiFab-label-54"
-        >
-          <svg
-            aria-hidden="true"
-            className="MuiSvgIcon-root-66"
-            focusable="false"
-            onClick={[Function]}
-            role="presentation"
-            viewBox="0 0 24 24"
-          >
-            <path
-              d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"
-            />
-            <path
-              d="M0 0h24v24H0z"
-              fill="none"
-            />
-          </svg>
-        </span>
-        <span
-          className="MuiTouchRipple-root-75"
-        />
-      </button>
-      <button
-        aria-label="Add"
-        className="MuiButtonBase-root-63 MuiFab-root-53 MuiFab-extended-57 MuiFab-primary-55"
-        disabled={false}
-        onBlur={[Function]}
-        onContextMenu={[Function]}
-        onFocus={[Function]}
-        onKeyDown={[Function]}
-        onKeyUp={[Function]}
-        onMouseDown={[Function]}
-        onMouseLeave={[Function]}
-        onMouseUp={[Function]}
-        onTouchEnd={[Function]}
-        onTouchMove={[Function]}
-        onTouchStart={[Function]}
-        tabIndex="0"
+        tabIndex={0}
         type="submit"
       >
         <span
-          className="MuiFab-label-54"
+          className="MuiFab-label"
         >
           Start Round
         </span>
-        <span
-          className="MuiTouchRipple-root-75"
-        />
       </button>
     </div>
-  </form>
-</div>
+  </div>
+</form>
 `;

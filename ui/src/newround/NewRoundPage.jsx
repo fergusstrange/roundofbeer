@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import AddIcon from '@material-ui/icons/Add';
-import { TextField } from '@material-ui/core';
+import { Container, Grid, TextField } from '@material-ui/core';
 import Fab from '@material-ui/core/Fab';
 import PropType from 'prop-types';
 import ApiClient from '../client/Client';
@@ -61,28 +61,35 @@ export default function NewRoundPage({ history }) {
   }
 
   return (
-    <div>
+    <Fragment>
       <form onSubmit={submitParticipants}>
-        <div>
-          {newRoundPage.participants.map(p => (
-            <div key={`participantForm-div-${p}`}>
-              <TextField
-                key={`participantForm-textField-${p}`}
-                value={p}
-                disabled
-              />
-            </div>
-          ))}
-          <TextField label="name" value={newRoundPage.participant} onChange={updateParticipant} autoFocus inputRef={newRoundPage.participantRef} />
-        </div>
-        <div>
-          <Fab color="primary" aria-label="Add" size="small">
-            <AddIcon onClick={addParticipant} />
-          </Fab>
-          <Fab type="submit" variant="extended" color="primary" aria-label="Add">Start Round</Fab>
-        </div>
+        <Grid container spacing={3} direction="column" alignItems="center">
+          <Grid item xs={12}>
+            <Container>
+              {newRoundPage.participants.map(p => (
+                <div key={`participantForm-div-${p}`}>
+                  <TextField
+                    component="h3"
+                    key={`participantForm-textField-${p}`}
+                    value={p}
+                    disabled
+                  />
+                </div>
+              ))}
+            </Container>
+            <Container>
+              <TextField label="name" value={newRoundPage.participant} onChange={updateParticipant} autoFocus inputRef={newRoundPage.participantRef} />
+              <Fab size="small" color="primary" aria-label="Add" onClick={addParticipant}>
+                <AddIcon />
+              </Fab>
+            </Container>
+          </Grid>
+          <Grid item xs={12}>
+            <Fab type="submit" variant="extended" color="primary" aria-label="Add">Start Round</Fab>
+          </Grid>
+        </Grid>
       </form>
-    </div>
+    </Fragment>
   );
 }
 

@@ -28,15 +28,16 @@ export default function JoinRoundPage({ match, history }) {
   return (
     <Fragment>
       <Grid container spacing={3} direction="column" alignItems="center">
-        <form onSubmit={submitJoinRound} />
-        <Grid item xs={12}>
-          <TextField label="Your name" autoFocus inputRef={joinRoundPage.nameRef} />
-        </Grid>
-        <Grid item xs={12}>
-          <Fab type="submit" variant="extended" color="primary" aria-label="Add">
+        <form onSubmit={submitJoinRound}>
+          <Grid item xs={12}>
+            <TextField label="Your name" autoFocus inputRef={joinRoundPage.nameRef} />
+          </Grid>
+          <Grid item xs={12}>
+            <Fab type="submit" variant="extended" color="primary" aria-label="Add">
             Join Round
-          </Fab>
-        </Grid>
+            </Fab>
+          </Grid>
+        </form>
       </Grid>
     </Fragment>
   );

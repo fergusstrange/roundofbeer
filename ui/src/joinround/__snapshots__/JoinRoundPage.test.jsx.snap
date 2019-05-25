@@ -6,63 +6,64 @@ exports[`Join Round Page Tests Renders existing round join page 1`] = `
 >
   <form
     onSubmit={[Function]}
-  />
-  <div
-    className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12"
   >
     <div
-      className="MuiFormControl-root MuiTextField-root"
+      className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12"
     >
-      <label
-        className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
-        data-shrink={false}
-      >
-        Your name
-      </label>
       <div
-        className="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
-        onClick={[Function]}
+        className="MuiFormControl-root MuiTextField-root"
       >
-        <input
-          aria-invalid={false}
-          autoFocus={true}
-          className="MuiInputBase-input MuiInput-input"
-          disabled={false}
-          onBlur={[Function]}
-          onChange={[Function]}
-          onFocus={[Function]}
-          required={false}
-          type="text"
-        />
+        <label
+          className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
+          data-shrink={false}
+        >
+          Your name
+        </label>
+        <div
+          className="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
+          onClick={[Function]}
+        >
+          <input
+            aria-invalid={false}
+            autoFocus={true}
+            className="MuiInputBase-input MuiInput-input"
+            disabled={false}
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            required={false}
+            type="text"
+          />
+        </div>
       </div>
     </div>
-  </div>
-  <div
-    className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12"
-  >
-    <button
-      aria-label="Add"
-      className="MuiButtonBase-root MuiFab-root MuiFab-extended MuiFab-primary"
-      disabled={false}
-      onBlur={[Function]}
-      onFocus={[Function]}
-      onKeyDown={[Function]}
-      onKeyUp={[Function]}
-      onMouseDown={[Function]}
-      onMouseLeave={[Function]}
-      onMouseUp={[Function]}
-      onTouchEnd={[Function]}
-      onTouchMove={[Function]}
-      onTouchStart={[Function]}
-      tabIndex={0}
-      type="submit"
+    <div
+      className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12"
     >
-      <span
-        className="MuiFab-label"
+      <button
+        aria-label="Add"
+        className="MuiButtonBase-root MuiFab-root MuiFab-extended MuiFab-primary"
+        disabled={false}
+        onBlur={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchMove={[Function]}
+        onTouchStart={[Function]}
+        tabIndex={0}
+        type="submit"
       >
-        Join Round
-      </span>
-    </button>
-  </div>
+        <span
+          className="MuiFab-label"
+        >
+          Join Round
+        </span>
+      </button>
+    </div>
+  </form>
 </div>
 `;

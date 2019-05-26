@@ -7,14 +7,22 @@ const actions = {
     ...state,
     error: undefined,
   }),
-  updateRoundToken: (roundUrl, roundToken) => async state => ({
+  updateRoundToken: data => async state => ({
     ...state,
-    roundToken,
+    roundToken: data.token,
     round: undefined,
     participatingRounds: Array.isArray(state.participatingRounds)
-      ? [...state.participatingRounds.filter(pr => pr.roundUrl !== roundUrl),
-        { roundUrl, roundToken }]
-      : [{ roundUrl, roundToken }],
+      ? [...state.participatingRounds.filter(pr => pr.roundUrl !== data.roundUrl),
+        {
+          roundUrl: data.roundUrl,
+          roundToken: data.token,
+          participants: data.participants,
+        }]
+      : [{
+        roundUrl: data.roundUrl,
+        roundToken: data.token,
+        participants: data.participants,
+      }],
   }),
   updateRound: round => async state => ({
     ...state,

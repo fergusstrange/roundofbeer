@@ -52,7 +52,7 @@ export default function NewRoundPage({ history }) {
     const participants = allParticipants();
     if (participants.length > 1) {
       client.createRound(participants)
-        .then(({ data }) => actions.updateRoundToken(data.roundUrl, data.token)
+        .then(({ data }) => actions.updateRoundToken(data)
           .then(() => history.push(`/${data.roundUrl}`)))
         .catch(() => actions.updateError('Unable to create round'));
     } else {

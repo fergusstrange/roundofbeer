@@ -40,6 +40,7 @@ func (sc ServiceContext) ServiceHandler(roundId string, request *RoundRequest) (
 		return &round.WithToken{
 			Token:    &token,
 			RoundUrl: &fetchedRound.Url,
+			Participants: round.ParticipantsFromRound(fetchedRound),
 		}, 200
 	}
 	return nil, 400

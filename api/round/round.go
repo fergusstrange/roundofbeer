@@ -10,6 +10,7 @@ import (
 type WithToken struct {
 	Token *string `json:"token"`
 	RoundUrl *string `json:"roundUrl"`
+	Participants []string `json:"participants"`
 }
 
 type Round struct {
@@ -58,4 +59,12 @@ func transformParticipant(participant persistence.Participant) Participant {
 		Name:       participant.Name,
 		RoundCount: participant.RoundCount,
 	}
+}
+
+func ParticipantsFromRound(round *persistence.Round) []string {
+	participants := make([]string, 0)
+	for _, participant := range round.Participants {
+		participants = append(participants, participant.Name)
+	}
+	return participants
 }

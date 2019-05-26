@@ -19,7 +19,7 @@ export default function JoinRoundPage({ match, history }) {
     if (joinRoundPage.nameRef.current.value) {
       client.joinRound(match.params.roundUrl,
         joinRoundPage.nameRef.current.value)
-        .then(({ data }) => actions.updateRoundToken(data.roundUrl, data.token)
+        .then(({ data }) => actions.updateRoundToken(data)
           .then(() => history.push(`/${data.roundUrl}`)))
         .catch(() => actions.updateError('Unable to join that round'));
     }

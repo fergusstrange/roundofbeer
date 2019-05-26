@@ -2,13 +2,14 @@ import './App.css';
 
 import React, { Fragment, useEffect } from 'react';
 import {
-  BrowserRouter as Router, Link, Route, Switch,
+  BrowserRouter as Router,
+  Route,
+  Switch,
 } from 'react-router-dom';
 import {
   createMuiTheme,
   AppBar,
   CssBaseline,
-  Fab,
   Paper,
   Toolbar,
   makeStyles,
@@ -17,8 +18,10 @@ import { MuiThemeProvider } from '@material-ui/core/styles';
 import LandingPage from './landing/LandingPage';
 import RoundLandingPage from './roundlanding/RoundLandingPage';
 import NewRoundPage from './newround/NewRoundPage';
+import OtherRoundsPage from './otherrounds/OtherRoundsPage';
 import ContextMessage from './contextmessage/ContextMessage';
 import JoinRoundPage from './joinround/JoinRoundPage';
+import BottomNavigationBar from './navigation/BottomNavigationBar';
 import { roundContext, updateLocalStore } from './store/Store';
 import beerBackgroundImage from './assets/beer.png';
 
@@ -48,15 +51,6 @@ const useStyles = makeStyles(t => ({
     top: 'auto',
     bottom: 0,
   },
-  bottomAppBarIcon: {
-    fontSize: '10px',
-    position: 'absolute',
-    zIndex: 1,
-    top: -30,
-    left: 0,
-    right: 0,
-    margin: '0 auto',
-  },
   layout: {
     width: 'auto',
     marginLeft: t.spacing(2),
@@ -68,11 +62,11 @@ const useStyles = makeStyles(t => ({
     },
   },
   paper: {
-    marginTop: t.spacing(9),
+    marginTop: t.spacing(6),
     marginBottom: t.spacing(3),
     padding: t.spacing(3),
     [t.breakpoints.up(600 + t.spacing(3) * 2)]: {
-      marginTop: t.spacing(9),
+      marginTop: t.spacing(6),
       marginBottom: t.spacing(3),
       padding: t.spacing(3),
     },
@@ -97,20 +91,13 @@ function App() {
             <Paper className={classes.paper}>
               <Switch>
                 <Route path="/new-round" component={NewRoundPage} />
+                <Route path="/other-rounds" component={OtherRoundsPage} />
                 <Route path="/:roundUrl/join" component={JoinRoundPage} />
                 <Route path="/:roundUrl" component={RoundLandingPage} />
                 <Route path="/" component={LandingPage} />
               </Switch>
             </Paper>
-            <AppBar position="fixed" color="secondary" className={classes.bottomAppBar}>
-              <Toolbar>
-                <Link to="/new-round">
-                  <Fab color="primary" aria-label="New Round" className={classes.bottomAppBarIcon}>
-                  New Round
-                  </Fab>
-                </Link>
-              </Toolbar>
-            </AppBar>
+            <BottomNavigationBar />
             <ContextMessage />
           </main>
         </Router>

@@ -49,6 +49,7 @@ describe('Tests the API Client', () => {
         body: {
           token: somethingLike('tom@beer.com'),
           roundUrl: somethingLike('aUrl'),
+          participants: eachLike('Bob'),
         },
       },
     }));
@@ -60,6 +61,7 @@ describe('Tests the API Client', () => {
         expect(res.data).toEqual({
           token: 'tom@beer.com',
           roundUrl: 'aUrl',
+          participants: ['Bob'],
         });
       }));
   });
@@ -84,6 +86,7 @@ describe('Tests the API Client', () => {
         body: {
           token: somethingLike('tom@beer.com'),
           roundUrl: somethingLike('aUrl'),
+          participants: eachLike('Bob'),
         },
       },
     }));
@@ -95,6 +98,7 @@ describe('Tests the API Client', () => {
         expect(res.data).toEqual({
           token: 'tom@beer.com',
           roundUrl: 'aUrl',
+          participants: ['Bob'],
         });
       }));
   });

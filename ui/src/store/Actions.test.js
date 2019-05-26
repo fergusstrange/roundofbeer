@@ -17,7 +17,11 @@ describe('Tests actions', () => {
 
   describe('updates round token', () => {
     it('removing round and adding participatingRounds',
-      () => expect(actions.updateRoundToken('abcdef', 'aToken')({
+      () => expect(actions.updateRoundToken({
+        roundUrl: 'abcdef',
+        token: 'aToken',
+        participants: ['Bob'],
+      })({
         anotherProp: 12345,
         round: {},
       })).resolves.toEqual({
@@ -27,11 +31,16 @@ describe('Tests actions', () => {
         participatingRounds: [{
           roundToken: 'aToken',
           roundUrl: 'abcdef',
+          participants: ['Bob'],
         }],
       }));
 
     it('updating participatingRounds with new round',
-      () => expect(actions.updateRoundToken('abcdef', 'aToken')({
+      () => expect(actions.updateRoundToken({
+        roundUrl: 'abcdef',
+        token: 'aToken',
+        participants: ['Bob'],
+      })({
         round: {},
         anotherProp: 12345,
         participatingRounds: [{
@@ -49,12 +58,17 @@ describe('Tests actions', () => {
           {
             roundToken: 'aToken',
             roundUrl: 'abcdef',
+            participants: ['Bob'],
           },
         ],
       }));
 
     it('updating participatingRounds replacing existing round',
-      () => expect(actions.updateRoundToken('abcdef', 'anUpdatedToken')({
+      () => expect(actions.updateRoundToken({
+        roundUrl: 'abcdef',
+        token: 'anUpdatedToken',
+        participants: ['Bob'],
+      })({
         round: {},
         anotherProp: 12345,
         participatingRounds: [
@@ -78,6 +92,7 @@ describe('Tests actions', () => {
           {
             roundToken: 'anUpdatedToken',
             roundUrl: 'abcdef',
+            participants: ['Bob'],
           },
         ],
       }));

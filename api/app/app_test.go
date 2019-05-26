@@ -56,6 +56,7 @@ func MockHandlers() ApplicationModule {
 			return round.WithToken{
 				Token:    pointers.String("daskdsa"),
 				RoundUrl: pointers.String("aUrl"),
+				Participants: []string{"Greg", "James"},
 			}
 		},
 		NextRoundCandidate: func(roundToken string) (*round.Round, int) {
@@ -114,6 +115,7 @@ func MockHandlers() ApplicationModule {
 			return &round.WithToken{
 				Token:    pointers.String("daskdsa"),
 				RoundUrl: pointers.String("aUrl"),
+				Participants: []string{"Greg", "James"},
 			}, 200
 		},
 	}

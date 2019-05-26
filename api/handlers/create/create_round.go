@@ -61,5 +61,6 @@ func newRoundResponse(persistedRound *persistence.Round) round.WithToken {
 	return round.WithToken{
 		Token:    &encodedRoundToken,
 		RoundUrl: &persistedRound.Url,
+		Participants: round.ParticipantsFromRound(persistedRound),
 	}
 }

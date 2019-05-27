@@ -11,6 +11,7 @@ const client = new ApiClient();
 export default function NewRoundPage({ history }) {
   const [, actions] = roundContext();
   const [newRoundPage, updateNewRoundPage] = useState({
+    createLoading: false,
     participantRef: React.createRef(),
     participants: [],
     participant: '',
@@ -47,16 +48,34 @@ export default function NewRoundPage({ history }) {
     return newRoundPage.participants;
   }
 
+  function updateCreateLoading() {
+    updateNewRoundPage({
+      ...newRoundPage,
+      createLoading: true,
+    });
+  }
+
+  function updateCreateLoadingFinished() {
+    updateNewRoundPage({
+      ...newRoundPage,
+      createLoading: false,
+    });
+  }
+
   function submitParticipants(e) {
     e.preventDefault();
+    updateCreateLoading();
     const participants = allParticipants();
     if (participants.length > 1) {
       client.createRound(participants)
         .then(({ data }) => actions.updateRoundToken(data)
+          .then(() => updateCreateLoadingFinished())
           .then(() => history.push(`/${data.roundUrl}`)))
-        .catch(() => actions.updateError('Unable to create round'));
+        .catch(() => actions.updateError('Unable to create round')
+          .then(() => updateCreateLoadingFinished()));
     } else {
-      actions.updateError('Need at least one friend!');
+      actions.updateError('Need at least one friend!')
+        .then(() => updateCreateLoadingFinished());
     }
   }
 
@@ -85,7 +104,15 @@ export default function NewRoundPage({ history }) {
             </Container>
           </Grid>
           <Grid item xs={12}>
-            <Fab type="submit" variant="extended" color="primary" aria-label="Add">Start Round</Fab>
+            <Fab
+              type="submit"
+              disabled={newRoundPage.createLoading}
+              variant="extended"
+              color="primary"
+              aria-label="Add"
+            >
+              Start Round
+            </Fab>
           </Grid>
         </Grid>
       </form>

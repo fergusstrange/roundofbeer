@@ -24,6 +24,12 @@ const actions = {
         participants: data.participants,
       }],
   }),
+  removeParticipatingRound: roundUrl => async state => ({
+    ...state,
+    participatingRounds: Array.isArray(state.participatingRounds)
+      ? state.participatingRounds.filter(pr => pr.roundUrl !== roundUrl)
+      : [],
+  }),
   clearRoundAndUpdateToken: roundToken => async state => ({
     ...state,
     roundToken,

@@ -131,6 +131,68 @@ describe('Tests actions', () => {
     }],
   }));
 
+  describe('removes participating round', () => {
+    it('when no rounds defined',
+      () => expect(actions.removeParticipatingRound('abcdef')({
+        anotherProp: 12345,
+        round: undefined,
+        roundToken: 'aToken',
+        participatingRounds: [{
+          roundToken: 'aToken',
+          roundUrl: 'abcdef',
+          participants: ['Bob'],
+        }],
+      })).resolves.toEqual({
+        anotherProp: 12345,
+        round: undefined,
+        roundToken: 'aToken',
+        participatingRounds: [],
+      }));
+
+    it('when round exists',
+      () => expect(actions.removeParticipatingRound('abcdef')({
+        anotherProp: 12345,
+        round: undefined,
+        roundToken: 'aToken',
+        participatingRounds: [{
+          roundToken: 'aToken',
+          roundUrl: 'abcdef',
+          participants: ['Bob'],
+        }],
+      })).resolves.toEqual({
+        anotherProp: 12345,
+        round: undefined,
+        roundToken: 'aToken',
+        participatingRounds: [],
+      }));
+
+    it('when many round exists',
+      () => expect(actions.removeParticipatingRound('abcdef')({
+        anotherProp: 12345,
+        round: undefined,
+        roundToken: 'aToken',
+        participatingRounds: [{
+          roundToken: 'aToken',
+          roundUrl: 'abcdef',
+          participants: ['Bob'],
+        },
+        {
+          roundToken: 'aToken',
+          roundUrl: 'defghj',
+          participants: ['Bob'],
+        }],
+      })).resolves.toEqual({
+        anotherProp: 12345,
+        round: undefined,
+        roundToken: 'aToken',
+        participatingRounds: [{
+          roundToken: 'aToken',
+          roundUrl: 'defghj',
+          participants: ['Bob'],
+        }],
+      }));
+  });
+
   it('updates round', () => expect(actions.updateRound({
     url: 'dsakdna',
     participants: [

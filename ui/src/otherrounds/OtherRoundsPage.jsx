@@ -1,9 +1,15 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Grid, List, ListItem, ListItemText, Typography,
+  Grid,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Typography,
 } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import { roundContext } from '../store/Store';
 
 export default function OtherRoundsPage({ history }) {
@@ -13,6 +19,11 @@ export default function OtherRoundsPage({ history }) {
     e.preventDefault();
     actions.clearRoundAndUpdateToken(participatingRound.roundToken)
       .then(() => history.push(`/${participatingRound.roundUrl}`));
+  }
+
+  function removeParticipatingRound(e, pr) {
+    e.preventDefault();
+    actions.removeParticipatingRound(pr.roundUrl);
   }
 
   const NoOtherRounds = () => (
@@ -29,11 +40,17 @@ export default function OtherRoundsPage({ history }) {
         <List>
           {state.participatingRounds.map(pr => (
             <Fragment key={pr.roundUrl}>
-              <Link to={`/${pr.roundUrl}`} onClick={e => updateRoundToken(e, pr)}>
-                <ListItem button>
+              <ListItem>
+                <ListItem button onClick={e => updateRoundToken(e, pr)}>
+                  <ListItemIcon>
+                    <ArrowForwardIcon />
+                  </ListItemIcon>
                   <ListItemText primary={pr.roundUrl} />
                 </ListItem>
-              </Link>
+                <ListItem button onClick={e => removeParticipatingRound(e, pr)}>
+                  <RemoveCircleIcon />
+                </ListItem>
+              </ListItem>
               {pr.participants
                 ? pr.participants.map(p => (
                   <ListItem key={`${pr.roundUrl}-${p}`}>

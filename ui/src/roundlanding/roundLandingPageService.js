@@ -16,7 +16,17 @@ function filterForMatchingRound(pathRoundUrl) {
   return participatingRound => participatingRound.roundUrl === pathRoundUrl;
 }
 
-const fetchRoundOrRedirect = (round, participatingRounds, actions, pathRoundUrl, history) => {
+function updateNextCandidateFinished(updateRoundLandingPage) {
+  return updateRoundLandingPage({ nextCandidateLoading: false });
+}
+
+const fetchRoundOrRedirect = (
+  round,
+  participatingRounds,
+  actions,
+  pathRoundUrl,
+  history,
+) => {
   if (!round) {
     const existingRound = participatingRoundsOrEmpty(participatingRounds)
       .find(filterForMatchingRound(pathRoundUrl));
@@ -31,10 +41,13 @@ const fetchRoundOrRedirect = (round, participatingRounds, actions, pathRoundUrl,
   }
 };
 
-const nextRoundCandidate = (state, actions) => {
+const nextRoundCandidate = (state, actions, updateRoundLandingPage) => {
+  updateRoundLandingPage({ nextCandidateLoading: true });
   client.nextRoundCandidate(state.roundToken)
     .then(({ data }) => actions.updateRound(data))
-    .catch(() => actions.updateError('Unable to find next buyer... Rock, Paper, Scissors?'));
+    .then(() => updateNextCandidateFinished(updateRoundLandingPage))
+    .catch(() => actions.updateError('Unable to find next buyer... Rock, Paper, Scissors?')
+      .then(() => updateNextCandidateFinished(updateRoundLandingPage)));
 };
 
 export { fetchRoundOrRedirect, nextRoundCandidate };

@@ -98,7 +98,7 @@ describe('Tests actions', () => {
       }));
   });
 
-  it('clears round and token', () => expect(actions.clearRoundAndToken()({
+  it('clears round and token', () => expect(actions.clearRoundAndUpdateToken('theNewToken')({
     anotherProp: 12345,
     round: {
       url: 'dsakdna',
@@ -123,7 +123,7 @@ describe('Tests actions', () => {
   })).resolves.toEqual({
     anotherProp: 12345,
     round: undefined,
-    roundToken: undefined,
+    roundToken: 'theNewToken',
     participatingRounds: [{
       roundToken: 'aToken',
       roundUrl: 'abcdef',

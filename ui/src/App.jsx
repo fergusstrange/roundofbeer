@@ -24,6 +24,7 @@ import JoinRoundPage from './joinround/JoinRoundPage';
 import BottomNavigationBar from './navigation/BottomNavigationBar';
 import { roundContext, updateLocalStore } from './store/Store';
 import beerBackgroundImage from './assets/beer.png';
+import CreditsPage from './credits/CreditsPage'
 
 const theme = createMuiTheme({
   palette: {
@@ -92,6 +93,7 @@ function App() {
               <Switch>
                 <Route path="/new-round" component={NewRoundPage} />
                 <Route path="/other-rounds" component={OtherRoundsPage} />
+                <Route path="/credits" component={CreditsPage} />
                 <Route path="/:roundUrl/join" component={JoinRoundPage} />
                 <Route path="/:roundUrl" component={RoundLandingPage} />
                 <Route path="/" component={LandingPage} />

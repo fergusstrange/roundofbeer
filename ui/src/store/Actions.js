@@ -24,6 +24,11 @@ const actions = {
         participants: data.participants,
       }],
   }),
+  clearRoundAndToken: () => async state => ({
+    ...state,
+    roundToken: undefined,
+    round: undefined,
+  }),
   updateRound: round => async state => ({
     ...state,
     round,

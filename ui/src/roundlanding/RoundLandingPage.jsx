@@ -19,7 +19,7 @@ export default function RoundLandingPage({ match, history }) {
   useEffect(() => fetchRoundOrRedirect(
     state.round,
     state.participatingRounds,
-    actions.updateRound,
+    actions,
     match.params.roundUrl,
     history,
   ), [

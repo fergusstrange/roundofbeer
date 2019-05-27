@@ -16,13 +16,15 @@ function filterForMatchingRound(pathRoundUrl) {
   return participatingRound => participatingRound.roundUrl === pathRoundUrl;
 }
 
-const fetchRoundOrRedirect = (round, participatingRounds, updateRound, pathRoundUrl, history) => {
+const fetchRoundOrRedirect = (round, participatingRounds, actions, pathRoundUrl, history) => {
   if (!round) {
     const existingRound = participatingRoundsOrEmpty(participatingRounds)
       .find(filterForMatchingRound(pathRoundUrl));
     if (existingRound) {
       client.fetchRound(existingRound.roundToken)
-        .then(({ data }) => updateRound(data));
+        .then(({ data }) => actions.updateRound(data))
+        .catch(() => actions.updateError('That round does not exist')
+          .then(() => history.push('/new-round')));
     } else {
       redirectJoinRoundPage(history, pathRoundUrl);
     }

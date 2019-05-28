@@ -101,7 +101,7 @@ const ComponentPages = () => (
 
 const Footer = ({ classes }) => (
   <footer className={classes.footer}>
-    <Grid container spacing={3} xs={12}>
+    <Grid container spacing={3}>
       <Grid item xs={3}>
         <a href="https://github.com/fergusstrange/roundofbeer">
           <img src={GithubIcon} alt="Github" width={16} height={16} />

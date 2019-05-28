@@ -35,6 +35,11 @@ const actions = {
     roundToken,
     round: undefined,
   }),
+  clearRoundAndToken: () => async state => ({
+    ...state,
+    round: undefined,
+    roundToken: undefined,
+  }),
   updateRound: round => async state => ({
     ...state,
     round,

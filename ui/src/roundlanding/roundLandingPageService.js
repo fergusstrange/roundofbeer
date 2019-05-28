@@ -2,10 +2,6 @@ import ApiClient from '../client/Client';
 
 const client = new ApiClient();
 
-function redirectJoinRoundPage(history, roundUrl) {
-  history.push(`/${roundUrl}/join`);
-}
-
 function participatingRoundsOrEmpty(participatingRounds) {
   return Array.isArray(participatingRounds)
     ? participatingRounds
@@ -16,30 +12,13 @@ function filterForMatchingRound(pathRoundUrl) {
   return participatingRound => participatingRound.roundUrl === pathRoundUrl;
 }
 
+function fetchExistingRound(participatingRounds, pathRoundUrl) {
+  return participatingRoundsOrEmpty(participatingRounds).find(filterForMatchingRound(pathRoundUrl));
+}
+
 function updateNextCandidateFinished(updateRoundLandingPage) {
   return updateRoundLandingPage({ nextCandidateLoading: false });
 }
-
-const fetchRoundOrRedirect = (
-  round,
-  participatingRounds,
-  actions,
-  pathRoundUrl,
-  history,
-) => {
-  if (!round) {
-    const existingRound = participatingRoundsOrEmpty(participatingRounds)
-      .find(filterForMatchingRound(pathRoundUrl));
-    if (existingRound) {
-      client.fetchRound(existingRound.roundToken)
-        .then(({ data }) => actions.updateRound(data))
-        .catch(() => actions.updateError('That round does not exist')
-          .then(() => history.push('/new-round')));
-    } else {
-      redirectJoinRoundPage(history, pathRoundUrl);
-    }
-  }
-};
 
 const nextRoundCandidate = (state, actions, updateRoundLandingPage) => {
   updateRoundLandingPage({ nextCandidateLoading: true });
@@ -50,4 +29,7 @@ const nextRoundCandidate = (state, actions, updateRoundLandingPage) => {
       .then(() => updateNextCandidateFinished(updateRoundLandingPage)));
 };
 
-export { fetchRoundOrRedirect, nextRoundCandidate };
+export {
+  nextRoundCandidate,
+  fetchExistingRound,
+};

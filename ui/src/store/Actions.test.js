@@ -98,7 +98,7 @@ describe('Tests actions', () => {
       }));
   });
 
-  it('clears round and token', () => expect(actions.clearRoundAndUpdateToken('theNewToken')({
+  it('clears round and updates token', () => expect(actions.clearRoundAndUpdateToken('theNewToken')({
     anotherProp: 12345,
     round: {
       url: 'dsakdna',
@@ -129,6 +129,29 @@ describe('Tests actions', () => {
       roundUrl: 'abcdef',
       participants: ['Bob'],
     }],
+  }));
+
+  it('clears round and token', () => expect(actions.clearRoundAndToken()({
+    anotherProp: 12345,
+    roundToken: 'dasdsadsa',
+    round: {
+      url: 'dsakdna',
+      participants: [
+        {
+          uuid: '5559be5c-2d73-446b-a3f8-da14d7c7f5a6',
+          name: 'Geoff',
+          roundCount: 11,
+        }],
+      currentCandidate: {
+        uuid: '5559be5c-2d73-446b-a3f8-da14d7c7f5a6',
+        name: 'Geoff',
+        roundCount: 11,
+      },
+    },
+  })).resolves.toEqual({
+    anotherProp: 12345,
+    round: undefined,
+    roundToken: undefined,
   }));
 
   describe('removes participating round', () => {

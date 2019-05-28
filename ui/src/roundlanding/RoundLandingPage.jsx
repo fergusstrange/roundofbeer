@@ -1,17 +1,25 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
+  CircularProgress,
+  Divider,
+  Grid,
   Table,
   TableBody,
   TableCell,
   TableFooter,
   TableRow,
   Typography,
-  Divider, Grid, CircularProgress,
 } from '@material-ui/core';
 import Fab from '@material-ui/core/Fab';
 import { roundContext } from '../store/Store';
-import { fetchRoundOrRedirect, nextRoundCandidate } from './roundLandingPageService';
+import {
+  fetchExistingRound,
+  nextRoundCandidate,
+} from './roundLandingPageService';
+import ApiClient from '../client/Client';
+
+const client = new ApiClient();
 
 export default function RoundLandingPage({ match, history }) {
   const [state, actions] = roundContext();
@@ -23,18 +31,36 @@ export default function RoundLandingPage({ match, history }) {
     updateRoundLandingPage({ pageLoading: !state.round });
   }, [state.round]);
 
-  useEffect(() => fetchRoundOrRedirect(
-    state.round,
-    state.participatingRounds,
-    actions,
-    match.params.roundUrl,
-    history,
-  ), [
-    state.round,
-    state.participatingRounds,
-    actions,
-    history,
-    match.params.roundUrl]);
+  useEffect(() => {
+    const pathRoundUrl = match.params.roundUrl;
+
+    if (!state.round) {
+      const existingRound = fetchExistingRound(state.participatingRounds, pathRoundUrl);
+      if (existingRound) {
+        client.fetchRound(existingRound.roundToken)
+          .then(({ data }) => actions.updateRound(data))
+          .catch(() => actions.updateError('That round does not exist')
+            .then(() => history.push('/new-round')));
+      } else {
+        history.push(`/${pathRoundUrl}/join`);
+      }
+    }
+  }, [actions, history, match.params.roundUrl, state.participatingRounds, state.round]);
+
+  useEffect(() => {
+    const pathRoundUrl = match.params.roundUrl;
+    if (state.round && state.round.url !== pathRoundUrl) {
+      const existingRound = fetchExistingRound(state.participatingRounds, pathRoundUrl);
+      if (existingRound) {
+        actions.clearRoundAndUpdateToken(existingRound.roundToken)
+          .then(() => history.push(`/${pathRoundUrl}`));
+      } else {
+        actions.clearRoundAndToken()
+          .then(() => history.push(`/${pathRoundUrl}/join`));
+      }
+    }
+  }, [actions, history, match.params.roundUrl, state.participatingRounds, state.round]);
+
 
   const ParticipantRows = () => (
     <TableBody>

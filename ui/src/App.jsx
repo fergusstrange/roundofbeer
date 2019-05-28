@@ -1,8 +1,9 @@
 import './App.css';
 
 import React, { Fragment, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import {
-  BrowserRouter as Router,
+  BrowserRouter as Router, Link,
   Route,
   Switch,
 } from 'react-router-dom';
@@ -13,6 +14,7 @@ import {
   Paper,
   Toolbar,
   makeStyles,
+  Grid,
 } from '@material-ui/core';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import LandingPage from './landing/LandingPage';
@@ -24,7 +26,9 @@ import JoinRoundPage from './joinround/JoinRoundPage';
 import BottomNavigationBar from './navigation/BottomNavigationBar';
 import { roundContext, updateLocalStore } from './store/Store';
 import beerBackgroundImage from './assets/beer.png';
-import CreditsPage from './credits/CreditsPage'
+import GithubIcon from './assets/github.png';
+import ClapIcon from './assets/clap.png';
+import CreditsPage from './credits/CreditsPage';
 
 const theme = createMuiTheme({
   palette: {
@@ -42,6 +46,11 @@ const theme = createMuiTheme({
 });
 
 const useStyles = makeStyles(t => ({
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+    minHeight: '100vH',
+  },
   appBar: {
     backgroundColor: '#f4cc37',
     backgroundImage: `url("${beerBackgroundImage}")`,
@@ -72,7 +81,44 @@ const useStyles = makeStyles(t => ({
       padding: t.spacing(3),
     },
   },
+  footer: {
+    padding: t.spacing(2),
+    margin: '0 auto',
+    marginTop: 'auto',
+  },
 }));
+
+const ComponentPages = () => (
+  <Switch>
+    <Route path="/new-round" component={NewRoundPage} />
+    <Route path="/other-rounds" component={OtherRoundsPage} />
+    <Route path="/credits" component={CreditsPage} />
+    <Route path="/:roundUrl/join" component={JoinRoundPage} />
+    <Route path="/:roundUrl" component={RoundLandingPage} />
+    <Route path="/" component={LandingPage} />
+  </Switch>
+);
+
+const Footer = ({ classes }) => (
+  <footer className={classes.footer}>
+    <Grid container spacing={3} xs={12}>
+      <Grid item xs={3}>
+        <a href="https://github.com/fergusstrange/roundofbeer">
+          <img src={GithubIcon} alt="Github" width={16} height={16} />
+        </a>
+      </Grid>
+      <Grid item xs={3}>
+        <Link to="/credits">
+          <img src={ClapIcon} alt="Credits" width={16} height={16} />
+        </Link>
+      </Grid>
+    </Grid>
+  </footer>
+);
+
+Footer.propTypes = {
+  classes: PropTypes.shape().isRequired,
+};
 
 function App() {
   const [state] = roundContext();
@@ -84,25 +130,21 @@ function App() {
     <Fragment>
       <MuiThemeProvider theme={theme}>
         <CssBaseline />
-        <AppBar elevation={0} position="absolute" className={classes.appBar}>
-          <Toolbar />
-        </AppBar>
-        <Router>
-          <main className={classes.layout}>
-            <Paper className={classes.paper}>
-              <Switch>
-                <Route path="/new-round" component={NewRoundPage} />
-                <Route path="/other-rounds" component={OtherRoundsPage} />
-                <Route path="/credits" component={CreditsPage} />
-                <Route path="/:roundUrl/join" component={JoinRoundPage} />
-                <Route path="/:roundUrl" component={RoundLandingPage} />
-                <Route path="/" component={LandingPage} />
-              </Switch>
-            </Paper>
-            <BottomNavigationBar />
-            <ContextMessage />
-          </main>
-        </Router>
+        <div className={classes.root}>
+          <Router>
+            <AppBar elevation={0} position="absolute" className={classes.appBar}>
+              <Toolbar />
+            </AppBar>
+            <main className={classes.layout}>
+              <Paper className={classes.paper}>
+                <ComponentPages />
+              </Paper>
+              <BottomNavigationBar />
+              <ContextMessage />
+            </main>
+            <Footer classes={classes} />
+          </Router>
+        </div>
       </MuiThemeProvider>
     </Fragment>
   );

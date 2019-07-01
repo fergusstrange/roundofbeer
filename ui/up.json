@@ -9,5 +9,13 @@
       "location": "/",
       "status": 200
     }
+  },
+  "stages": {
+    "staging": {
+      "domain": "www.staging.roundof.beer"
+    },
+    "production": {
+      "domain": "www.roundof.beer"
+    }
   }
 }

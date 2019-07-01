@@ -41,5 +41,13 @@
         ]
       }
     ]
+  },
+  "stages": {
+    "staging": {
+      "domain": "api.staging.roundof.beer"
+    },
+    "production": {
+      "domain": "api.roundof.beer"
+    }
   }
 }

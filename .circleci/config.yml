@@ -45,10 +45,8 @@ jobs:
         at: /go/src/github.com/fergusstrange
     - run: |
         curl -sf https://up.apex.sh/install | sudo sh && \
-        node generateUpConfig.js api/up.template.json api.roundof.beer > api/up.json
-        up deploy default --chdir api --verbose && \
-        node generateUpConfig.js ui/up.template.json www.roundof.beer > ui/up.json
-        up deploy default --chdir ui --verbose
+        up deploy staging --chdir api --verbose && \
+        up deploy staging --chdir ui --verbose
 
   deploy-to-prod:
     executor: default
@@ -57,10 +55,8 @@ jobs:
         at: /go/src/github.com/fergusstrange
     - run: |
         curl -sf https://up.apex.sh/install | sudo sh && \
-        node generateUpConfig.js api/up.template.json api.beer.dev.dius.com.au > api/up.json
-        up deploy default --chdir api --verbose && \
-        node generateUpConfig.js ui/up.template.json beer.dev.dius.com.au > ui/up.json
-        up deploy default --chdir ui --verbose
+        up deploy production --chdir api --verbose && \
+        up deploy production --chdir ui --verbose
 
 workflows:
   version: 2
@@ -72,7 +68,7 @@ workflows:
             only:
             - master
     - deploy-to-staging:
-        context: staging
+        context: home-aws
         requires:
         - build
     - deploy-to-prod-approval:
@@ -80,6 +76,6 @@ workflows:
         requires:
         - deploy-to-staging
     - deploy-to-prod:
-        context: prod
+        context: home-aws
         requires:
         - deploy-to-prod-approval

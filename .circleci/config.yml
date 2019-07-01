@@ -45,6 +45,7 @@ jobs:
         at: /go/src/github.com/fergusstrange
     - run: |
         curl -sf https://up.apex.sh/install | sudo sh && \
+        node generateUpConfig.js api/up.template.json api.roundof.beer > api/up.json
         up deploy staging --chdir api && \
         up deploy staging --chdir ui
 
@@ -55,6 +56,7 @@ jobs:
         at: /go/src/github.com/fergusstrange
     - run: |
         curl -sf https://up.apex.sh/install | sudo sh && \
+        node generateUpConfig.js api/up.template.json beer.dev.dius.com.au > api/up.json
         up deploy production --chdir api && \
         up deploy production --chdir ui
 
@@ -68,6 +70,7 @@ workflows:
             only:
             - master
     - deploy-to-staging:
+        context: staging
         requires:
         - build
     - deploy-to-prod-approval:
@@ -75,5 +78,6 @@ workflows:
         requires:
         - deploy-to-staging
     - deploy-to-prod:
+        context: prod
         requires:
         - deploy-to-prod-approval

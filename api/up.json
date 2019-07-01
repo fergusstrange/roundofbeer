@@ -1,5 +1,8 @@
 {
   "name": "api",
+  "hooks": {
+    "build": "echo skipping"
+  },
   "environment": {
     "SIGNING_KEY": "$SIGNING_KEY_REPLACE"
   },

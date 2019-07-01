@@ -1,0 +1,13 @@
+{
+  "name": "ui",
+  "type": "static",
+  "static": {
+    "dir": "build"
+  },
+  "redirects": {
+    "/*": {
+      "location": "/",
+      "status": 200
+    }
+  }
+}

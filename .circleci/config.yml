@@ -42,7 +42,7 @@ jobs:
     executor: default
     steps:
     - attach_workspace:
-        at: /go/src/github.com/fergusstrange/roundofbeer
+        at: /go/src/github.com/fergusstrange
     - run: |
         curl -sf https://up.apex.sh/install | sudo sh && \
         node generateUpConfig.js api/up.template.json api.roundof.beer > api/up.json
@@ -54,7 +54,7 @@ jobs:
     executor: default
     steps:
     - attach_workspace:
-        at: /go/src/github.com/fergusstrange/roundofbeer
+        at: /go/src/github.com/fergusstrange
     - run: |
         curl -sf https://up.apex.sh/install | sudo sh && \
         node generateUpConfig.js api/up.template.json api.beer.dev.dius.com.au > api/up.json

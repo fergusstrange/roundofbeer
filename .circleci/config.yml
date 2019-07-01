@@ -46,7 +46,7 @@ jobs:
     - run: |
         curl -sf https://up.apex.sh/install | sudo sh && \
         node generateUpConfig.js api/up.template.json api.roundof.beer > api/up.json
-        up deploy staging --chdir api && \
+        up deploy default --chdir api && \
         up deploy staging --chdir ui
 
   deploy-to-prod:
@@ -57,7 +57,7 @@ jobs:
     - run: |
         curl -sf https://up.apex.sh/install | sudo sh && \
         node generateUpConfig.js api/up.template.json beer.dev.dius.com.au > api/up.json
-        up deploy production --chdir api && \
+        up deploy default --chdir api && \
         up deploy production --chdir ui
 
 workflows:

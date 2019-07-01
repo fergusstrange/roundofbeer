@@ -29,7 +29,7 @@ jobs:
         yarn build && \
         popd && \
         pushd api && \
-        sed -i -e 's/$SIGNING_KEY_REPLACE/'${SIGNING_KEY}'/g' up.template.json && \
+        sed -i -e 's/$SIGNING_KEY_REPLACE/'${SIGNING_KEY}'/g' up.json && \
         go test -v ./... && \
         GOOS=linux GOARCH=amd64 go build -o server *.go && \
         popd

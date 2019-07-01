@@ -40,6 +40,10 @@
     ]
   },
   "stages": {
+    "staging": {
+      "domain": "api.staging.roundof.beer",
+      "path": "/"
+    },
     "production": {
       "domain": "api.roundof.beer",
       "path": "/"

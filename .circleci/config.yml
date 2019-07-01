@@ -1,33 +1,78 @@
-version: 2
+version: 2.1
+executors:
+  default:
+    docker:
+    - image: circleci/golang:1.12-node
+    working_directory: /go/src/github.com/fergusstrange/roundofbeer
+    environment:
+      GO111MODULE: "on"
+      CI: "true"
 jobs:
   build:
-    working_directory: /go/src/github.com/fergusstrange/roundofbeer
-    docker:
-      - image: circleci/golang:1.12-node
-        environment:
-          GO111MODULE: "on"
-          CI: "true"
+    executor: default
     steps:
-      - checkout
-      - run: |
-          curl -sf https://up.apex.sh/install | sudo sh && \
-          sudo npm install -g yarn
-      - run: |
-          if [ ! -d "/home/circleci/pact" ]; then
-            curl -fsSL https://raw.githubusercontent.com/pact-foundation/pact-ruby-standalone/master/install.sh | bash
-            mv pact /home/circleci/pact
-          fi
-      - run: |
-          export PATH=/home/circleci/bin:/home/circleci/pact/bin:$PATH && \
-          pushd ui && \
-          rm -rf build && \
-          yarn && \
-          yarn test && \
-          yarn build && \
-          popd && \
-          pushd api && \
-          sed -i -e 's/$SIGNING_KEY_REPLACE/'${SIGNING_KEY}'/g' up.json && \
-          go test -v ./... && \
-          popd && \
-          up deploy production --chdir api && \
-          up deploy production --chdir ui
+    - checkout
+    - run: |
+        curl -sf https://up.apex.sh/install | sudo sh && \
+        sudo npm install -g yarn
+    - run: |
+        if [ ! -d "/home/circleci/pact" ]; then
+          curl -fsSL https://raw.githubusercontent.com/pact-foundation/pact-ruby-standalone/master/install.sh | bash
+          mv pact /home/circleci/pact
+        fi
+    - run: |
+        export PATH=/home/circleci/bin:/home/circleci/pact/bin:$PATH && \
+        pushd ui && \
+        rm -rf build && \
+        yarn && \
+        yarn test && \
+        yarn build && \
+        popd && \
+        pushd api && \
+        sed -i -e 's/$SIGNING_KEY_REPLACE/'${SIGNING_KEY}'/g' up.json && \
+        go test -v ./... && \
+        popd
+    - persist_to_workspace:
+        root: /go/src/github.com/fergusstrange
+        paths:
+        - roundofbeer
+
+  deploy-to-staging:
+    executor: default
+    steps:
+    - attach_workspace:
+        at: /go/src/github.com/fergusstrange
+    - run: |
+        curl -sf https://up.apex.sh/install | sudo sh && \
+        up deploy staging --chdir api && \
+        up deploy staging --chdir ui
+
+  deploy-to-prod:
+    executor: default
+    steps:
+    - attach_workspace:
+        at: /go/src/github.com/fergusstrange
+    - run: |
+        curl -sf https://up.apex.sh/install | sudo sh && \
+        up deploy production --chdir api && \
+        up deploy production --chdir ui
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+    - build:
+        filters:
+          branches:
+            only:
+            - master
+    - deploy-to-staging:
+        requires:
+        - build
+    - deploy-to-prod-approval:
+        type: approval
+        requires:
+        - deploy-to-staging
+    - deploy-to-prod:
+        requires:
+        - deploy-to-prod-approval

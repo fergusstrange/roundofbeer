@@ -11,6 +11,10 @@
     }
   },
   "stages": {
+    "staging": {
+      "domain": "www.staging.roundof.beer",
+      "path": "/"
+    },
     "production": {
       "domain": "www.roundof.beer",
       "path": "/"

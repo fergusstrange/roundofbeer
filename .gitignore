@@ -1,5 +1,7 @@
 infrastructure/.terraform
 
+out.zip
+
 ### Go ###
 # Binaries for programs and plugins
 *.exe

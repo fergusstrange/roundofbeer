@@ -28,6 +28,7 @@ jobs:
         yarn test && \
         yarn feature-test && \
         yarn build && \
+        rm -rf node_modules && \
         popd && \
         pushd api && \
         sed -i -e 's/$SIGNING_KEY_REPLACE/'${SIGNING_KEY}'/g' up.json && \

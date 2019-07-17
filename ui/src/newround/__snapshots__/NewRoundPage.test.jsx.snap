@@ -2,6 +2,7 @@
 
 exports[`New Round Page Tests renders correctly 1`] = `
 <form
+  id="new-round-form"
   onSubmit={[Function]}
 >
   <div
@@ -17,7 +18,7 @@ exports[`New Round Page Tests renders correctly 1`] = `
         className="MuiContainer-root MuiContainer-maxWidthLg"
       >
         <div
-          className="MuiFormControl-root MuiTextField-root"
+          className="MuiFormControl-root MuiTextField-root new-round-participant-text-field"
         >
           <label
             className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
@@ -47,6 +48,7 @@ exports[`New Round Page Tests renders correctly 1`] = `
           aria-label="Add"
           className="MuiButtonBase-root MuiFab-root MuiFab-primary MuiFab-sizeSmall"
           disabled={false}
+          id="new-round-add-participant"
           onBlur={[Function]}
           onClick={[Function]}
           onFocus={[Function]}
@@ -90,6 +92,7 @@ exports[`New Round Page Tests renders correctly 1`] = `
         aria-label="Add"
         className="MuiButtonBase-root MuiFab-root MuiFab-extended MuiFab-primary"
         disabled={false}
+        id="new-round-start-round"
         onBlur={[Function]}
         onFocus={[Function]}
         onKeyDown={[Function]}

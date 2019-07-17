@@ -8,7 +8,7 @@
     "start-mock": "concurrently \"BROWSER=none REACT_APP_API_URL=http://localhost:8080 react-scripts start\" \"node src/ApiMockServer.js\"",
     "build": "eslint src && react-scripts build",
     "test": "CI=true react-scripts test",
-    "feature-test": "concurrently -k -s first \"yarn start-mock\" \"testcafe chrome src/FeatureTests.test.js\"",
+    "feature-test": "concurrently -k -s first \"yarn start-mock\" \"testcafe chrome FeatureTests.test.js\"",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

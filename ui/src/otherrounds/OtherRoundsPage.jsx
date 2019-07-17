@@ -29,7 +29,7 @@ export default function OtherRoundsPage({ history }) {
   const NoOtherRounds = () => (
     <Grid container spacing={3} direction="column" alignItems="center">
       <Grid item xs={12}>
-        <Typography variant="h5">No other rounds</Typography>
+        <Typography variant="h5" className="other-rounds-page-no-rounds">No other rounds</Typography>
       </Grid>
     </Grid>
   );
@@ -48,13 +48,17 @@ export default function OtherRoundsPage({ history }) {
                   <ListItemText primary={pr.roundUrl} />
                 </ListItem>
                 <ListItem button onClick={e => removeParticipatingRound(e, pr)}>
-                  <RemoveCircleIcon />
+                  <RemoveCircleIcon className="other-rounds-remove-round" />
                 </ListItem>
               </ListItem>
               {pr.participants
                 ? pr.participants.map(p => (
                   <ListItem key={`${pr.roundUrl}-${p}`}>
-                    <ListItemText inset primary={p} />
+                    <ListItemText
+                      className="other-rounds-participant"
+                      inset
+                      primary={p}
+                    />
                   </ListItem>
                 ))
                 : undefined}

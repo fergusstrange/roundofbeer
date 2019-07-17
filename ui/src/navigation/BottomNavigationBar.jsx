@@ -26,6 +26,7 @@ export default function BottomNavigationBar() {
         showLabels
       >
         <BottomNavigationAction
+          id="new-round-button"
           component={Link}
           to="/new-round"
           label="New Round"
@@ -33,6 +34,7 @@ export default function BottomNavigationBar() {
           className={classes.bottomNavBarAction}
         />
         <BottomNavigationAction
+          id="other-rounds-button"
           component={Link}
           to="/other-rounds"
           label="Other Rounds"

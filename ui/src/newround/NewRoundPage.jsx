@@ -81,7 +81,7 @@ export default function NewRoundPage({ history }) {
 
   return (
     <Fragment>
-      <form onSubmit={submitParticipants}>
+      <form onSubmit={submitParticipants} id="new-round-form">
         <Grid container spacing={3} direction="column" alignItems="center">
           <Grid item xs={12}>
             <Container>
@@ -97,14 +97,22 @@ export default function NewRoundPage({ history }) {
               ))}
             </Container>
             <Container>
-              <TextField label="name" value={newRoundPage.participant} onChange={updateParticipant} autoFocus inputRef={newRoundPage.participantRef} />
-              <Fab size="small" color="primary" aria-label="Add" onClick={addParticipant}>
+              <TextField
+                className="new-round-participant-text-field"
+                label="name"
+                value={newRoundPage.participant}
+                onChange={updateParticipant}
+                autoFocus
+                inputRef={newRoundPage.participantRef}
+              />
+              <Fab id="new-round-add-participant" size="small" color="primary" aria-label="Add" onClick={addParticipant}>
                 <AddIcon />
               </Fab>
             </Container>
           </Grid>
           <Grid item xs={12}>
             <Fab
+              id="new-round-start-round"
               type="submit"
               disabled={newRoundPage.createLoading}
               variant="extended"

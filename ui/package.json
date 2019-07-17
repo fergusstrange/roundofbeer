@@ -5,8 +5,10 @@
   "scripts": {
     "prestart": "node local-proxy.js &",
     "start": "BROWSER=none REACT_APP_API_URL=/ react-scripts start",
+    "start-mock": "concurrently \"BROWSER=none REACT_APP_API_URL=http://localhost:8080 react-scripts start\" \"node src/ApiMockServer.js\"",
     "build": "eslint src && react-scripts build",
     "test": "CI=true react-scripts test",
+    "feature-test": "concurrently -k -s first \"yarn start-mock\" \"testcafe chrome src/FeatureTests.test.js\"",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -27,13 +29,16 @@
   },
   "devDependencies": {
     "@pact-foundation/pact": "^8.2.2",
+    "concurrently": "^4.1.1",
     "eslint-config-airbnb": "17.1.0",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.1",
     "eslint-plugin-react": "^7.11.0",
     "eslint-plugin-react-hooks": "^1.6.0",
+    "express": "^4.17.1",
     "http-proxy": "^1.17.0",
-    "react-test-renderer": "^16.8.6"
+    "react-test-renderer": "^16.8.6",
+    "testcafe": "^1.3.2"
   },
   "browserslist": [
     ">0.2%",

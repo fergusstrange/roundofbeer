@@ -2,7 +2,7 @@ version: 2.1
 executors:
   default:
     docker:
-    - image: circleci/golang:1.12-node
+    - image: circleci/golang:1.12-node-browsers
     working_directory: /go/src/github.com/fergusstrange/roundofbeer
     environment:
       GO111MODULE: "on"
@@ -26,6 +26,7 @@ jobs:
         rm -rf build && \
         yarn && \
         yarn test && \
+        yarn feature-test && \
         yarn build && \
         popd && \
         pushd api && \

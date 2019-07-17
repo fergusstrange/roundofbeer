@@ -108,7 +108,7 @@ const Footer = ({ classes }) => (
         </a>
       </Grid>
       <Grid item xs={3}>
-        <Link to="/credits">
+        <Link id="credits-link" to="/credits">
           <img src={ClapIcon} alt="Credits" width={16} height={16} />
         </Link>
       </Grid>

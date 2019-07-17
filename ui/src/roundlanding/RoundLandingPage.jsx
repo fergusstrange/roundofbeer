@@ -88,7 +88,7 @@ export default function RoundLandingPage({ match, history }) {
   );
 
   const CurrentCandidate = () => (
-    <Typography variant="h3" component="h3">
+    <Typography variant="h3" component="h3" className="current-candidate">
       {state.round
         ? `${state.round.currentCandidate.name} buys`
         : undefined}
@@ -116,6 +116,7 @@ export default function RoundLandingPage({ match, history }) {
       </Grid>
       <Grid item xs={12}>
         <Fab
+          id="next-buyer-button"
           variant="extended"
           color="primary"
           aria-label="Add"

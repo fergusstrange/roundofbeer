@@ -14,6 +14,7 @@ But really this is an example of end to end code, testing and deployment to clou
 
 * Front end unit test coverage using jest and snapshot rendering
 * Backend unit testing using testify
+* Backend behaviour testing using [apitest](https://apitest.dev)
 * Consumer Driven Contract tests using Pact Framework in both Javascript and Golang
 * CircleCI for continuous integration
 

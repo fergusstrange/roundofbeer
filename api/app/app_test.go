@@ -18,7 +18,7 @@ import (
 
 func Test_VerifyProviderTests(t *testing.T) {
 	go func() {
-		errors.LogFatal(WithHandlers(MockHandlers()))
+		errors.LogFatal(WithHandlers(MockHandlers()).Run("localhost:8080"))
 	}()
 
 	provider := &dsl.Pact{
@@ -54,8 +54,8 @@ func MockHandlers() ApplicationModule {
 		Persistence: testfixtures.NewMockPersistence(),
 		CreateRound: func(request *create.Request) round.WithToken {
 			return round.WithToken{
-				Token:    pointers.String("daskdsa"),
-				RoundUrl: pointers.String("aUrl"),
+				Token:        pointers.String("daskdsa"),
+				RoundUrl:     pointers.String("aUrl"),
 				Participants: []string{"Greg", "James"},
 			}
 		},
@@ -113,8 +113,8 @@ func MockHandlers() ApplicationModule {
 		},
 		JoinRound: func(roundId string, request *join.RoundRequest) (*round.WithToken, int) {
 			return &round.WithToken{
-				Token:    pointers.String("daskdsa"),
-				RoundUrl: pointers.String("aUrl"),
+				Token:        pointers.String("daskdsa"),
+				RoundUrl:     pointers.String("aUrl"),
 				Participants: []string{"Greg", "James"},
 			}, 200
 		},

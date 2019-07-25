@@ -19,11 +19,11 @@ require (
 	github.com/modern-go/reflect2 v1.0.1 // indirect
 	github.com/pact-foundation/pact-go v1.0.0-beta.3
 	github.com/pkg/errors v0.8.1 // indirect
-	github.com/spf13/cobra v0.0.3 // indirect
-	github.com/spf13/pflag v1.0.3 // indirect
+	github.com/steinfletcher/apitest v1.3.6
+	github.com/steinfletcher/apitest-jsonpath v1.3.0
 	github.com/stretchr/testify v1.3.0
 	github.com/ugorji/go v1.1.4 // indirect
-	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
+	gopkg.in/go-playground/assert.v1 v1.2.1
 	gopkg.in/go-playground/validator.v8 v8.18.2 // indirect
 	gopkg.in/yaml.v2 v2.2.2 // indirect
 )

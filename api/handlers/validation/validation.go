@@ -1,11 +1,16 @@
 package validation
 
 import (
-	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
-func ValidRoundPathParam(ctx *gin.Context) string {
+type Context interface {
+	AbortWithStatus(code int)
+	Param(name string) string
+	GetHeader(name string) string
+}
+
+func ValidRoundPathParam(ctx Context) string {
 	roundId := ctx.Param("roundId")
 	if roundId == "" {
 		ctx.AbortWithStatus(http.StatusBadRequest)
@@ -13,7 +18,7 @@ func ValidRoundPathParam(ctx *gin.Context) string {
 	return roundId
 }
 
-func ValidRoundHeader(ctx *gin.Context) string {
+func ValidRoundHeader(ctx Context) string {
 	roundToken := ctx.GetHeader("x-round-token")
 	if roundToken == "" {
 		ctx.AbortWithStatus(http.StatusBadRequest)

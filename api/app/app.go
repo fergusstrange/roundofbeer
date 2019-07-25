@@ -21,10 +21,12 @@ type ApplicationModule struct {
 }
 
 func DefaultApp() error {
-	return WithHandlers(DefaultModule(persistence.NewDynamoDBPersistence()))
+	return WithHandlers(DefaultModule(persistence.NewDynamoDBPersistence())).
+		Run(portFromEnvironment())
 }
 
-func WithHandlers(applicationModule ApplicationModule) error {
+func WithHandlers(applicationModule ApplicationModule) *gin.Engine {
+	gin.SetMode(gin.ReleaseMode)
 	app := gin.Default()
 
 	app.POST("/round", create.Handler(applicationModule.CreateRound))
@@ -34,7 +36,7 @@ func WithHandlers(applicationModule ApplicationModule) error {
 
 	applicationModule.Persistence.CreateRoundTable()
 
-	return app.Run(portFromEnvironment())
+	return app
 }
 
 func DefaultModule(persistence persistence.Persistence) ApplicationModule {

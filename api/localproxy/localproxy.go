@@ -8,5 +8,5 @@ import (
 
 func main() {
 	module := app.DefaultModule(testfixtures.NewMockPersistence())
-	errors.LogFatal(app.WithHandlers(module))
+	errors.LogFatal(app.WithHandlers(module).Run("localhost:8080"))
 }

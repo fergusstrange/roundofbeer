@@ -32,6 +32,8 @@ jobs:
         popd && \
         pushd api && \
         sed -i -e 's/$SIGNING_KEY_REPLACE/'${SIGNING_KEY}'/g' up.json && \
+        go get -u golang.org/x/lint/golint && \
+        golint -set_exit_status ./... && \
         go test -v ./... && \
         GOOS=linux GOARCH=amd64 go build -o server *.go && \
         popd

@@ -12,6 +12,7 @@ But really this is an example of end to end code, testing and deployment to clou
 
 ### Testing
 
+* Front end behaviour testing using TestCafe
 * Front end unit test coverage using jest and snapshot rendering
 * Backend unit testing using testify
 * Backend behaviour testing using [apitest](https://apitest.dev)

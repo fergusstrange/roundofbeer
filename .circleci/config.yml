@@ -36,7 +36,7 @@ jobs:
         GOOS=linux GOARCH=amd64 go build -o server *.go && \
         popd
     - store_artifacts:
-        path: /go/src/github.com/fergusstrange/roundofbeer/api/handlers/.sequence/*.html
+        path: /go/src/github.com/fergusstrange/roundofbeer/api/handlers/.sequence
         destination: api-sequence-diagrams
 
     - persist_to_workspace:

@@ -38,8 +38,8 @@ func (sc ServiceContext) ServiceHandler(roundID string, request *RoundRequest) (
 		nameExistsInRound(request, fetchedRound.Participants) {
 		token := round.EncodeRoundToken(fetchedRound.URL)
 		return &round.WithToken{
-			Token:    &token,
-			RoundURL: &fetchedRound.URL,
+			Token:        &token,
+			RoundURL:     &fetchedRound.URL,
 			Participants: round.ParticipantsFromRound(fetchedRound),
 		}, 200
 	}

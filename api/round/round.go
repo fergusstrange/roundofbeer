@@ -8,8 +8,8 @@ import (
 )
 
 type WithToken struct {
-	Token *string `json:"token"`
-	RoundURL *string `json:"roundUrl"`
+	Token        *string  `json:"token"`
+	RoundURL     *string  `json:"roundUrl"`
 	Participants []string `json:"participants"`
 }
 

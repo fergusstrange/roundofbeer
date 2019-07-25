@@ -59,8 +59,8 @@ func transformParticipants(request *Request) []persistence.Participant {
 func newRoundResponse(persistedRound *persistence.Round) round.WithToken {
 	encodedRoundToken := round.EncodeRoundToken(persistedRound.URL)
 	return round.WithToken{
-		Token:    &encodedRoundToken,
-		RoundURL: &persistedRound.URL,
+		Token:        &encodedRoundToken,
+		RoundURL:     &persistedRound.URL,
 		Participants: round.ParticipantsFromRound(persistedRound),
 	}
 }

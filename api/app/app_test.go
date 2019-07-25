@@ -55,13 +55,13 @@ func MockHandlers() ApplicationModule {
 		CreateRound: func(request *create.Request) round.WithToken {
 			return round.WithToken{
 				Token:        pointers.String("daskdsa"),
-				RoundUrl:     pointers.String("aUrl"),
+				RoundURL:     pointers.String("aUrl"),
 				Participants: []string{"Greg", "James"},
 			}
 		},
 		NextRoundCandidate: func(roundToken string) (*round.Round, int) {
 			return &round.Round{
-				Url: "theberesford.diet",
+				URL: "theberesford.diet",
 				Participants: []round.Participant{
 					{
 						UUID:       "d197f52e-5f9d-4082-92d7-fcbadf4663af",
@@ -87,7 +87,7 @@ func MockHandlers() ApplicationModule {
 		},
 		GetRound: func(roundToken string) (*round.Round, int) {
 			return &round.Round{
-				Url: "theberesford.diet",
+				URL: "theberesford.diet",
 				Participants: []round.Participant{
 					{
 						UUID:       "d197f52e-5f9d-4082-92d7-fcbadf4663af",
@@ -111,10 +111,10 @@ func MockHandlers() ApplicationModule {
 					RoundCount: 33,
 				}}, 200
 		},
-		JoinRound: func(roundId string, request *join.RoundRequest) (*round.WithToken, int) {
+		JoinRound: func(roundID string, request *join.RoundRequest) (*round.WithToken, int) {
 			return &round.WithToken{
 				Token:        pointers.String("daskdsa"),
-				RoundUrl:     pointers.String("aUrl"),
+				RoundURL:     pointers.String("aUrl"),
 				Participants: []string{"Greg", "James"},
 			}, 200
 		},

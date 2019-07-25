@@ -30,7 +30,7 @@ func (sc ServiceContext) ServiceHandler(roundTokenHeader string) (*round.Round, 
 	roundToken, err := jwt.NewHelper().Decode(roundTokenHeader)
 	if err != nil {
 		return nil, 400
-	} else if fetchedRound := sc.persistence.FetchRound(roundToken.RoundUrl); fetchedRound != nil {
+	} else if fetchedRound := sc.persistence.FetchRound(roundToken.RoundURL); fetchedRound != nil {
 		return round.TransformRound(fetchedRound), 200
 	} else {
 		return nil, 400

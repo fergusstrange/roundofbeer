@@ -6,17 +6,17 @@ import (
 )
 
 func TestValidRoundPathParam(t *testing.T) {
-	roundId := ValidRoundPathParam(NewTestContext("12345", "abcdef"))
+	roundID := ValidRoundPathParam(NewTestContext("12345", "abcdef"))
 
-	assert.Equal(t, "12345", roundId)
+	assert.Equal(t, "12345", roundID)
 }
 
 func TestValidRoundPathParam_InvalidParam(t *testing.T) {
 	testContext := NewTestContext("", "")
 
-	roundId := ValidRoundPathParam(testContext)
+	roundID := ValidRoundPathParam(testContext)
 
-	assert.Equal(t, "", roundId)
+	assert.Equal(t, "", roundID)
 	assert.Equal(t, 400, testContext.AbortStatus)
 }
 
@@ -37,13 +37,13 @@ func TestValidRoundHeader_InvalidParam(t *testing.T) {
 
 type TestContext struct {
 	AbortStatus int
-	RoundId     string
+	RoundID     string
 	XRoundToken string
 }
 
-func NewTestContext(roundId, xRoundToken string) *TestContext {
+func NewTestContext(roundID, xRoundToken string) *TestContext {
 	return &TestContext{
-		RoundId:     roundId,
+		RoundID:     roundID,
 		XRoundToken: xRoundToken,
 	}
 }
@@ -53,7 +53,7 @@ func (ctx *TestContext) AbortWithStatus(code int) {
 }
 
 func (ctx *TestContext) Param(name string) string {
-	return ctx.RoundId
+	return ctx.RoundID
 }
 
 func (ctx *TestContext) GetHeader(name string) string {

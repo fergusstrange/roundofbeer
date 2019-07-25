@@ -1,4 +1,4 @@
-# Round of Beer [![CircleCI](https://circleci.com/gh/fergusstrange/roundofbeer.svg?style=svg)](https://circleci.com/gh/fergusstrange/roundofbeer)
+# Round of Beer [![CircleCI](https://circleci.com/gh/fergusstrange/roundofbeer.svg?style=svg)](https://circleci.com/gh/fergusstrange/roundofbeer) [![Go Report Card](https://goreportcard.com/badge/github.com/fergusstrange/roundofbeer)](https://goreportcard.com/report/github.com/fergusstrange/roundofbeer)
 
 Keep track of who's round it is and share it with your friends...
 

@@ -12,7 +12,7 @@ const roundOfBeer = "roundofbeer"
 type Persistence interface {
 	CreateRoundTable()
 	CreateRound(round *Round)
-	FetchRound(roundId string) *Round
+	FetchRound(roundID string) *Round
 	UpdateParticipantsAndCurrentCandidate(updatedRound *Round) *Round
 }
 
@@ -27,7 +27,7 @@ func NewDynamoDBPersistence() *DynamoDBPersistence {
 }
 
 type Round struct {
-	Url              string        `dynamo:"url,hash"`
+	URL              string        `dynamo:"url,hash"`
 	Participants     []Participant `dynamo:"participants"`
 	CurrentCandidate string        `dynamo:"current_candidate"`
 	CreateDate       time.Time     `dynamo:"create_date"`
@@ -63,11 +63,11 @@ func (db *DynamoDBPersistence) CreateRound(round *Round) {
 	errors.LogFatal(err)
 }
 
-func (db *DynamoDBPersistence) FetchRound(roundId string) *Round {
+func (db *DynamoDBPersistence) FetchRound(roundID string) *Round {
 	round := new(Round)
 	err := db.client.
 		Table(roundOfBeer).
-		Get("url", roundId).
+		Get("url", roundID).
 		One(round)
 	if err != nil {
 		return nil
@@ -78,7 +78,7 @@ func (db *DynamoDBPersistence) FetchRound(roundId string) *Round {
 func (db *DynamoDBPersistence) UpdateParticipantsAndCurrentCandidate(updatedRound *Round) *Round {
 	persistedRound := new(Round)
 	err := db.client.Table(roundOfBeer).
-		Update("url", updatedRound.Url).
+		Update("url", updatedRound.URL).
 		Set("participants", updatedRound.Participants).
 		Set("current_candidate", updatedRound.CurrentCandidate).
 		Set("update_date", time.Now()).

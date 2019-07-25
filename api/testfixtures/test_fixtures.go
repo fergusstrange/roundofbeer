@@ -19,16 +19,16 @@ func NewMockPersistence() MockPersistence {
 func (mp MockPersistence) CreateRoundTable() {}
 
 func (mp MockPersistence) CreateRound(round *persistence.Round) {
-	mp.mockStore[round.Url] = round
+	mp.mockStore[round.URL] = round
 }
 
-func (mp MockPersistence) FetchRound(roundId string) *persistence.Round {
-	return mp.mockStore[roundId]
+func (mp MockPersistence) FetchRound(roundID string) *persistence.Round {
+	return mp.mockStore[roundID]
 }
 
 func (mp MockPersistence) UpdateParticipantsAndCurrentCandidate(updatedRound *persistence.Round) *persistence.Round {
-	mp.mockStore[updatedRound.Url] = updatedRound
-	return mp.mockStore[updatedRound.Url]
+	mp.mockStore[updatedRound.URL] = updatedRound
+	return mp.mockStore[updatedRound.URL]
 }
 
 func (mp MockPersistence) NewTestRound(id string) *persistence.Round {
@@ -46,7 +46,7 @@ func (mp MockPersistence) NewTestRound(id string) *persistence.Round {
 				RoundCount: 1,
 			},
 		},
-		Url:              id,
+		URL:              id,
 		CreateDate:       time.Now(),
 		UpdateDate:       time.Now(),
 		CurrentCandidate: tomsUUID,

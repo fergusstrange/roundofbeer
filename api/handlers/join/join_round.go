@@ -17,12 +17,12 @@ type ServiceContext struct {
 	persistence persistence.Persistence
 }
 
-func Handler(serviceHandler func(roundId string, request *RoundRequest) (*round.WithToken, int)) func(ctx *gin.Context) {
+func Handler(serviceHandler func(roundID string, request *RoundRequest) (*round.WithToken, int)) func(ctx *gin.Context) {
 	return func(ctx *gin.Context) {
 		joinRoundRequest := new(RoundRequest)
 		errors.LogError(ctx.BindJSON(joinRoundRequest))
-		roundId := validation.ValidRoundPathParam(ctx)
-		joinedRound, status := serviceHandler(roundId, joinRoundRequest)
+		roundID := validation.ValidRoundPathParam(ctx)
+		joinedRound, status := serviceHandler(roundID, joinRoundRequest)
 		ctx.JSON(status, joinedRound)
 	}
 }
@@ -33,13 +33,13 @@ func NewServiceContext(db persistence.Persistence) ServiceContext {
 	}
 }
 
-func (sc ServiceContext) ServiceHandler(roundId string, request *RoundRequest) (*round.WithToken, int) {
-	if fetchedRound := sc.persistence.FetchRound(roundId); fetchedRound != nil &&
+func (sc ServiceContext) ServiceHandler(roundID string, request *RoundRequest) (*round.WithToken, int) {
+	if fetchedRound := sc.persistence.FetchRound(roundID); fetchedRound != nil &&
 		nameExistsInRound(request, fetchedRound.Participants) {
-		token := round.EncodeRoundToken(fetchedRound.Url)
+		token := round.EncodeRoundToken(fetchedRound.URL)
 		return &round.WithToken{
 			Token:    &token,
-			RoundUrl: &fetchedRound.Url,
+			RoundURL: &fetchedRound.URL,
 			Participants: round.ParticipantsFromRound(fetchedRound),
 		}, 200
 	}

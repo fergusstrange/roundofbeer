@@ -7,7 +7,7 @@ import (
 
 func TestHelper_Encode(t *testing.T) {
 	token := helperWithTestKey().Encode(&RoundToken{
-		RoundUrl: "pdjasdnks",
+		RoundURL: "pdjasdnks",
 	})
 
 	assert.NotEmpty(t, token)
@@ -15,7 +15,7 @@ func TestHelper_Encode(t *testing.T) {
 
 func TestHelper_Decode(t *testing.T) {
 	token := helperWithTestKey().Encode(&RoundToken{
-		RoundUrl: "pdjasdnks",
+		RoundURL: "pdjasdnks",
 	})
 
 	decodedRoundToken, err := helperWithTestKey().Decode(token)
@@ -23,7 +23,7 @@ func TestHelper_Decode(t *testing.T) {
 	assert.NoError(t, err)
 	assert.EqualValues(t,
 		RoundToken{
-			RoundUrl: "pdjasdnks",
+			RoundURL: "pdjasdnks",
 		},
 		decodedRoundToken,
 	)

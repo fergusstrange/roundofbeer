@@ -9,12 +9,12 @@ import (
 
 type WithToken struct {
 	Token *string `json:"token"`
-	RoundUrl *string `json:"roundUrl"`
+	RoundURL *string `json:"roundUrl"`
 	Participants []string `json:"participants"`
 }
 
 type Round struct {
-	Url              string        `json:"url"`
+	URL              string        `json:"url"`
 	Participants     []Participant `json:"participants"`
 	CurrentCandidate Participant   `json:"currentCandidate"`
 }
@@ -37,15 +37,15 @@ func TransformRound(round *persistence.Round) *Round {
 	}
 
 	return &Round{
-		Url:              round.Url,
+		URL:              round.URL,
 		Participants:     participants,
 		CurrentCandidate: currentCandidate,
 	}
 }
 
-func EncodeRoundToken(roundUrl string) string {
+func EncodeRoundToken(roundURL string) string {
 	return jwt.NewHelper().Encode(&jwt.RoundToken{
-		RoundUrl: roundUrl,
+		RoundURL: roundURL,
 		StandardClaims: jwtLib.StandardClaims{
 			IssuedAt:  time.Now().Unix(),
 			ExpiresAt: time.Now().AddDate(1, 0, 0).Unix(),

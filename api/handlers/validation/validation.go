@@ -11,11 +11,11 @@ type Context interface {
 }
 
 func ValidRoundPathParam(ctx Context) string {
-	roundId := ctx.Param("roundId")
-	if roundId == "" {
+	roundID := ctx.Param("roundID")
+	if roundID == "" {
 		ctx.AbortWithStatus(http.StatusBadRequest)
 	}
-	return roundId
+	return roundID
 }
 
 func ValidRoundHeader(ctx Context) string {

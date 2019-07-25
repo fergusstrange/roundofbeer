@@ -34,7 +34,7 @@ func (sc ServiceContext) ServiceHandler(roundTokenHeader string) (*round.Round, 
 	roundToken, err := jwt.NewHelper().Decode(roundTokenHeader)
 	if err != nil {
 		return nil, 400
-	} else if currentRound := sc.persistence.FetchRound(roundToken.RoundUrl); currentRound != nil {
+	} else if currentRound := sc.persistence.FetchRound(roundToken.RoundURL); currentRound != nil {
 		updatedRound := round.UpdatedRoundWithNextCandidate(currentRound)
 		sc.persistence.UpdateParticipantsAndCurrentCandidate(updatedRound)
 		return round.TransformRound(updatedRound), 200

@@ -35,7 +35,7 @@ func NewServiceContext(db persistence.Persistence) ServiceContext {
 func (sc ServiceContext) ServiceHandler(request *Request) round.WithToken {
 	url := random.AlphaNumeric(6)
 	roundToPersist := round.UpdatedRoundWithNextCandidate(&persistence.Round{
-		Url:          url,
+		URL:          url,
 		CreateDate:   time.Now(),
 		UpdateDate:   time.Now(),
 		Participants: transformParticipants(request),
@@ -57,10 +57,10 @@ func transformParticipants(request *Request) []persistence.Participant {
 }
 
 func newRoundResponse(persistedRound *persistence.Round) round.WithToken {
-	encodedRoundToken := round.EncodeRoundToken(persistedRound.Url)
+	encodedRoundToken := round.EncodeRoundToken(persistedRound.URL)
 	return round.WithToken{
 		Token:    &encodedRoundToken,
-		RoundUrl: &persistedRound.Url,
+		RoundURL: &persistedRound.URL,
 		Participants: round.ParticipantsFromRound(persistedRound),
 	}
 }

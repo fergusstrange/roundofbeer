@@ -33,7 +33,7 @@ jobs:
         pushd api && \
         sed -i -e 's/$SIGNING_KEY_REPLACE/'${SIGNING_KEY}'/g' up.json && \
         go get -u github.com/golangci/golangci-lint/cmd/golangci-lint@v1.17.1 && \
-        golangci-lint run --issues-exit-code 1 --enable golint ./... && \
+        golangci-lint run --issues-exit-code 1 --enable golint --enable gofmt ./... && \
         go test -v ./... && \
         GOOS=linux GOARCH=amd64 go build -o server *.go && \
         popd

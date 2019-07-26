@@ -16,9 +16,25 @@ import (
 	"testing"
 )
 
+func TestPortFromEnvironment_Override(t *testing.T) {
+	defer func() { assert.Nil(t, os.Unsetenv("PORT")) }()
+
+	assert.Nil(t, os.Setenv("PORT", "3000"))
+
+	actualPort := portFromEnvironment()
+
+	assert.Equal(t, "localhost:3000", actualPort)
+}
+
+func TestPortFromEnvironment_Default(t *testing.T) {
+	actualPort := portFromEnvironment()
+
+	assert.Equal(t, "localhost:8080", actualPort)
+}
+
 func Test_VerifyProviderTests(t *testing.T) {
 	go func() {
-		errors.LogFatal(WithHandlers(MockHandlers()).Run("localhost:8080"))
+		errors.LogFatal(NewApplication(MockHandlers(), testfixtures.NewMockPersistence()).Run())
 	}()
 
 	provider := &dsl.Pact{
@@ -49,9 +65,8 @@ func Test_VerifyProviderTests(t *testing.T) {
 	assert.Nil(t, err)
 }
 
-func MockHandlers() ApplicationModule {
-	return ApplicationModule{
-		Persistence: testfixtures.NewMockPersistence(),
+func MockHandlers() *ApplicationModule {
+	return &ApplicationModule{
 		CreateRound: func(request *create.Request) round.WithToken {
 			return round.WithToken{
 				Token:        pointers.String("daskdsa"),

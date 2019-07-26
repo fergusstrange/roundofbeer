@@ -12,20 +12,45 @@ import (
 	"os"
 )
 
+type Application struct {
+	persistence       persistence.Persistence
+	applicationModule *ApplicationModule
+	handlers          *gin.Engine
+}
+
+func NewApplication(applicationModule *ApplicationModule, persistence persistence.Persistence) *Application {
+	return &Application{
+		persistence:       persistence,
+		applicationModule: applicationModule,
+		handlers:          Handlers(applicationModule),
+	}
+}
+
+func (application *Application) Initialise() {
+	application.persistence.CreateRoundTable()
+}
+
+func (application *Application) Run() error {
+	return application.handlers.Run(portFromEnvironment())
+}
+
 type ApplicationModule struct {
-	Persistence        persistence.Persistence
 	CreateRound        func(request *create.Request) round.WithToken
 	JoinRound          func(roundID string, request *join.RoundRequest) (*round.WithToken, int)
 	GetRound           func(roundToken string) (*round.Round, int)
 	NextRoundCandidate func(roundTokenHeader string) (*round.Round, int)
 }
 
-func DefaultApp() error {
-	return WithHandlers(DefaultModule(persistence.NewDynamoDBPersistence())).
-		Run(portFromEnvironment())
+func NewApplicationModule(persistence persistence.Persistence) *ApplicationModule {
+	return &ApplicationModule{
+		CreateRound:        create.NewServiceContext(persistence).ServiceHandler,
+		JoinRound:          join.NewServiceContext(persistence).ServiceHandler,
+		GetRound:           read.NewServiceContext(persistence).ServiceHandler,
+		NextRoundCandidate: next.NewServiceContext(persistence).ServiceHandler,
+	}
 }
 
-func WithHandlers(applicationModule ApplicationModule) *gin.Engine {
+func Handlers(applicationModule *ApplicationModule) *gin.Engine {
 	gin.SetMode(gin.ReleaseMode)
 	app := gin.Default()
 
@@ -34,19 +59,7 @@ func WithHandlers(applicationModule ApplicationModule) *gin.Engine {
 	app.GET("/round", read.Handler(applicationModule.GetRound))
 	app.PUT("/round", next.Handler(applicationModule.NextRoundCandidate))
 
-	applicationModule.Persistence.CreateRoundTable()
-
 	return app
-}
-
-func DefaultModule(persistence persistence.Persistence) ApplicationModule {
-	return ApplicationModule{
-		Persistence:        persistence,
-		CreateRound:        create.NewServiceContext(persistence).ServiceHandler,
-		JoinRound:          join.NewServiceContext(persistence).ServiceHandler,
-		GetRound:           read.NewServiceContext(persistence).ServiceHandler,
-		NextRoundCandidate: next.NewServiceContext(persistence).ServiceHandler,
-	}
 }
 
 func portFromEnvironment() string {
@@ -54,5 +67,5 @@ func portFromEnvironment() string {
 	if port == "" {
 		return "localhost:8080"
 	}
-	return fmt.Sprintf(":%s", port)
+	return fmt.Sprintf("localhost:%s", port)
 }

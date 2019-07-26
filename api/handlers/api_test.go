@@ -11,7 +11,7 @@ import (
 )
 
 func TestCreateRound(t *testing.T) {
-	handlers := app.WithHandlers(app.DefaultModule(testfixtures.NewMockPersistence()))
+	handlers := app.Handlers(app.NewApplicationModule(testfixtures.NewMockPersistence()))
 
 	apitest.New().
 		Report(apitest.SequenceDiagram()).
@@ -28,7 +28,7 @@ func TestCreateRound(t *testing.T) {
 
 func TestJoinRound(t *testing.T) {
 	persistence := testfixtures.NewMockPersistence()
-	handlers := app.WithHandlers(app.DefaultModule(persistence))
+	handlers := app.Handlers(app.NewApplicationModule(persistence))
 
 	persistence.NewTestRound("12345")
 
@@ -44,8 +44,8 @@ func TestJoinRound(t *testing.T) {
 }
 
 func TestNextRound(t *testing.T) {
-	module := app.DefaultModule(testfixtures.NewMockPersistence())
-	handlers := app.WithHandlers(module)
+	module := app.NewApplicationModule(testfixtures.NewMockPersistence())
+	handlers := app.Handlers(module)
 
 	roundToken := module.CreateRound(&create.Request{
 		Participants: []string{"Tom", "Bert"},
@@ -65,8 +65,8 @@ func TestNextRound(t *testing.T) {
 }
 
 func TestFetchRound(t *testing.T) {
-	module := app.DefaultModule(testfixtures.NewMockPersistence())
-	handlers := app.WithHandlers(module)
+	module := app.NewApplicationModule(testfixtures.NewMockPersistence())
+	handlers := app.Handlers(module)
 
 	roundToken := module.CreateRound(&create.Request{
 		Participants: []string{"Tom", "Bert"},

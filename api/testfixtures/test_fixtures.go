@@ -2,7 +2,6 @@ package testfixtures
 
 import (
 	"github.com/fergusstrange/roundofbeer/api/persistence"
-	"github.com/google/uuid"
 	"time"
 )
 
@@ -32,25 +31,28 @@ func (mp MockPersistence) UpdateParticipantsAndCurrentCandidate(updatedRound *pe
 }
 
 func (mp MockPersistence) NewTestRound(id string) *persistence.Round {
-	tomsUUID := uuid.New().String()
-	round := &persistence.Round{
+	round := NewTestRound(id)
+	mp.CreateRound(round)
+	return round
+}
+
+func NewTestRound(id string) *persistence.Round {
+	return &persistence.Round{
 		Participants: []persistence.Participant{
 			{
 				Name:       "Tom",
-				UUID:       tomsUUID,
+				UUID:       "50d4993a-183b-48ff-b175-31644a45021b",
 				RoundCount: 0,
 			},
 			{
 				Name:       "John",
-				UUID:       uuid.New().String(),
+				UUID:       "c547d1c9-ca1a-4ff6-83fc-e7df627ef45f",
 				RoundCount: 1,
 			},
 		},
 		URL:              id,
 		CreateDate:       time.Now(),
 		UpdateDate:       time.Now(),
-		CurrentCandidate: tomsUUID,
+		CurrentCandidate: "50d4993a-183b-48ff-b175-31644a45021b",
 	}
-	mp.CreateRound(round)
-	return round
 }

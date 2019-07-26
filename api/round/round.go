@@ -25,6 +25,16 @@ type Participant struct {
 	RoundCount int    `json:"roundCount"`
 }
 
+func EncodeRoundToken(roundURL string) string {
+	return jwt.NewHelper().Encode(&jwt.RoundToken{
+		RoundURL: roundURL,
+		StandardClaims: jwtLib.StandardClaims{
+			IssuedAt:  time.Now().Unix(),
+			ExpiresAt: time.Now().AddDate(1, 0, 0).Unix(),
+		},
+	})
+}
+
 func TransformRound(round *persistence.Round) *Round {
 	var participants []Participant
 	var currentCandidate Participant
@@ -41,16 +51,6 @@ func TransformRound(round *persistence.Round) *Round {
 		Participants:     participants,
 		CurrentCandidate: currentCandidate,
 	}
-}
-
-func EncodeRoundToken(roundURL string) string {
-	return jwt.NewHelper().Encode(&jwt.RoundToken{
-		RoundURL: roundURL,
-		StandardClaims: jwtLib.StandardClaims{
-			IssuedAt:  time.Now().Unix(),
-			ExpiresAt: time.Now().AddDate(1, 0, 0).Unix(),
-		},
-	})
 }
 
 func transformParticipant(participant persistence.Participant) Participant {

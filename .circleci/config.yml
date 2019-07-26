@@ -14,7 +14,8 @@ jobs:
     - checkout
     - run: |
         curl -sf https://up.apex.sh/install | sudo sh && \
-        sudo npm install -g yarn
+        sudo npm install -g yarn && \
+        go get -u github.com/mattn/goveralls
     - run: |
         if [ ! -d "/home/circleci/pact" ]; then
           curl -fsSL https://raw.githubusercontent.com/pact-foundation/pact-ruby-standalone/master/install.sh | bash
@@ -34,7 +35,8 @@ jobs:
         sed -i -e 's/$SIGNING_KEY_REPLACE/'${SIGNING_KEY}'/g' up.json && \
         go get -u github.com/golangci/golangci-lint/cmd/golangci-lint@v1.17.1 && \
         golangci-lint run --issues-exit-code 1 --enable golint --enable gofmt ./... && \
-        go test -v ./... && \
+        go test -v -cover -race -coverprofile=coverage.out ./... && \
+        goveralls -coverprofile=coverage.out -service=travis-ci -repotoken $COVERALLS_TOKEN && \
         GOOS=linux GOARCH=amd64 go build -o server *.go && \
         popd
     - store_artifacts:
@@ -69,6 +71,7 @@ jobs:
 workflows:
   version: 2
   build-and-deploy:
+    context: home-build
     jobs:
     - build:
         filters:

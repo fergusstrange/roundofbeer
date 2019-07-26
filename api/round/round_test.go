@@ -46,5 +46,3 @@ func TestParticipantsFromRound(t *testing.T) {
 
 	assert.Equal(t, []string{"Tom", "John"}, participants)
 }
-
-

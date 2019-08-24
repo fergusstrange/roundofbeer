@@ -1,39 +1,43 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Join Round Page Tests Renders existing round join page 1`] = `
-<div
-  className="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-3 MuiGrid-direction-xs-column MuiGrid-align-items-xs-center"
+<form
+  onSubmit={[Function]}
 >
-  <form
-    onSubmit={[Function]}
+  <div
+    className="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-3 MuiGrid-direction-xs-column MuiGrid-align-items-xs-center"
   >
     <div
       className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12"
     >
       <div
-        className="MuiFormControl-root MuiTextField-root"
+        className="MuiContainer-root MuiContainer-maxWidthLg"
       >
-        <label
-          className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
-          data-shrink={false}
-        >
-          Your name
-        </label>
         <div
-          className="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
-          onClick={[Function]}
+          className="MuiFormControl-root MuiTextField-root"
         >
-          <input
-            aria-invalid={false}
-            autoFocus={true}
-            className="MuiInputBase-input MuiInput-input"
-            disabled={false}
-            onBlur={[Function]}
-            onChange={[Function]}
-            onFocus={[Function]}
-            required={false}
-            type="text"
-          />
+          <label
+            className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
+            data-shrink={false}
+          >
+            Your name
+          </label>
+          <div
+            className="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
+            onClick={[Function]}
+          >
+            <input
+              aria-invalid={false}
+              autoFocus={true}
+              className="MuiInputBase-input MuiInput-input"
+              disabled={false}
+              onBlur={[Function]}
+              onChange={[Function]}
+              onFocus={[Function]}
+              required={false}
+              type="text"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -64,6 +68,6 @@ exports[`Join Round Page Tests Renders existing round join page 1`] = `
         </span>
       </button>
     </div>
-  </form>
-</div>
+  </div>
+</form>
 `;

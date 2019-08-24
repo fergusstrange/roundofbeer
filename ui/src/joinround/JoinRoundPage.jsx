@@ -1,8 +1,7 @@
 import React, { Fragment, useState } from 'react';
-import { TextField } from '@material-ui/core';
+import { TextField, Grid, Container } from '@material-ui/core';
 import Fab from '@material-ui/core/Fab';
 import PropTypes from 'prop-types';
-import Grid from '@material-ui/core/Grid';
 import Client from '../client/Client';
 import { roundContext } from '../store/Store';
 
@@ -27,18 +26,25 @@ export default function JoinRoundPage({ match, history }) {
 
   return (
     <Fragment>
-      <Grid container spacing={3} direction="column" alignItems="center">
-        <form onSubmit={submitJoinRound}>
+      <form onSubmit={submitJoinRound}>
+        <Grid container spacing={3} direction="column" alignItems="center">
           <Grid item xs={12}>
-            <TextField label="Your name" autoFocus inputRef={joinRoundPage.nameRef} />
+            <Container>
+              <TextField label="Your name" autoFocus inputRef={joinRoundPage.nameRef} />
+            </Container>
           </Grid>
           <Grid item xs={12}>
-            <Fab type="submit" variant="extended" color="primary" aria-label="Add">
-            Join Round
+            <Fab
+              type="submit"
+              variant="extended"
+              color="primary"
+              aria-label="Add"
+            >
+              Join Round
             </Fab>
           </Grid>
-        </form>
-      </Grid>
+        </Grid>
+      </form>
     </Fragment>
   );
 }

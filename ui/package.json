@@ -18,7 +18,7 @@
     "@material-ui/core": "^4.0.0",
     "@material-ui/icons": "^4.0.0",
     "@material-ui/styles": "^4.0.0",
-    "axios": "^0.18.1",
+    "axios": "^0.21.1",
     "dakpan": "^2.0.2",
     "local-storage": "^2.0.0",
     "prop-types": "^15.7.2",
